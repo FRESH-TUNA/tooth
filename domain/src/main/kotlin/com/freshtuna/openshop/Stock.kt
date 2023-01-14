@@ -1,4 +1,4 @@
-package com.freshtuna.openshop.domain
+package com.freshtuna.openshop
 
 /**
  * 재고 도메인
