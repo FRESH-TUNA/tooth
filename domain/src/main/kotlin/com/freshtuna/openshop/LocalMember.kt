@@ -22,4 +22,13 @@ class LocalMember(
     fun checkPasswordRule(): Boolean {
         return PASSWORD_SATETY_REGEX.matcher(this.password).matches()
     }
+
+    /**
+     * 패스워드가 맞는지 검사한다.
+     * 패스워드가 틀리면 예외를 발생시킨다.
+     */
+    fun checkPassword(password: String) {
+        if (!this.password.equals(password))
+            throw OpenException(Error.PASSWORD_NOT_MATCHED)
+    }
 }

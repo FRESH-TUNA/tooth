@@ -4,6 +4,7 @@ import org.assertj.core.util.Lists
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 
 class LocalMemberTest {
     @Test
@@ -139,5 +140,35 @@ class LocalMemberTest {
 
         assertEquals(normalMember1.checkPasswordRule(), true)
         assertEquals(normalMember2.checkPasswordRule(), true)
+    }
+
+    @Test
+    @DisplayName("패스워드 체크 실패 테스트")
+    fun checkPasswordFail() {
+        /**
+         * given
+         * 테스트에 필요한 멤버
+         */
+        val member1 = LocalMember("id", "name", "nickname", Lists.emptyList(), "localId", "1aB!1aB")
+
+        /**
+         * then
+         */
+        assertThrows<OpenException> { member1.checkPassword("not same password") }
+    }
+
+    @Test
+    @DisplayName("패스워드 체크 성공 테스트")
+    fun checkPasswordSuccess() {
+        /**
+         * given
+         * 테스트에 필요한 멤버
+         */
+        val member1 = LocalMember("id", "name", "nickname", Lists.emptyList(), "localId", "1aB!1aB")
+
+        /**
+         * then
+         */
+        assertDoesNotThrow { member1.checkPassword("1aB!1aB") }
     }
 }
