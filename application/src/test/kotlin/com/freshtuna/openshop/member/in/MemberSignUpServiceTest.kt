@@ -4,17 +4,33 @@ import com.freshtuna.openshop.LocalMember
 import com.freshtuna.openshop.Role
 import com.freshtuna.openshop.member.out.MemberSearchPort
 import com.freshtuna.openshop.member.out.MemberSignUpPort
+import com.freshtuna.openshop.member.out.MemberUpdatePort
+import io.mockk.every
+
+import io.mockk.junit5.MockKExtension
+import io.mockk.mockk
 import org.assertj.core.util.Lists
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
+import org.junit.jupiter.api.extension.ExtendWith
 
-import org.mockito.kotlin.any
-import org.mockito.kotlin.mock
-import org.mockito.kotlin.whenever
 
+@ExtendWith(MockKExtension::class)
 class MemberSignUpServiceTest {
+
+    private val memberSignUpPort: MemberSignUpPort = mockk()
+
+    private val memberSearchPort: MemberSearchPort = mockk()
+
+    private val memberUpdatePort: MemberUpdatePort = mockk()
+
+    private val memberSignUpService = MemberSignUpService(
+        memberSignUpPort,
+        memberSearchPort,
+        memberUpdatePort
+    )
 
     @Test
     @DisplayName("이미 가입된 아이디로는 로컬 회원 가입이 불가하다.")
@@ -47,13 +63,8 @@ class MemberSignUpServiceTest {
          * given
          * 테스트에 사용할 서비스 객체, 포트 객체
          */
-        val memberSignupPort : MemberSignUpPort = mock()
-        val memberSearchPort : MemberSearchPort = mock()
-
-        whenever(memberSignupPort.signUp(any<LocalMember>())).thenReturn(true)
-        whenever(memberSearchPort.existsLocalMemberBylocalId(any())).thenReturn(true)
-
-        val memberSignUpService = MemberSignUpService(memberSignupPort, memberSearchPort)
+        every { memberSignUpPort.signUp(any<LocalMember>()) } returns true
+        every { memberSearchPort.existsLocalMemberBylocalId(localId) } returns true
 
 
         /**
@@ -94,14 +105,8 @@ class MemberSignUpServiceTest {
          * given
          * 테스트에 사용할 서비스 객체, 포트 객체
          */
-        val memberSignupPort : MemberSignUpPort = mock()
-        val memberSearchPort : MemberSearchPort = mock()
-
-        whenever(memberSignupPort.signUp(any<LocalMember>())).thenReturn(true)
-        whenever(memberSearchPort.existsLocalMemberBylocalId(any())).thenReturn(false)
-
-        val memberSignUpService = MemberSignUpService(memberSignupPort, memberSearchPort)
-
+        every { memberSignUpPort.signUp(any<LocalMember>()) } returns false
+        every { memberSearchPort.existsLocalMemberBylocalId(localId) } returns false
 
         /**
          * when, then
