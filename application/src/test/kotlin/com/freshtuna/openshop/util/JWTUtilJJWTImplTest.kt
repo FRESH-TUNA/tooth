@@ -1,8 +1,6 @@
 package com.freshtuna.openshop.util
 
-import com.freshtuna.openshop.LocalMember
-import com.freshtuna.openshop.Member
-import com.freshtuna.openshop.Role
+import com.freshtuna.openshop.*
 import org.assertj.core.util.Lists
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.DisplayName
@@ -60,6 +58,28 @@ class JWTUtilJJWTImplTest {
         assertEquals(true, token is String)
     }
 
+    @Test
+    @DisplayName("OAuth 소셜 멤버 액세스 토큰 생성 테스트")
+    fun generateAccessTokenForOAuthMember() {
+        /**
+         * given
+         * 토큰을 생성하고 싶은 멤버, 토큰을 생성할 테스트 객체
+         */
+        val oAuthMember = createOAuthMember()
+        val jwtUtil = createJWTUtilJJWTImpl()
+
+        /**
+         * when
+         * 토큰 생성
+         */
+        val token = jwtUtil.generateAccessToken(oAuthMember)
+
+        /**
+         * then
+         * 토큰은 문자열타입으로 반환되는지 체크
+         */
+        assertEquals(true, token is String)
+    }
 
 
     private fun createJWTUtilJJWTImpl(): JWTUtil {
@@ -98,5 +118,27 @@ class JWTUtilJJWTImplTest {
          * 주어진 정보들을 통해 로컬 멤버 생성하기
          */
         return LocalMember(id, name, nickname, roles, localId, password)
+    }
+
+    private fun createOAuthMember(): Member {
+        // 고유 식별자
+        val id = "식별자"
+
+        // 개인정보 (실명)
+        val name = "김동원"
+
+        // 부가정보
+        val nickname = "신선한참치"
+
+        // 권한
+        val roles: List<Role> = Lists.emptyList()
+
+        // OAuth 서비스 프로바이더
+        val provider = OAuthProvider.GOOGLE
+
+        // oauth 프로바이더가 제공하는 id (sub)
+        val oauthId = "oauthId"
+
+        return OAuthMember(id, name, nickname, roles, provider, oauthId)
     }
 }
