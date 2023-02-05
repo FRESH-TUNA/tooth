@@ -17,9 +17,7 @@ dependencies {
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.1")
 
     testImplementation("org.assertj:assertj-core:3.11.1")
-    testImplementation("org.mockito:mockito-core:3.3.0")
-
-    implementation(kotlin("stdlib-jdk8"))
+    testImplementation("io.mockk:mockk:1.13.4")
 }
 
 tasks.getByName<Test>("test") {
