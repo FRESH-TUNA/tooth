@@ -2,6 +2,8 @@ package com.freshtuna.openshop.member.`in`
 
 import com.freshtuna.openshop.LocalMember
 import com.freshtuna.openshop.member.out.MemberSearchPort
+import com.freshtuna.openshop.util.JWTUtil
+
 import io.mockk.every
 import io.mockk.mockk
 import org.assertj.core.util.Lists
@@ -10,7 +12,15 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.DisplayName
 
-class MemberSignInServiceTest {
+class MemberSignInJWTServiceTest {
+
+    private val memberSearchPort: MemberSearchPort = mockk()
+    private val jwtUtil: JWTUtil = mockk()
+
+    private val memberSignInService = MemberSignInJWTService(
+        memberSearchPort,
+        jwtUtil
+    )
 
     @Test
     @DisplayName("유저ID와 패스워드로 로그인을 시도한다")
@@ -24,13 +34,11 @@ class MemberSignInServiceTest {
         val localId = "localId"
         val password = "password"
         val id = "id"
-
         val member = LocalMember(id,"name","nickname", Lists.emptyList(), localId, password)
 
-        val memberSearchPort : MemberSearchPort = mockk()
         every { memberSearchPort.findLocalMemberBylocalId(localId) } returns member
-
-        val memberSignInService = MemberSignInService(memberSearchPort)
+        every { jwtUtil.generateAccessToken(member) } returns "accessToken!"
+        every { jwtUtil.generateRefreshToken(member) } returns "refreshToken"
 
         /**
          * when
@@ -40,6 +48,6 @@ class MemberSignInServiceTest {
         /**
          * then
          */
-        assertEquals(signInedMember.id, id)
+        assertEquals(signInedMember.member.id, id)
     }
 }
