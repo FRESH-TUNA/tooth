@@ -1,5 +1,5 @@
 package com.freshtuna.openshop
 
-class OpenException(val error: Error): RuntimeException() {
+open class OpenException(val error: Error): RuntimeException() {
 
 }
