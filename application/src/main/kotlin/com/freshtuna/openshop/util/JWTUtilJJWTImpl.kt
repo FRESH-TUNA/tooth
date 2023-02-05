@@ -1,6 +1,9 @@
 package com.freshtuna.openshop.util
 
+import com.freshtuna.openshop.Error
 import com.freshtuna.openshop.Member
+import com.freshtuna.openshop.OpenException
+import com.freshtuna.openshop.OpenMsgException
 import io.jsonwebtoken.*
 import io.jsonwebtoken.security.Keys
 import java.security.Key
@@ -54,15 +57,21 @@ class JWTUtilJJWTImpl(
                 .parseClaimsJws(token)
                 .body != null
         } catch (e: SecurityException) {
-//            log.info("Invalid JWT signature.")
-        } catch (e: MalformedJwtException) {
-//            log.info("Invalid JWT token.")
-        } catch (e: ExpiredJwtException) {
-//            log.info("Expired JWT token.")
-        } catch (e: UnsupportedJwtException) {
-//            log.info("Unsupported JWT token.")
+            if (Objects.isNull(e.message))
+                throw OpenException(Error.JWT_ERROR)
+            throw OpenMsgException(Error.JWT_ERROR, e.message!!)
+        } catch (e: JwtException) {
+            if (Objects.isNull(e.message))
+                throw OpenException(Error.JWT_ERROR)
+            throw OpenMsgException(Error.JWT_ERROR, e.message!!)
         } catch (e: IllegalArgumentException) {
-//            log.info("JWT token compact of handler are invalid.")
+            if (Objects.isNull(e.message))
+                throw OpenException(Error.JWT_ERROR)
+            throw OpenMsgException(Error.JWT_ERROR, e.message!!)
+        } catch (e: Exception) {
+            if (Objects.isNull(e.message))
+                throw OpenException(Error.INTERNAL_SERVER_ERROR)
+            throw OpenMsgException(Error.INTERNAL_SERVER_ERROR, e.message!!)
         }
 
         return false
@@ -78,7 +87,11 @@ class JWTUtilJJWTImpl(
                 .parseClaimsJws(token)
                 .getBody()
                 .subject
-        } catch (e: Exception) { }
+        } catch (e: Exception) {
+            if (Objects.isNull(e.message))
+                throw OpenException(Error.INTERNAL_SERVER_ERROR)
+            throw OpenMsgException(Error.INTERNAL_SERVER_ERROR, e.message!!)
+        }
 
         return null
     }
