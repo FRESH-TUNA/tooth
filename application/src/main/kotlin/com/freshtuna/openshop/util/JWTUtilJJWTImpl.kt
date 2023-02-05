@@ -67,5 +67,20 @@ class JWTUtilJJWTImpl(
 
         return false
     }
+
+    override fun idOfToken(token: String): String? {
+        isValid(token)
+
+        try {
+            return Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token)
+                .getBody()
+                .subject
+        } catch (e: Exception) { }
+
+        return null
+    }
 }
 
