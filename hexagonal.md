@@ -9,3 +9,24 @@ Adapter -> 도메인: incoming port
 
 incoming port 구현체 -> Service
 outgoing port 구현체 -> Adapter
+
+
+## 확장함수 예제
+```kotlin
+package com.freshtuna.openshop.config
+
+import com.freshtuna.openshop.member.LocalMember
+
+class MemberEntity(localMember: LocalMember) {
+    fun te(localMember: LocalMember) {
+        val str = "esfsfEFEsfsf dfsfs"
+        str.toLowercaseAndRemoveSpace()
+    }
+}
+
+fun LocalMember.toEntity() {
+
+}
+
+fun String.toLowercaseAndRemoveSpace() = this.lowercase().replace(" ", ""
+```

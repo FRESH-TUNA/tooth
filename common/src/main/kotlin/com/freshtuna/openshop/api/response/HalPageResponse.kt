@@ -1,3 +1,3 @@
-package com.freshtuna.openshop.responses.base;
+package com.freshtuna.openshop.api.response;
 
 class HalPageResponse(val page: PageInfo): HalCollectionResponse()

@@ -5,11 +5,6 @@ package com.freshtuna.openshop.config
  */
 class UrlConfig {
 
-    companion object {
-
-        const val ROOT = "/openauth"
-    }
-
     /**
      * external api 설정
      */
@@ -20,7 +15,7 @@ class UrlConfig {
             /**
              * jwt local member signin
              */
-            const val JWT_LOCAL_SIGNIN = ROOT + "/sign-in/jwt/local"
+            const val JWT_LOCAL_SIGNIN = "/sign-in/jwt/local"
         }
     }
 }
