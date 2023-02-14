@@ -2,7 +2,7 @@ package com.freshtuna.openshop.member
 
 import com.freshtuna.openshop.member.constant.Role
 
-abstract class Member(
+open class Member(
     // 고유식별자
     var id: String,
 
