@@ -35,20 +35,18 @@ class SignInJWTServiceTest {
         val localId = "localId"
         val password = "password"
         val id = "id"
-        val member = LocalMember(id,"name","nickname", Lists.emptyList(), localId, password)
+        val member = LocalMember(id,"nickname", Lists.emptyList(), localId, password)
 
+        /**
+         * when
+         */
         every { memberSearchPort.findLocalMemberBylocalId(localId) } returns member
         every { jwtUseCase.generateAccessToken(member) } returns JWT("accessToken!")
         every { jwtUseCase.generateRefreshToken(member) } returns JWT("refreshToken")
 
         /**
-         * when
-         */
-        val signInedMember = memberSignInService.signInLocalMember(localId, password)
-
-        /**
          * then
          */
-        assertEquals(signInedMember.member.id, id)
+        assertEquals(memberSignInService.signInLocalMember(localId, password).member.id, id)
     }
 }

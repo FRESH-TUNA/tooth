@@ -11,10 +11,10 @@ open class MariaDBMember(
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    var id: Long,
+    var id: Long?,
 
     @GeneratedValue(generator = "uuid2")
-    var publicId: UUID,
+    var publicId: UUID?,
 
     @Column
     var nickname: String,

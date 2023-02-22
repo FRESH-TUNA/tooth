@@ -8,7 +8,7 @@ class MariaDBRole(
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    var id: Long,
+    var id: Long?,
 
     @ManyToOne
     var member: MariaDBMember,

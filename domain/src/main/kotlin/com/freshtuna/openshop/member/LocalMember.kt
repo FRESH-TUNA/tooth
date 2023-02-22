@@ -4,7 +4,7 @@ import com.freshtuna.openshop.member.constant.Role
 import java.util.regex.Pattern
 
 class LocalMember(
-    id: String,
+    id: String?,
     nickname: String,
     roles: List<Role>,
     var localId: String,

@@ -1,8 +1,6 @@
 package com.freshtuna.openshop.jwt
 
 import com.freshtuna.openshop.*
-import com.freshtuna.openshop.jwt.JWT
-import com.freshtuna.openshop.jwt.JWTService
 import com.freshtuna.openshop.member.LocalMember
 import com.freshtuna.openshop.member.Member
 import com.freshtuna.openshop.member.OAuthMember

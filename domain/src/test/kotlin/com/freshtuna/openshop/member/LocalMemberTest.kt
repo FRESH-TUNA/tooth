@@ -1,13 +1,10 @@
 package com.freshtuna.openshop.member
 
-import com.freshtuna.openshop.exception.OpenException
-import com.freshtuna.openshop.member.LocalMember
 import com.freshtuna.openshop.member.constant.Role
 import org.assertj.core.util.Lists
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
 
 class LocalMemberTest {
     @Test
