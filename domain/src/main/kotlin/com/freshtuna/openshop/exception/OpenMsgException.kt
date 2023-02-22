@@ -1,5 +1,5 @@
 package com.freshtuna.openshop.exception
 
-import com.freshtuna.openshop.exception.constant.Error
+import com.freshtuna.openshop.exception.constant.Oh
 
-class OpenMsgException(error: Error, val msg: String): OpenException(error)
+class OpenMsgException(oh: Oh, val msg: String): OpenException(oh)

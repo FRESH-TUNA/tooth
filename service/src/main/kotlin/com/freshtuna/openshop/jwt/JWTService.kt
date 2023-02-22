@@ -1,6 +1,6 @@
 package com.freshtuna.openshop.jwt
 
-import com.freshtuna.openshop.exception.constant.Error
+import com.freshtuna.openshop.exception.constant.Oh
 import com.freshtuna.openshop.member.Member
 import com.freshtuna.openshop.exception.OpenException
 import com.freshtuna.openshop.exception.OpenMsgException
@@ -59,20 +59,20 @@ class JWTService(
                 .body != null
         } catch (e: SecurityException) {
             if (Objects.isNull(e.message))
-                throw OpenException(Error.JWT_ERROR)
-            throw OpenMsgException(Error.JWT_ERROR, e.message!!)
+                throw OpenException(Oh.JWT_ERROR)
+            throw OpenMsgException(Oh.JWT_ERROR, e.message!!)
         } catch (e: JwtException) {
             if (Objects.isNull(e.message))
-                throw OpenException(Error.JWT_ERROR)
-            throw OpenMsgException(Error.JWT_ERROR, e.message!!)
+                throw OpenException(Oh.JWT_ERROR)
+            throw OpenMsgException(Oh.JWT_ERROR, e.message!!)
         } catch (e: IllegalArgumentException) {
             if (Objects.isNull(e.message))
-                throw OpenException(Error.JWT_ERROR)
-            throw OpenMsgException(Error.JWT_ERROR, e.message!!)
+                throw OpenException(Oh.JWT_ERROR)
+            throw OpenMsgException(Oh.JWT_ERROR, e.message!!)
         } catch (e: Exception) {
             if (Objects.isNull(e.message))
-                throw OpenException(Error.INTERNAL_SERVER_ERROR)
-            throw OpenMsgException(Error.INTERNAL_SERVER_ERROR, e.message!!)
+                throw OpenException(Oh.INTERNAL_SERVER_ERROR)
+            throw OpenMsgException(Oh.INTERNAL_SERVER_ERROR, e.message!!)
         }
 
         return false
@@ -90,8 +90,8 @@ class JWTService(
                 .subject
         } catch (e: Exception) {
             if (Objects.isNull(e.message))
-                throw OpenException(Error.INTERNAL_SERVER_ERROR)
-            throw OpenMsgException(Error.INTERNAL_SERVER_ERROR, e.message!!)
+                throw OpenException(Oh.INTERNAL_SERVER_ERROR)
+            throw OpenMsgException(Oh.INTERNAL_SERVER_ERROR, e.message!!)
         }
 
         return ""

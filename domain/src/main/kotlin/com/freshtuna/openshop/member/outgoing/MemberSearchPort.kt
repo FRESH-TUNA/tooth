@@ -11,9 +11,8 @@ interface MemberSearchPort {
 
     /**
      * localId로 가입한 로컬 계정을 반환한다.
-     * 없므면 null을 반환한다.
      */
-    fun findLocalMemberBylocalId(localId: String) : LocalMember?
+    fun findLocalMemberBylocalId(localId: String) : LocalMember
 
     /**
      * 같은 정보로 가입된 소셜계정이 있는지 검사한다.
