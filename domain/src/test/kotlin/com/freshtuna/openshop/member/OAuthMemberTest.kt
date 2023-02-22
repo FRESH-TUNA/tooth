@@ -42,14 +42,13 @@ class OAuthMemberTest {
          * when
          * 주어진 정보들을 통해 로컬 멤버 생성하기
          */
-        val member = OAuthMember(id, name, nickname, roles, provider, oauthId)
+        val member = OAuthMember(id, nickname, roles, provider, oauthId)
 
         /**
          * then
          * 필요한 정보들이 잘 설정되어있는지 확인
          */
         Assertions.assertEquals(member.id, id)
-        Assertions.assertEquals(member.name, name)
         Assertions.assertEquals(member.nickname, nickname)
         Assertions.assertEquals(member.roles === roles, true)
 

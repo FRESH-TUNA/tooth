@@ -28,8 +28,7 @@ class MemberSignUpServiceTest {
 
     private val memberSignUpService = LocalSignUpService(
         localSignUpPort,
-        memberSearchPort,
-        memberUpdatePort
+        memberSearchPort
     )
 
     @Test
@@ -41,9 +40,6 @@ class MemberSignUpServiceTest {
          */
         // 고유 식별자
         val id = "식별자"
-
-        // 개인정보 (실명)
-        val name = "김동원"
 
         // 부가정보
         val nickname = "신선한참치"
@@ -57,13 +53,13 @@ class MemberSignUpServiceTest {
         // 패스워드
         val password = "패스워드"
 
-        val member = LocalMember(id, name, nickname, roles, localId, password)
+        val member = LocalMember(id, nickname, roles, localId, password)
 
         /**
          * given
          * 테스트에 사용할 서비스 객체, 포트 객체
          */
-        every { localSignUpPort.signUp(any<LocalMember>()) } returns true
+        every { localSignUpPort.signUp(any()) } returns member
         every { memberSearchPort.existsLocalMemberBylocalId(localId) } returns true
 
 
@@ -84,9 +80,6 @@ class MemberSignUpServiceTest {
         // 고유 식별자
         val id = "식별자"
 
-        // 개인정보 (실명)
-        val name = "김동원"
-
         // 부가정보
         val nickname = "신선한참치"
 
@@ -99,13 +92,13 @@ class MemberSignUpServiceTest {
         // 패스워드
         val password = "패스워드"
 
-        val member = LocalMember(id, name, nickname, roles, localId, password)
+        val member = LocalMember(id, nickname, roles, localId, password)
 
         /**
          * given
          * 테스트에 사용할 서비스 객체, 포트 객체
          */
-        every { localSignUpPort.signUp(any<LocalMember>()) } returns false
+        every { localSignUpPort.signUp(any<LocalMember>()) } returns member
         every { memberSearchPort.existsLocalMemberBylocalId(localId) } returns false
 
         /**

@@ -127,9 +127,6 @@ class JWTUseCaseJJWTImplTest {
         // 고유 식별자
         val id = "식별자"
 
-        // 개인정보 (실명)
-        val name = "김동원"
-
         // 부가정보
         val nickname = "신선한참치"
 
@@ -150,12 +147,10 @@ class JWTUseCaseJJWTImplTest {
          * when
          * 주어진 정보들을 통해 로컬 멤버 생성하기
          */
-        return LocalMember(id, name, nickname, roles, localId, password)
+        return LocalMember(id, nickname, roles, localId, password)
     }
 
     private fun createLocalMember(id: String): Member {
-        // 개인정보 (실명)
-        val name = "김동원"
 
         // 부가정보
         val nickname = "신선한참치"
@@ -177,16 +172,13 @@ class JWTUseCaseJJWTImplTest {
          * when
          * 주어진 정보들을 통해 로컬 멤버 생성하기
          */
-        return LocalMember(id, name, nickname, roles, localId, password)
+        return LocalMember(id, nickname, roles, localId, password)
     }
 
     private fun createOAuthMember(): Member {
         // 고유 식별자
         val id = "식별자"
 
-        // 개인정보 (실명)
-        val name = "김동원"
-
         // 부가정보
         val nickname = "신선한참치"
 
@@ -199,12 +191,10 @@ class JWTUseCaseJJWTImplTest {
         // oauth 프로바이더가 제공하는 id (sub)
         val oauthId = "oauthId"
 
-        return OAuthMember(id, name, nickname, roles, provider, oauthId)
+        return OAuthMember(id, nickname, roles, provider, oauthId)
     }
 
     private fun createOAuthMember(id: String): Member {
-        // 개인정보 (실명)
-        val name = "김동원"
 
         // 부가정보
         val nickname = "신선한참치"
@@ -218,6 +208,6 @@ class JWTUseCaseJJWTImplTest {
         // oauth 프로바이더가 제공하는 id (sub)
         val oauthId = "oauthId"
 
-        return OAuthMember(id, name, nickname, roles, provider, oauthId)
+        return OAuthMember(id, nickname, roles, provider, oauthId)
     }
 }

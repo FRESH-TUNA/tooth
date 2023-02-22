@@ -41,14 +41,13 @@ class LocalMemberTest {
          * when
          * 주어진 정보들을 통해 로컬 멤버 생성하기
          */
-        val member = LocalMember(id, name, nickname, roles, localId, password)
+        val member = LocalMember(id, nickname, roles, localId, password)
 
         /**
          * then
          * 필요한 정보들이 잘 설정되어있는지 확인
          */
         assertEquals(member.id, id)
-        assertEquals(member.name, name)
         assertEquals(member.nickname, nickname)
         assertEquals(member.roles === roles, true)
 
@@ -65,9 +64,6 @@ class LocalMemberTest {
          */
         // 고유 식별자
         val id = "식별자"
-
-        // 개인정보 (실명)
-        val name = "김동원"
 
         // 부가정보
         val nickname = "신선한참치"
@@ -86,13 +82,13 @@ class LocalMemberTest {
          * given
          * 테스트에 필요한 규칙에 어긋나는 패스워드를 사용한 로컬사용자들을 모두 생성
          */
-        val member1 = LocalMember(id, name, nickname, roles, localId, "1aB!1aB")
-        val member2 = LocalMember(id, name, nickname, roles, localId, "1aB!1aB!1aB!1aB!1aB!1")
-        val member3 = LocalMember(id, name, nickname, roles, localId, "aaB!aaB!")
-        val member4 = LocalMember(id, name, nickname, roles, localId, "1ab!1ab!")
-        val member5 = LocalMember(id, name, nickname, roles, localId, "1AB!1AB!")
-        val member6 = LocalMember(id, name, nickname, roles, localId, "1AB11AB1")
-        val member7 = LocalMember(id, name, nickname, roles, localId, "1AB!1AB ")
+        val member1 = LocalMember(id, nickname, roles, localId, "1aB!1aB")
+        val member2 = LocalMember(id, nickname, roles, localId, "1aB!1aB!1aB!1aB!1aB!1")
+        val member3 = LocalMember(id, nickname, roles, localId, "aaB!aaB!")
+        val member4 = LocalMember(id, nickname, roles, localId, "1ab!1ab!")
+        val member5 = LocalMember(id, nickname, roles, localId, "1AB!1AB!")
+        val member6 = LocalMember(id, nickname, roles, localId, "1AB11AB1")
+        val member7 = LocalMember(id, nickname, roles, localId, "1AB!1AB ")
 
         /**
          * when and then
@@ -135,8 +131,8 @@ class LocalMemberTest {
          * given, when, then
          * 테스트에 필요한 규칙이 준수된 패스워드를 사용한 로컬사용자들을 모두 생성
          */
-        val normalMember1 = LocalMember(id, name, nickname, roles, localId, "1aB!1aB!1aB!1aB!1aB!")
-        val normalMember2 = LocalMember(id, name, nickname, roles, localId, "1aB!1aB!")
+        val normalMember1 = LocalMember(id, nickname, roles, localId, "1aB!1aB!1aB!1aB!1aB!")
+        val normalMember2 = LocalMember(id, nickname, roles, localId, "1aB!1aB!")
 
         assertEquals(normalMember1.checkPasswordRule(), true)
         assertEquals(normalMember2.checkPasswordRule(), true)
@@ -149,7 +145,7 @@ class LocalMemberTest {
          * given
          * 테스트에 필요한 멤버
          */
-        val member1 = LocalMember("id", "name", "nickname", Lists.emptyList(), "localId", "1aB!1aB")
+        val member1 = LocalMember("id", "nickname", Lists.emptyList(), "localId", "1aB!1aB")
 
         /**
          * then
@@ -164,7 +160,7 @@ class LocalMemberTest {
          * given
          * 테스트에 필요한 멤버
          */
-        val member1 = LocalMember("id", "name", "nickname", Lists.emptyList(), "localId", "1aB!1aB")
+        val member1 = LocalMember("id", "nickname", Lists.emptyList(), "localId", "1aB!1aB")
 
         /**
          * then
