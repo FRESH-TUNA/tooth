@@ -1,9 +1,9 @@
 package com.freshtuna.openshop.member
 
-import com.freshtuna.openshop.auth.SignUpService
+import com.freshtuna.openshop.auth.LocalSignUpService
 import com.freshtuna.openshop.member.constant.Role
 import com.freshtuna.openshop.member.outgoing.MemberSearchPort
-import com.freshtuna.openshop.member.outgoing.MemberSignUpPort
+import com.freshtuna.openshop.auth.outgoing.LocalSignUpPort
 import com.freshtuna.openshop.member.outgoing.MemberUpdatePort
 import io.mockk.every
 
@@ -20,14 +20,14 @@ import org.junit.jupiter.api.extension.ExtendWith
 @ExtendWith(MockKExtension::class)
 class MemberSignUpServiceTest {
 
-    private val memberSignUpPort: MemberSignUpPort = mockk()
+    private val localSignUpPort: LocalSignUpPort = mockk()
 
     private val memberSearchPort: MemberSearchPort = mockk()
 
     private val memberUpdatePort: MemberUpdatePort = mockk()
 
-    private val memberSignUpService = SignUpService(
-        memberSignUpPort,
+    private val memberSignUpService = LocalSignUpService(
+        localSignUpPort,
         memberSearchPort,
         memberUpdatePort
     )
@@ -63,7 +63,7 @@ class MemberSignUpServiceTest {
          * given
          * 테스트에 사용할 서비스 객체, 포트 객체
          */
-        every { memberSignUpPort.signUp(any<LocalMember>()) } returns true
+        every { localSignUpPort.signUp(any<LocalMember>()) } returns true
         every { memberSearchPort.existsLocalMemberBylocalId(localId) } returns true
 
 
@@ -105,7 +105,7 @@ class MemberSignUpServiceTest {
          * given
          * 테스트에 사용할 서비스 객체, 포트 객체
          */
-        every { memberSignUpPort.signUp(any<LocalMember>()) } returns false
+        every { localSignUpPort.signUp(any<LocalMember>()) } returns false
         every { memberSearchPort.existsLocalMemberBylocalId(localId) } returns false
 
         /**
