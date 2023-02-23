@@ -30,7 +30,7 @@ class LocalJWTSignInController(
     @PostMapping(UrlConfig.EXTERNAL.JWT_LOCAL_SIGNIN)
     override fun signIn(@RequestBody request: LocalSignInRequest,
                         response: HttpServletResponse): BasicResponse {
-        val result = signInJWTUseCase.signInLocalMember(request.id, request.password)
+        val result = signInJWTUseCase.signIn(request.id, request.password)
 
         addCookie(REFRESH_TOKEN_COOKIE, result.refreshToken.tokenString, response)
         addHeader(HttpHeaders.AUTHORIZATION, result.accessToken.tokenString, response)

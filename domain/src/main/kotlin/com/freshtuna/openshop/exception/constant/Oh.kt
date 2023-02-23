@@ -23,5 +23,9 @@ enum class Oh {
         fun localMemberNotExisted(localId: String): Nothing {
             throw OpenMsgException(LOCAL_MEMBER_NOT_FOUNDED, "아이디: $localId 와 일치하는 계정이 없습니다.")
         }
+
+        fun localIdUsed(localId: String): Nothing {
+            throw OpenMsgException(LOCAL_MEMBER_NOT_FOUNDED, "아이디: $localId 는 이미 사용중입니다.")
+        }
     }
 }

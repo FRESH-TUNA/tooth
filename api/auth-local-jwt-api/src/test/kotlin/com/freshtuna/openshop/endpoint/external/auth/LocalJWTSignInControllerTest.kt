@@ -37,7 +37,7 @@ class LocalJWTSignInControllerTest {
             """.trimIndent()
 
         every {
-            signInJWTUseCase.signInLocalMember(localId, password)
+            signInJWTUseCase.signIn(localId, password)
         } returns JWTResult(
             localMember, JWT("accessToken"), JWT("refreshToken")
         )

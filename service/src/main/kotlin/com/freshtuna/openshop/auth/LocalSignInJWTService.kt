@@ -6,11 +6,11 @@ import com.freshtuna.openshop.member.LocalMember
 import com.freshtuna.openshop.jwt.JWTResult
 import com.freshtuna.openshop.jwt.incoming.JWTUseCase
 
-class SignInJWTService(
+class LocalSignInJWTService(
     private val memberSearchPort: MemberSearchPort,
     private val jwtUseCase: JWTUseCase
 ) : SignInJWTUseCase {
-    override fun signInLocalMember(localId: String, password: String): JWTResult {
+    override fun signIn(localId: String, password: String): JWTResult {
 
         val member: LocalMember = memberSearchPort.findLocalMemberByIdAndPassword(localId, password)
 
