@@ -1,9 +1,9 @@
-package com.freshtuna.openshop.config
+package com.freshtuna.openshop.config.constant
 
 /**
  * 컨트롤러와 mapping 되는 url 설정
  */
-class UrlConfig {
+class Url {
 
     /**
      * external api 설정
@@ -16,6 +16,11 @@ class UrlConfig {
              * jwt local member signin
              */
             const val JWT_LOCAL_SIGNIN = "/sign-in/jwt/local"
+
+            /**
+             * jwt local member signup
+             */
+            const val JWT_LOCAL_SIGNUP = "/sign-up/jwt/local"
         }
     }
 }
