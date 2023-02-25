@@ -16,8 +16,8 @@ class LocalSignUpJWTService(
 ) : LocalSignUpJWTUseCase {
 
     override fun signUp(member: LocalMember): JWTResult {
-        if (memberSearchPort.existsLocalMemberBylocalId(member.localId))
-            Oh.localIdUsed(member.localId)
+        if (memberSearchPort.existsLocalMemberBylocalId(member.localId!!))
+            Oh.localIdUsed(member.localId!!)
 
         val member = localSignUpPort.signUp(member)
 

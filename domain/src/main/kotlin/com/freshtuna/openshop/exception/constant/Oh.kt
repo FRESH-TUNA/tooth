@@ -1,5 +1,6 @@
 package com.freshtuna.openshop.exception.constant
 
+import com.freshtuna.openshop.exception.OpenException
 import com.freshtuna.openshop.exception.OpenMsgException
 
 enum class Oh {
@@ -8,6 +9,7 @@ enum class Oh {
      */
     LOCAL_MEMBER_NOT_FOUNDED,
     PASSWORD_NOT_MATCHED,
+    BREAK_PASSWORD_RULE,
 
     /**
      * JWT
@@ -26,6 +28,10 @@ enum class Oh {
 
         fun localIdUsed(localId: String): Nothing {
             throw OpenMsgException(LOCAL_MEMBER_NOT_FOUNDED, "아이디: $localId 는 이미 사용중입니다.")
+        }
+
+        fun breakPasswordRule(): Nothing {
+            throw OpenException(BREAK_PASSWORD_RULE)
         }
     }
 }

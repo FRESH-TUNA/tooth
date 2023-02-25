@@ -1,6 +1,7 @@
 package com.freshtuna.openshop.api.util
 
 import jakarta.servlet.http.HttpServletResponse
+import org.springframework.http.HttpHeaders
 
 class HeaderUtil {
 
@@ -13,6 +14,17 @@ class HeaderUtil {
                       response: HttpServletResponse
         ) {
             response.addHeader(name, value)
+        }
+
+        /**
+         * 응답의 header값을 뽑는다.
+         */
+        fun getHeaderValue(key: String, response: HttpServletResponse): String? {
+            return response.getHeader(key)
+        }
+
+        fun getAuthorizationHeaderValue(response: HttpServletResponse): String? {
+            return getHeaderValue(HttpHeaders.AUTHORIZATION, response)
         }
     }
 }

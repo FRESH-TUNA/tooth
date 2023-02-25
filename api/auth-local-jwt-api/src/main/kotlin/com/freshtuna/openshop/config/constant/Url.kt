@@ -21,6 +21,11 @@ class Url {
              * jwt local member signup
              */
             const val JWT_LOCAL_SIGNUP = "/sign-up/jwt/local"
+
+            /**
+             * change password
+             */
+            const val CHANGE_PASSWORD = "change-password"
         }
     }
 }

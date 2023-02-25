@@ -25,7 +25,7 @@ class JWTService(
         )
 
     override fun generateAccessToken(member: Member): JWT {
-        val roles: String = member.roles
+        val roles: String = member.roles!!
             .map { role -> role.name }
             .joinToString(separator = ",")
         val now: Long = Date().time
@@ -79,7 +79,6 @@ class JWTService(
     }
 
     override fun idOfToken(token: JWT): String {
-        isValid(token)
 
         try {
             return Jwts.parserBuilder()
@@ -93,8 +92,21 @@ class JWTService(
                 throw OpenException(Oh.INTERNAL_SERVER_ERROR)
             throw OpenMsgException(Oh.INTERNAL_SERVER_ERROR, e.message!!)
         }
+    }
 
-        return ""
+    override fun claim(token: JWT, claimKey: String): String {
+
+        try {
+            return Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token.tokenString)
+                .body[claimKey].toString()
+        } catch (e: Exception) {
+            if (Objects.isNull(e.message))
+                throw OpenException(Oh.INTERNAL_SERVER_ERROR)
+            throw OpenMsgException(Oh.INTERNAL_SERVER_ERROR, e.message!!)
+        }
     }
 }
 

@@ -2,7 +2,7 @@ package com.freshtuna.openshop.member
 
 import com.freshtuna.openshop.exception.constant.Oh
 import com.freshtuna.openshop.member.outgoing.MemberSearchPort
-import com.freshtuna.openshop.oauth.constant.OAuthProvider
+import com.freshtuna.openshop.member.constant.Provider
 
 class MemberSearchAdapter(
     private val memberRepository: MariaDBMemberRepository,
@@ -24,7 +24,7 @@ class MemberSearchAdapter(
         return optionalOfLocalMember.get().toLocalMember()
     }
 
-    override fun existsOAuthMember(oauthId: String, provider: OAuthProvider): Boolean {
+    override fun existsOAuthMember(oauthId: String, provider: Provider): Boolean {
         TODO("Not yet implemented")
     }
 

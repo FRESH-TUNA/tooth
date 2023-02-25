@@ -1,7 +1,7 @@
 package com.freshtuna.openshop.member
 
 import com.freshtuna.openshop.member.constant.Role
-import com.freshtuna.openshop.oauth.constant.OAuthProvider
+import com.freshtuna.openshop.member.constant.Provider
 import org.assertj.core.util.Lists
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.DisplayName
@@ -33,7 +33,7 @@ class OAuthMemberTest {
          * OAuth 사용자에 필요한 정보
          */
         // OAuth 서비스 프로바이더
-        val provider = OAuthProvider.GOOGLE
+        val provider = Provider.GOOGLE
 
         // oauth 프로바이더가 제공하는 id (sub)
         val oauthId = "oauthId"
@@ -52,7 +52,7 @@ class OAuthMemberTest {
         Assertions.assertEquals(member.nickname, nickname)
         Assertions.assertEquals(member.roles === roles, true)
 
-        Assertions.assertEquals(member.provider, OAuthProvider.GOOGLE)
+        Assertions.assertEquals(member.provider, Provider.GOOGLE)
         Assertions.assertEquals(member.oauthId, oauthId)
     }
 }

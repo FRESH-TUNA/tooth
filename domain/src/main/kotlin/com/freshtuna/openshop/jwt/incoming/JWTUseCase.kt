@@ -23,4 +23,9 @@ interface JWTUseCase {
      * 토큰에서 id를 추출한다.
      */
     fun idOfToken(token: JWT): String
+
+    /**
+     * 토큰의 key에 해당하는 claim값을 추출한다.
+     */
+    fun claim(token: JWT, claimKey: String): String
 }

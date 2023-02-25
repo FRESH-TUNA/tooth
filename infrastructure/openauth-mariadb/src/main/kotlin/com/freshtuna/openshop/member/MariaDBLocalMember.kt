@@ -25,6 +25,10 @@ class MariaDBLocalMember(
 
         return LocalMember(publicId.toString(), nickname, domainRules, localId, password)
     }
+
+    fun changePassword(newPassword: String) {
+        password = newPassword
+    }
 }
 
 /**

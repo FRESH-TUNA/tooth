@@ -5,7 +5,7 @@ import com.freshtuna.openshop.member.LocalMember
 import com.freshtuna.openshop.member.Member
 import com.freshtuna.openshop.member.OAuthMember
 import com.freshtuna.openshop.member.constant.Role
-import com.freshtuna.openshop.oauth.constant.OAuthProvider
+import com.freshtuna.openshop.member.constant.Provider
 import com.freshtuna.openshop.jwt.incoming.JWTUseCase
 import org.assertj.core.util.Lists
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -186,7 +186,7 @@ class JWTUseCaseJJWTImplTest {
         val roles: List<Role> = Lists.emptyList()
 
         // OAuth 서비스 프로바이더
-        val provider = OAuthProvider.GOOGLE
+        val provider = Provider.GOOGLE
 
         // oauth 프로바이더가 제공하는 id (sub)
         val oauthId = "oauthId"
@@ -203,7 +203,7 @@ class JWTUseCaseJJWTImplTest {
         val roles: List<Role> = Lists.emptyList()
 
         // OAuth 서비스 프로바이더
-        val provider = OAuthProvider.GOOGLE
+        val provider = Provider.GOOGLE
 
         // oauth 프로바이더가 제공하는 id (sub)
         val oauthId = "oauthId"

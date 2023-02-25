@@ -8,4 +8,6 @@ interface MariaDBLocalMemberRepository  : JpaRepository<MariaDBLocalMember, Long
     fun existsByLocalId(localId: String): Boolean
 
     fun findByLocalId(localId: String): Optional<MariaDBLocalMember>
+
+    fun findByPublicId(publicId: UUID): MariaDBLocalMember
 }
