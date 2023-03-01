@@ -2,6 +2,7 @@ package com.freshtuna.openshop.member.outgoing
 
 import com.freshtuna.openshop.member.LocalMember
 import com.freshtuna.openshop.member.Password
+import com.freshtuna.openshop.member.SecuredPassword
 import com.freshtuna.openshop.member.constant.Provider
 
 interface MemberSearchPort {
@@ -11,21 +12,16 @@ interface MemberSearchPort {
     fun existsLocalMemberBylocalId(localId: String) : Boolean
 
     /**
-     * localId로 가입한 로컬 계정을 반환한다.
+     * localId와 패스워드로 가입한 로컬 계정을 반환한다.
      */
-    fun findLocalMemberBylocalId(localId: String) : LocalMember
-
-    /**
-     * localId와 패스워드가 일치하는 계정을 반환한다.
-     */
-    fun findLocalMember(member: LocalMember, password: Password) : LocalMember
+    fun findLocalMember(localId: String, password: SecuredPassword) : LocalMember
 
     /**
      * 같은 정보로 가입된 소셜계정이 있는지 검사한다.
      */
     fun existsOAuthMember(oauthId: String, provider: Provider) : Boolean
 
-    fun findLocalMemberByIdAndPassword(localId: String, password: String): LocalMember
+    fun findLocalMemberByIdAndPassword(localId: String, password: Password): LocalMember
 }
 
 // memberRepository.findOrNullByIdAndPassword(id, password) ?: throw Exception()

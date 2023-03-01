@@ -1,5 +1,7 @@
-package com.freshtuna.openshop.member
+package com.freshtuna.openshop.member.entity
 
+import com.freshtuna.openshop.member.entity.MariaDBLocalMember
+import com.freshtuna.openshop.member.entity.MariaDBRole
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import java.util.*

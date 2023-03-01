@@ -3,7 +3,7 @@ package com.freshtuna.openshop.member
 import java.util.regex.Pattern
 
 class Password(
-    private val password: String
+    val passwordString: String
 ) {
 
     companion object {
@@ -15,10 +15,10 @@ class Password(
      * 패스워드가 안전한지 검증한다.
      */
     fun checkPasswordRule(): Boolean {
-        return PASSWORD_SATETY_REGEX.matcher(this.password).matches()
+        return PASSWORD_SATETY_REGEX.matcher(this.passwordString).matches()
     }
 
     fun isSamePassword(compared: Password): Boolean {
-        return password == compared.password
+        return passwordString == compared.passwordString
     }
 }

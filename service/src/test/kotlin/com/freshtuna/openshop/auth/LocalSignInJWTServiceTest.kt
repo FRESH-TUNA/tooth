@@ -4,6 +4,9 @@ import com.freshtuna.openshop.jwt.JWT
 import com.freshtuna.openshop.member.outgoing.MemberSearchPort
 import com.freshtuna.openshop.jwt.incoming.JWTUseCase
 import com.freshtuna.openshop.member.LocalMember
+import com.freshtuna.openshop.member.Password
+import com.freshtuna.openshop.member.SecuredPassword
+import com.freshtuna.openshop.member.incoming.SecuredPasswordUseCase
 
 import io.mockk.every
 import io.mockk.mockk
@@ -17,10 +20,12 @@ class LocalSignInJWTServiceTest {
 
     private val memberSearchPort: MemberSearchPort = mockk()
     private val jwtUseCase: JWTUseCase = mockk()
+    private val securedPasswordUseCase: SecuredPasswordUseCase = mockk()
 
     private val memberSignInService = LocalSignInJWTService(
         memberSearchPort,
-        jwtUseCase
+        jwtUseCase,
+        securedPasswordUseCase
     )
 
     @Test
@@ -33,14 +38,16 @@ class LocalSignInJWTServiceTest {
          * 테스트할 서비스 객체
          */
         val localId = "localId"
-        val password = "password"
+        val password = Password("password")
+        val securedPassword = SecuredPassword("isSecured!")
         val id = "id"
-        val member = LocalMember(id,"nickname", Lists.emptyList(), localId, password)
+        val member = LocalMember(id,"nickname", Lists.emptyList(), localId)
 
         /**
          * when
          */
-        every { memberSearchPort.findLocalMemberBylocalId(localId) } returns member
+        every { securedPasswordUseCase.generate(password) } returns securedPassword
+        every { memberSearchPort.findLocalMember(localId, securedPassword) } returns member
         every { jwtUseCase.generateAccessToken(member) } returns JWT("accessToken!")
         every { jwtUseCase.generateRefreshToken(member) } returns JWT("refreshToken")
 

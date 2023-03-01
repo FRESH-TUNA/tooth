@@ -1,5 +1,6 @@
-package com.freshtuna.openshop.member
+package com.freshtuna.openshop.member.repository
 
+import com.freshtuna.openshop.member.entity.MariaDBLocalMember
 import org.springframework.data.jpa.repository.JpaRepository
 import java.util.*
 

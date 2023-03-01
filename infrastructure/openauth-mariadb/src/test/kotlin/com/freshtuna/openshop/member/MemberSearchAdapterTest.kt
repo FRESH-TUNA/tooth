@@ -1,6 +1,10 @@
 package com.freshtuna.openshop.member
 
 import com.freshtuna.openshop.exception.OpenException
+import com.freshtuna.openshop.member.adapter.MemberSearchAdapter
+import com.freshtuna.openshop.member.entity.MariaDBLocalMember
+import com.freshtuna.openshop.member.repository.MariaDBLocalMemberRepository
+import com.freshtuna.openshop.member.repository.MariaDBMemberRepository
 import io.mockk.every
 import io.mockk.mockk
 import org.junit.jupiter.api.Test
@@ -67,7 +71,7 @@ class MemberSearchAdapterTest {
          * localId를 가진 유저가 있다면
          */
         every { localMemberRepository.findByLocalId(localId) } returns Optional.of(mariaDBLocalMember)
-        val localMember = memberSearchAdapter.findLocalMemberBylocalId(localId)
+        val localMember = memberSearchAdapter.findLocalMember(localId)
 
         /**
          * then
@@ -92,6 +96,6 @@ class MemberSearchAdapterTest {
         /**
          * then
          */
-        assertThrows<OpenException> { memberSearchAdapter.findLocalMemberBylocalId(localId) }
+        assertThrows<OpenException> { memberSearchAdapter.findLocalMember(localId) }
     }
 }

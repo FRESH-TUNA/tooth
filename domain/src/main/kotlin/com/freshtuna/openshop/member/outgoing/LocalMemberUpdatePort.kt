@@ -1,12 +1,12 @@
 package com.freshtuna.openshop.member.outgoing
 
 import com.freshtuna.openshop.member.LocalMember
-import com.freshtuna.openshop.member.Password
+import com.freshtuna.openshop.member.SecuredPassword
 
 interface LocalMemberUpdatePort {
 
     /**
      * localMember 정보 변경
      */
-    fun changePassword(member: LocalMember, newPassword: Password)
+    fun changePassword(member: LocalMember, newPassword: SecuredPassword)
 }

@@ -1,4 +1,4 @@
-package com.freshtuna.openshop.member
+package com.freshtuna.openshop.member.entity
 
 import com.freshtuna.openshop.member.constant.Role
 import jakarta.persistence.*

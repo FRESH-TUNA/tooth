@@ -8,19 +8,18 @@ import com.freshtuna.openshop.jwt.JWT
 
 import com.freshtuna.openshop.jwt.incoming.JWTUseCase
 import com.freshtuna.openshop.member.LocalMember
+import com.freshtuna.openshop.member.Password
+import com.freshtuna.openshop.member.SecuredPassword
+import com.freshtuna.openshop.member.incoming.SecuredPasswordUseCase
 import io.mockk.InternalPlatformDsl.toStr
 
 import io.mockk.every
 
-import io.mockk.junit5.MockKExtension
 import io.mockk.mockk
 import org.assertj.core.util.Lists
 import org.junit.jupiter.api.*
-import org.junit.jupiter.api.extension.ExtendWith
 import java.util.UUID
 
-
-@ExtendWith(MockKExtension::class)
 class LocalSignUpJWTServiceTest {
 
     private val localSignUpPort: LocalSignUpPort = mockk()
@@ -29,10 +28,13 @@ class LocalSignUpJWTServiceTest {
 
     private val jwtUseCase: JWTUseCase = mockk()
 
+    private val securedPasswordUseCase: SecuredPasswordUseCase = mockk()
+
     private val memberSignUpService = LocalSignUpJWTService(
         localSignUpPort,
         memberSearchPort,
-        jwtUseCase
+        jwtUseCase,
+        securedPasswordUseCase
     )
 
     @Test
@@ -52,21 +54,21 @@ class LocalSignUpJWTServiceTest {
         val localId = "freshtuna@kakao.com"
 
         // 패스워드
-        val password = "패스워드"
+        val password = Password("패스워드")
 
-        val member = LocalMember(null, nickname, roles, localId, password)
+        val member = LocalMember(null, nickname, roles, localId)
 
         /**
          * when
          */
-        every { localSignUpPort.signUp(any()) } returns member
+        every { localSignUpPort.signUp(any(), any()) } returns member
         every { memberSearchPort.existsLocalMemberBylocalId(localId) } returns true
 
         /**
          * then
          * 로컬멤버 생성 테스트
          */
-        assertThrows<OpenException> { memberSignUpService.signUp(member) }
+        assertThrows<OpenException> { memberSignUpService.signUp(member, password) }
     }
 
     @Test
@@ -76,7 +78,6 @@ class LocalSignUpJWTServiceTest {
          * given
          * 로컬멤버 생성하기
          */
-
         // 부가정보
         val nickname = "신선한참치"
 
@@ -87,19 +88,21 @@ class LocalSignUpJWTServiceTest {
         val localId = "freshtuna@kakao.com"
 
         // 패스워드
-        val password = "패스워드"
+        val password = Password("1aB!1aB2")
 
-        val member = LocalMember(null, nickname, roles, localId, password)
+        val member = LocalMember(null, nickname, roles, localId)
 
         /**
          * when
          * 테스트에 사용할 서비스 객체, 포트 객체
          */
         val newId = UUID.randomUUID().toStr()
-        val newMember = LocalMember(newId, nickname, roles, localId, password)
+        val newMember = LocalMember(newId, nickname, roles, localId)
 
-        every { localSignUpPort.signUp(any<LocalMember>()) } returns newMember
+        every { localSignUpPort.signUp(any(), any()) } returns newMember
         every { memberSearchPort.existsLocalMemberBylocalId(localId) } returns false
+
+        every { securedPasswordUseCase.generate(any()) } returns SecuredPassword("thisISsecure!!")
         every { jwtUseCase.generateAccessToken(newMember) } returns JWT("accessToken!")
         every { jwtUseCase.generateRefreshToken(newMember) } returns JWT("refreshToken")
 
@@ -107,6 +110,6 @@ class LocalSignUpJWTServiceTest {
          * then
          * 로컬멤버 생성 테스트
          */
-        Assertions.assertEquals(memberSignUpService.signUp(member).member.id, newId)
+        Assertions.assertEquals(memberSignUpService.signUp(member, password).member.id, newId)
     }
 }

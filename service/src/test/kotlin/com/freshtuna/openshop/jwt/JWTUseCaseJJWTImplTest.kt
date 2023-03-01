@@ -7,6 +7,7 @@ import com.freshtuna.openshop.member.OAuthMember
 import com.freshtuna.openshop.member.constant.Role
 import com.freshtuna.openshop.member.constant.Provider
 import com.freshtuna.openshop.jwt.incoming.JWTUseCase
+import com.freshtuna.openshop.member.Password
 import org.assertj.core.util.Lists
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.DisplayName
@@ -140,14 +141,11 @@ class JWTUseCaseJJWTImplTest {
         // 로그인 ID
         val localId = "freshtuna@kakao.com"
 
-        // 패스워드
-        val password = "패스워드"
-
         /**
          * when
          * 주어진 정보들을 통해 로컬 멤버 생성하기
          */
-        return LocalMember(id, nickname, roles, localId, password)
+        return LocalMember(id, nickname, roles, localId)
     }
 
     private fun createLocalMember(id: String): Member {
@@ -166,13 +164,13 @@ class JWTUseCaseJJWTImplTest {
         val localId = "freshtuna@kakao.com"
 
         // 패스워드
-        val password = "패스워드"
+        val password = Password("패스워드")
 
         /**
          * when
          * 주어진 정보들을 통해 로컬 멤버 생성하기
          */
-        return LocalMember(id, nickname, roles, localId, password)
+        return LocalMember(id, nickname, roles, localId)
     }
 
     private fun createOAuthMember(): Member {

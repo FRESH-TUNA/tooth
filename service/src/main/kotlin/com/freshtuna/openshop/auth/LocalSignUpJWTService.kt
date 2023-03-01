@@ -8,18 +8,24 @@ import com.freshtuna.openshop.auth.outgoing.LocalSignUpPort
 import com.freshtuna.openshop.exception.constant.Oh
 import com.freshtuna.openshop.jwt.JWTResult
 import com.freshtuna.openshop.jwt.incoming.JWTUseCase
+import com.freshtuna.openshop.member.Password
+import com.freshtuna.openshop.member.incoming.SecuredPasswordUseCase
 
 class LocalSignUpJWTService(
     private val localSignUpPort: LocalSignUpPort,
     private val memberSearchPort: MemberSearchPort,
-    private val jwtUseCase: JWTUseCase
+    private val jwtUseCase: JWTUseCase,
+    private val securedPasswordUseCase: SecuredPasswordUseCase
 ) : LocalSignUpJWTUseCase {
 
-    override fun signUp(member: LocalMember): JWTResult {
+    override fun signUp(member: LocalMember, password: Password): JWTResult {
         if (memberSearchPort.existsLocalMemberBylocalId(member.localId!!))
             Oh.localIdUsed(member.localId!!)
 
-        val member = localSignUpPort.signUp(member)
+        if (!password.checkPasswordRule())
+            Oh.breakPasswordRule()
+
+        val member = localSignUpPort.signUp(member, securedPasswordUseCase.generate(password))
 
         val accessToken = jwtUseCase.generateAccessToken(member)
         val refreshToken = jwtUseCase.generateRefreshToken(member)

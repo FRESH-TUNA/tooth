@@ -1,4 +1,4 @@
-package com.freshtuna.openshop.member
+package com.freshtuna.openshop.member.entity
 
 import jakarta.persistence.*
 
@@ -17,7 +17,7 @@ open class MariaDBMember(
     var publicId: UUID?,
 
     @Column
-    var nickname: String,
+    var nickname: String?,
 
     @OneToMany
     var roles: List<MariaDBRole>) {

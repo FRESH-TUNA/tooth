@@ -1,6 +1,8 @@
-package com.freshtuna.openshop.member
+package com.freshtuna.openshop.member.entity
 
 import com.freshtuna.openshop.member.constant.Role
+import com.freshtuna.openshop.member.entity.MariaDBMember
+import com.freshtuna.openshop.member.entity.MariaDBRole
 import io.mockk.mockk
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.DisplayName
