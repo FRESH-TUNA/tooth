@@ -10,7 +10,11 @@ import com.freshtuna.openshop.jwt.JWTResult
 import com.freshtuna.openshop.jwt.incoming.JWTUseCase
 import com.freshtuna.openshop.member.Password
 import com.freshtuna.openshop.member.incoming.SecuredPasswordUseCase
+import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
+@Service
+@Transactional
 class LocalSignUpJWTService(
     private val localSignUpPort: LocalSignUpPort,
     private val memberSearchPort: MemberSearchPort,

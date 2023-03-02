@@ -8,7 +8,9 @@ import com.freshtuna.openshop.member.Password
 import com.freshtuna.openshop.member.SecuredPassword
 import com.freshtuna.openshop.member.outgoing.MemberSearchPort
 import com.freshtuna.openshop.member.constant.Provider
+import org.springframework.stereotype.Component
 
+@Component
 class MemberSearchAdapter(
     private val localMemberRepository: MariaDBLocalMemberRepository
 ) : MemberSearchPort {
