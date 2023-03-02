@@ -19,7 +19,7 @@ class LocalSignUpJWTService(
 ) : LocalSignUpJWTUseCase {
 
     override fun signUp(member: LocalMember, password: Password): JWTResult {
-        if (memberSearchPort.existsLocalMemberBylocalId(member.localId!!))
+        if (memberSearchPort.existsLocalMember(member.localId!!))
             Oh.localIdUsed(member.localId!!)
 
         if (!password.checkPasswordRule())

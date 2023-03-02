@@ -1,10 +1,9 @@
-package com.freshtuna.openshop.member
+package com.freshtuna.openshop.member.adapter
 
 import com.freshtuna.openshop.exception.OpenException
-import com.freshtuna.openshop.member.adapter.MemberSearchAdapter
+import com.freshtuna.openshop.member.SecuredPassword
 import com.freshtuna.openshop.member.entity.MariaDBLocalMember
 import com.freshtuna.openshop.member.repository.MariaDBLocalMemberRepository
-import com.freshtuna.openshop.member.repository.MariaDBMemberRepository
 import io.mockk.every
 import io.mockk.mockk
 import org.junit.jupiter.api.Test
@@ -17,9 +16,8 @@ import kotlin.collections.ArrayList
 
 class MemberSearchAdapterTest {
 
-    private val memberRepository: MariaDBMemberRepository = mockk()
     private val localMemberRepository: MariaDBLocalMemberRepository = mockk()
-    private val memberSearchAdapter = MemberSearchAdapter(memberRepository, localMemberRepository)
+    private val memberSearchAdapter = MemberSearchAdapter(localMemberRepository)
 
     @Test
     @DisplayName("유효한 로컬 id 존재 성공 테스트")
@@ -34,7 +32,7 @@ class MemberSearchAdapterTest {
         /**
          * when, then
          */
-        assertEquals(memberSearchAdapter.existsLocalMemberBylocalId(localId), true)
+        assertEquals(memberSearchAdapter.existsLocalMember(localId), true)
     }
 
     @Test
@@ -53,7 +51,7 @@ class MemberSearchAdapterTest {
         /**
          * then
          */
-        assertEquals(memberSearchAdapter.existsLocalMemberBylocalId(localId), false)
+        assertEquals(memberSearchAdapter.existsLocalMember(localId), false)
     }
 
     @Test
@@ -63,15 +61,19 @@ class MemberSearchAdapterTest {
          * given
          */
         val localId = "existed"
+        val password = "password"
         val mariaDBLocalMember = MariaDBLocalMember(
-            localId, "password", 0L, UUID.randomUUID(), "nickname", ArrayList())
+            localId, password, 0L, UUID.randomUUID(), "nickname", ArrayList())
 
         /**
          * when
          * localId를 가진 유저가 있다면
          */
-        every { localMemberRepository.findByLocalId(localId) } returns Optional.of(mariaDBLocalMember)
-        val localMember = memberSearchAdapter.findLocalMember(localId)
+        every {
+            localMemberRepository.findByLocalIdAndPassword(localId, password)
+        } returns Optional.of(mariaDBLocalMember)
+
+        val localMember = memberSearchAdapter.findLocalMember(localId, SecuredPassword(password))
 
         /**
          * then
@@ -86,16 +88,19 @@ class MemberSearchAdapterTest {
          * given
          */
         val localId = "existed"
+        val password = "password"
 
         /**
          * when
          * 만약 localId를 가진 로컬 유저가 없다면
          */
-        every { localMemberRepository.findByLocalId(localId) } returns Optional.empty()
+        every {
+            localMemberRepository.findByLocalIdAndPassword(localId, password)
+        } returns Optional.empty()
 
         /**
          * then
          */
-        assertThrows<OpenException> { memberSearchAdapter.findLocalMember(localId) }
+        assertThrows<OpenException> { memberSearchAdapter.findLocalMember(localId, SecuredPassword(password)) }
     }
 }

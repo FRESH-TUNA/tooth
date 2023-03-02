@@ -62,7 +62,7 @@ class LocalSignUpJWTServiceTest {
          * when
          */
         every { localSignUpPort.signUp(any(), any()) } returns member
-        every { memberSearchPort.existsLocalMemberBylocalId(localId) } returns true
+        every { memberSearchPort.existsLocalMember(localId) } returns true
 
         /**
          * then
@@ -100,7 +100,7 @@ class LocalSignUpJWTServiceTest {
         val newMember = LocalMember(newId, nickname, roles, localId)
 
         every { localSignUpPort.signUp(any(), any()) } returns newMember
-        every { memberSearchPort.existsLocalMemberBylocalId(localId) } returns false
+        every { memberSearchPort.existsLocalMember(localId) } returns false
 
         every { securedPasswordUseCase.generate(any()) } returns SecuredPassword("thisISsecure!!")
         every { jwtUseCase.generateAccessToken(newMember) } returns JWT("accessToken!")
