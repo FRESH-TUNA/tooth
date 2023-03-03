@@ -7,8 +7,8 @@ open class Member(
     var id: String?,
 
     // 부가정보
-    var nickname: String?,
+    var nickname: String,
 
     // 권한
-    var roles: List<Role>?,
+    var roles: List<Role>,
 )

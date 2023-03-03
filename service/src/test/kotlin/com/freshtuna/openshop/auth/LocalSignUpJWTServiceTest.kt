@@ -56,7 +56,7 @@ class LocalSignUpJWTServiceTest {
         // 패스워드
         val password = Password("패스워드")
 
-        val member = LocalMember(null, nickname, roles, localId)
+        val member = LocalMember("null", nickname, roles, localId)
 
         /**
          * when
@@ -90,7 +90,7 @@ class LocalSignUpJWTServiceTest {
         // 패스워드
         val password = Password("1aB!1aB2")
 
-        val member = LocalMember(null, nickname, roles, localId)
+        val member = LocalMember("null", nickname, roles, localId)
 
         /**
          * when

@@ -6,7 +6,6 @@ import com.freshtuna.openshop.member.incoming.ChangePasswordUseCase
 import com.freshtuna.openshop.config.constant.Url
 import com.freshtuna.openshop.endpoint.external.request.ChangePasswordRequest
 
-import com.freshtuna.openshop.member.LocalMember
 import com.freshtuna.openshop.endpoint.external.spec.PasswordChangeSpec
 import com.freshtuna.openshop.member.Password
 
@@ -28,7 +27,7 @@ class PasswordChangeController(
     ): BasicResponse {
 
         changePasswordUseCase.changePassword(
-            LocalMember.ofId(userDetailManager.get().username),
+            userDetailManager.get().username,
             Password(request.curPassword),
             Password(request.newPassword))
 

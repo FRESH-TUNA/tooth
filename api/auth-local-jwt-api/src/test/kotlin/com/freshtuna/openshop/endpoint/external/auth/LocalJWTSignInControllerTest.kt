@@ -5,6 +5,7 @@ import com.freshtuna.openshop.config.constant.Url
 import com.freshtuna.openshop.jwt.JWT
 import com.freshtuna.openshop.jwt.JWTResult
 import com.freshtuna.openshop.member.Member
+import com.freshtuna.openshop.member.Password
 import io.mockk.every
 import io.mockk.mockk
 import org.junit.jupiter.api.Test
@@ -27,7 +28,7 @@ class LocalJWTSignInControllerTest {
     fun signIn() {
         // given: localId, password
         val localId = "localId"
-        val password = "password"
+        val password = Password("password")
         val localMember = Member("id","nick", ArrayList())
         val payload = """
             {
@@ -37,7 +38,7 @@ class LocalJWTSignInControllerTest {
             """.trimIndent()
 
         every {
-            signInJWTUseCase.signIn(localId, password)
+            signInJWTUseCase.signIn(any(), any())
         } returns JWTResult(
             localMember, JWT("accessToken"), JWT("refreshToken")
         )

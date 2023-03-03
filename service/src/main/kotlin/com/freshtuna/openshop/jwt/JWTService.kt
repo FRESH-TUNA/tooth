@@ -6,35 +6,24 @@ import com.freshtuna.openshop.exception.OpenException
 import com.freshtuna.openshop.exception.OpenMsgException
 import com.freshtuna.openshop.jwt.incoming.JWTUseCase
 import io.jsonwebtoken.*
-import io.jsonwebtoken.security.Keys
 import java.security.Key
 import java.util.*
 
 class JWTService(
-    private val key: Key,
+    private val secret: Key,
+    private val refreshTokenSecret: Key,
     private val accessTokenExpiredMileSeconds: Long,
     private val refreshTokenExpiredMileSeconds: Long) : JWTUseCase {
 
-    constructor(
-        key: String,
-        accessTokenExpiredMileSeconds: Long,
-        refreshTokenExpiredMileSeconds: Long): this(
-            Keys.hmacShaKeyFor(key.toByteArray()),
-            accessTokenExpiredMileSeconds,
-            refreshTokenExpiredMileSeconds
-        )
-
     override fun generateAccessToken(member: Member): JWT {
-        val roles: String = member.roles!!
-            .map { role -> role.name }
-            .joinToString(separator = ",")
+        val roles: String = member.roles!!.joinToString(separator = ",") { role -> role.name }
         val now: Long = Date().time
         val expiryDate = Date(now + accessTokenExpiredMileSeconds)
 
         return JWT(Jwts.builder()
             .setSubject(member.id)
             .claim("ROLES", roles)
-            .signWith(key, SignatureAlgorithm.HS512)
+            .signWith(secret, SignatureAlgorithm.HS512)
             .setExpiration(expiryDate)
             .compact())
     }
@@ -45,7 +34,7 @@ class JWTService(
 
         return JWT(Jwts.builder()
             .setSubject(member.id)
-            .signWith(key, SignatureAlgorithm.HS512)
+            .signWith(refreshTokenSecret, SignatureAlgorithm.HS512)
             .setExpiration(expiryDate)
             .compact())
     }
@@ -53,7 +42,7 @@ class JWTService(
     override fun isValid(token: JWT): Boolean {
         try {
             return Jwts.parserBuilder()
-                .setSigningKey(key)
+                .setSigningKey(secret)
                 .build()
                 .parseClaimsJws(token.tokenString)
                 .body != null
@@ -82,7 +71,7 @@ class JWTService(
 
         try {
             return Jwts.parserBuilder()
-                .setSigningKey(key)
+                .setSigningKey(secret)
                 .build()
                 .parseClaimsJws(token.tokenString)
                 .getBody()
@@ -98,7 +87,7 @@ class JWTService(
 
         try {
             return Jwts.parserBuilder()
-                .setSigningKey(key)
+                .setSigningKey(secret)
                 .build()
                 .parseClaimsJws(token.tokenString)
                 .body[claimKey].toString()

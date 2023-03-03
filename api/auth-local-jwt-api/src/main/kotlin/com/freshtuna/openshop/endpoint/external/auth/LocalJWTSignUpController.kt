@@ -23,7 +23,7 @@ class LocalJWTSignUpController(
     @PostMapping(Url.EXTERNAL.JWT_LOCAL_SIGNUP)
     override fun signUp(@RequestBody request: LocalSignUpRequest,
                         response: HttpServletResponse): BasicResponse {
-        val result = signUpJWTUseCase.signUp(request.toNewMember())
+        val result = signUpJWTUseCase.signUp(request.toNewMember(), request.toPassword())
 
         CookieUtil.addCookie(Env.REFRESH_TOKEN_COOKIE, result.refreshToken.tokenString, response)
         HeaderUtil.addHeader(HttpHeaders.AUTHORIZATION, result.accessToken.tokenString, response)

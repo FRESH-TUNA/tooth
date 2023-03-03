@@ -10,33 +10,24 @@ import java.util.*
 class MariaDBLocalMember(
 
     @Column
-    var localId: String?,
+    var localId: String,
 
     @Column
-    var password: String?,
+    var password: String,
 
-    id: Long?,
-    publicId: UUID?,
-    nickname: String?,
-    roles: List<MariaDBRole>,
-
-    ) : MariaDBMember(id, publicId, nickname, roles) {
+    nickname: String,
+) : MariaDBMember(nickname) {
     companion object {
 
         fun of(localMember: LocalMember, securedPassword: SecuredPassword): MariaDBLocalMember {
-            val publicId = if(Objects.isNull(localMember.id)) null else UUID.fromString(localMember.id)
 
             val mariaDBLocalMember = MariaDBLocalMember(
                 localMember.localId,
                 securedPassword.passwordString,
-                null,
-                publicId,
-                localMember.nickname,
-                Collections.emptyList()
+                localMember.nickname
             )
 
-            mariaDBLocalMember.roles = localMember.roles!!
-                .map { role -> MariaDBRole(null, mariaDBLocalMember, role) }
+            mariaDBLocalMember.updateRoles(localMember.roles)
 
             return mariaDBLocalMember
         }

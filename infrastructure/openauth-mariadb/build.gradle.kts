@@ -13,8 +13,12 @@ plugins {
     kotlin("plugin.jpa") version "1.3.72"
 
     kotlin("jvm") version "1.7.22"
+}
 
-    kotlin("kapt") version "1.6.0"
+allOpen {
+    annotation("jakarta.persistence.Entity")
+    annotation("jakarta.persistence.MappedSuperclass")
+    annotation("jakarta.persistence.Embeddable")
 }
 
 group = "com.freshtuna.openshop"
@@ -30,11 +34,10 @@ dependencies {
     implementation(project(":domain"))
 
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-    implementation("org.springframework.cloud:spring-cloud-starter-vault-config")
 
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
-    kapt("org.springframework.boot:spring-boot-configuration-processor")
 
+    testImplementation("org.springframework.cloud:spring-cloud-starter-vault-config")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.mariadb.jdbc:mariadb-java-client")
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.1")

@@ -2,7 +2,9 @@ package com.freshtuna.openshop.member
 
 import com.freshtuna.openshop.member.incoming.SecuredPasswordUseCase
 import org.springframework.security.crypto.password.PasswordEncoder
+import org.springframework.stereotype.Service
 
+@Service
 class SecuredPasswordSpringService(
     private val passwordEncoder: PasswordEncoder
 ) : SecuredPasswordUseCase {

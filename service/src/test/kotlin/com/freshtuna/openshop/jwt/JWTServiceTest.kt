@@ -7,14 +7,15 @@ import com.freshtuna.openshop.member.OAuthMember
 import com.freshtuna.openshop.member.constant.Role
 import com.freshtuna.openshop.member.constant.Provider
 import com.freshtuna.openshop.jwt.incoming.JWTUseCase
-import com.freshtuna.openshop.member.Password
+
+import io.jsonwebtoken.security.Keys
 import org.assertj.core.util.Lists
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 
 
-class JWTUseCaseJJWTImplTest {
+class JWTServiceTest {
 
     @Test
     @DisplayName("구현체 생성 테스트")
@@ -24,6 +25,7 @@ class JWTUseCaseJJWTImplTest {
          * key, 액세스 토큰 유효기간(ms), 리프레시 토큰 유효기간(ms)
          */
         val key = "this is key this is key this is key this is key this is key this is key this is key"
+        val refreshKey = "this is key this is key this is key this is key this is key this is key this is key"
         val accessTokenExpiredMileSeconds = 5000L
         val refreshTokenExpiredMileSeconds = 1000L
 
@@ -31,7 +33,8 @@ class JWTUseCaseJJWTImplTest {
          * when
          */
         val jwtUtil = JWTService(
-            key,
+            Keys.hmacShaKeyFor(key.toByteArray()),
+            Keys.hmacShaKeyFor(refreshKey.toByteArray()),
             accessTokenExpiredMileSeconds,
             refreshTokenExpiredMileSeconds)
 
@@ -118,10 +121,15 @@ class JWTUseCaseJJWTImplTest {
 
     private fun createJWTUtilJJWTImpl(): JWTUseCase {
         val key = "this is key this is key this is key this is key this is key this is key this is key"
+        val refreshKey = "this is key this is key this is key this is key this is key this is key this is key"
         val accessTokenExpiredMileSeconds = 5000L
         val refreshTokenExpiredMileSeconds = 1000L
 
-        return JWTService(key, accessTokenExpiredMileSeconds, refreshTokenExpiredMileSeconds)
+        return JWTService(
+            Keys.hmacShaKeyFor(key.toByteArray()),
+            Keys.hmacShaKeyFor(refreshKey.toByteArray()),
+            accessTokenExpiredMileSeconds,
+            refreshTokenExpiredMileSeconds)
     }
 
     private fun createLocalMember(): Member {
@@ -162,9 +170,6 @@ class JWTUseCaseJJWTImplTest {
          */
         // 로그인 ID
         val localId = "freshtuna@kakao.com"
-
-        // 패스워드
-        val password = Password("패스워드")
 
         /**
          * when

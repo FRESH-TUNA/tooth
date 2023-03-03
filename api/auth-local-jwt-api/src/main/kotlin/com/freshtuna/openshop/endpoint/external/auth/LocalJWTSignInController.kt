@@ -9,6 +9,7 @@ import com.freshtuna.openshop.endpoint.external.auth.request.LocalSignInRequest
 import com.freshtuna.openshop.endpoint.external.auth.spec.LocalMemberSignInSpec
 import com.freshtuna.openshop.auth.incoming.SignInJWTUseCase
 import com.freshtuna.openshop.config.constant.Env
+import com.freshtuna.openshop.member.Password
 
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.http.HttpHeaders
@@ -16,7 +17,6 @@ import org.springframework.http.HttpHeaders
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
-
 
 @RestController
 class LocalJWTSignInController(
@@ -27,7 +27,8 @@ class LocalJWTSignInController(
     @PostMapping(Url.EXTERNAL.JWT_LOCAL_SIGNIN)
     override fun signIn(@RequestBody request: LocalSignInRequest,
                         response: HttpServletResponse): BasicResponse {
-        val result = signInJWTUseCase.signIn(request.id, request.password)
+
+        val result = signInJWTUseCase.signIn(request.id, Password(request.password))
 
         addCookie(Env.REFRESH_TOKEN_COOKIE, result.refreshToken.tokenString, response)
         addHeader(HttpHeaders.AUTHORIZATION, result.accessToken.tokenString, response)
