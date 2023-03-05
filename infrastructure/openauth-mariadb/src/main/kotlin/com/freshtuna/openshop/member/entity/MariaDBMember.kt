@@ -5,29 +5,28 @@ import jakarta.persistence.*
 
 import java.util.UUID
 
+@Table(name = "member")
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "member_type")
 class MariaDBMember(
     nickname: String
-) {
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    val id: Long = -1
+) : MariaDBDefaultEntity() {
 
+    @Column(unique = true)
     @GeneratedValue(generator = "uuid2")
     var publicId: UUID = UUID.randomUUID()
 
     @Column
     var nickname: String = nickname
 
-    @OneToMany
-    private var _roles: MutableList<MariaDBRole> = mutableListOf()
-    val roles: List<MariaDBRole>
+    @OneToMany(mappedBy = "member")
+    private var _roles: MutableList<MariaDBMemberRole> = mutableListOf()
+    val roles: List<MariaDBMemberRole>
         get() = _roles.toList()
 
     fun updateRoles(roles: List<Role>) {
         _roles.clear()
-        roles.map { role -> this._roles.add(MariaDBRole( this, role)) }
+        roles.map { role -> this._roles.add(MariaDBMemberRole( this, role)) }
     }
 }

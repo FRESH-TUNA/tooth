@@ -1,7 +1,5 @@
 package com.freshtuna.openshop.member.entity
 
-import com.freshtuna.openshop.member.entity.MariaDBMember
-import com.freshtuna.openshop.member.entity.MariaDBRole
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import java.util.UUID
@@ -18,7 +16,7 @@ class MariaDBMemberTest {
         val id = 1L
         val publicId = UUID.randomUUID()
         val nickname = "nickname"
-        val roles = ArrayList<MariaDBRole>()
+        val roles = ArrayList<MariaDBMemberRole>()
 
         /**
          * when, then

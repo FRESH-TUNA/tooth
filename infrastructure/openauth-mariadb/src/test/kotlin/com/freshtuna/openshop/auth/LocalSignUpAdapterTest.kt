@@ -31,8 +31,7 @@ class LocalSignUpAdapterTest {
         /**
          * when
          */
-        val savedDbMember = MariaDBLocalMember(
-            "wishToId", "password", 1004L, UUID.randomUUID(), "nickname", ArrayList())
+        val savedDbMember = MariaDBLocalMember("wishToId", "password", "nickname")
 
         every { memberRepository.save(any()) } returns savedDbMember
 

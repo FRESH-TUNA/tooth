@@ -1,8 +1,6 @@
 package com.freshtuna.openshop.member.entity
 
 import com.freshtuna.openshop.member.constant.Role
-import com.freshtuna.openshop.member.entity.MariaDBMember
-import com.freshtuna.openshop.member.entity.MariaDBRole
 import io.mockk.mockk
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.DisplayName
@@ -11,7 +9,7 @@ import org.junit.jupiter.api.Test
 //@ExtendWith(SpringExtension::class)
 //@DataJpaTest
 //@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-class MariaDBRoleTest {
+class MariaDBMemberRoleTest {
 
     @Test
     @DisplayName("역활 생성 테스트")
@@ -27,6 +25,6 @@ class MariaDBRoleTest {
         /**
          * create
          */
-        MariaDBRole(id, member, memberRole)
+        MariaDBMemberRole(id, member, memberRole)
     }
 }

@@ -12,7 +12,7 @@ class MariaDBLocalMember(
     @Column
     var localId: String,
 
-    @Column
+    @Column(name = "local_password")
     var password: String,
 
     nickname: String,
@@ -34,7 +34,7 @@ class MariaDBLocalMember(
     }
 
     fun toLocalMember(): LocalMember {
-        val domainRules = roles.map { mariaDBRole -> mariaDBRole.memberRole }
+        val domainRules = roles.map { mariaDBRole -> mariaDBRole.role }
 
         return LocalMember(publicId.toString(), nickname, domainRules, localId)
     }

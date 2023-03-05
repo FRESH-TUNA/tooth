@@ -3,16 +3,13 @@ package com.freshtuna.openshop.member.entity
 import com.freshtuna.openshop.member.constant.Role
 import jakarta.persistence.*
 
+@Table(name = "member_role")
 @Entity
-class MariaDBRole(
+class MariaDBMemberRole(
 
     @ManyToOne
     var member: MariaDBMember,
 
-    @Column
-    var memberRole: Role) {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    var id: Long? = null
-}
+    @Enumerated(EnumType.STRING)
+    var role: Role
+) : MariaDBDefaultEntity()

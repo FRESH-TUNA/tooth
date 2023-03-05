@@ -24,7 +24,6 @@ allOpen {
 group = "com.freshtuna.openshop"
 version = "1.0-SNAPSHOT"
 java.sourceCompatibility = JavaVersion.VERSION_17
-extra["springCloudVersion"] = "2022.0.1"
 
 repositories {
     mavenCentral()
@@ -33,24 +32,21 @@ repositories {
 dependencies {
     implementation(project(":domain"))
 
-    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 
+    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+    implementation("org.mariadb.jdbc:mariadb-java-client")
+    implementation("org.flywaydb:flyway-mysql")
+
+    runtimeOnly("org.jetbrains.kotlin:kotlin-reflect:1.8.10")
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
 
-    testImplementation("org.springframework.cloud:spring-cloud-starter-vault-config")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
-    testImplementation("org.mariadb.jdbc:mariadb-java-client")
+
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.1")
     testImplementation("org.junit.jupiter:junit-jupiter:5.8.1")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.1")
     testImplementation("org.assertj:assertj-core:3.11.1")
     testImplementation("io.mockk:mockk:1.13.4")
-}
-
-dependencyManagement {
-    imports {
-        mavenBom("org.springframework.cloud:spring-cloud-dependencies:${property("springCloudVersion")}")
-    }
 }
 
 tasks.getByName<Test>("test") {
