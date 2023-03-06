@@ -18,13 +18,12 @@ class MariaDBMemberRoleTest {
         /**
          * given
          */
-        val id = 1L
         val member: MariaDBMember = mockk()
         val memberRole = Role.USER
 
         /**
          * create
          */
-        MariaDBMemberRole(id, member, memberRole)
+        MariaDBMemberRole(member, memberRole)
     }
 }

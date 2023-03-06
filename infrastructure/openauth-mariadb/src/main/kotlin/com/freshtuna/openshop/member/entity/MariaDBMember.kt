@@ -10,7 +10,7 @@ import java.util.UUID
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "member_type")
 class MariaDBMember(
-    nickname: String
+    nickname: String?
 ) : MariaDBDefaultEntity() {
 
     @Column(unique = true)
@@ -18,7 +18,7 @@ class MariaDBMember(
     var publicId: UUID = UUID.randomUUID()
 
     @Column
-    var nickname: String = nickname
+    var nickname: String? = nickname
 
     @OneToMany(mappedBy = "member")
     private var _roles: MutableList<MariaDBMemberRole> = mutableListOf()

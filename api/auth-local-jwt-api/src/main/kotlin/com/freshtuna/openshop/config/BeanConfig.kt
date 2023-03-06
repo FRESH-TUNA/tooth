@@ -7,8 +7,6 @@ import io.github.oshai.KotlinLogging
 import io.jsonwebtoken.security.Keys
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
-import org.springframework.security.crypto.password.PasswordEncoder
 
 @Configuration
 class BeanConfig {
@@ -29,10 +27,5 @@ class BeanConfig {
             Keys.hmacShaKeyFor(jwtProperties().refreshTokenSecret.toByteArray()),
             jwtProperties().accessTokenExpiredMileSeconds.toLong(),
             jwtProperties().refreshTokenExpiredMileSeconds.toLong())
-    }
-
-    @Bean
-    fun getPasswordEncoder(): PasswordEncoder {
-        return BCryptPasswordEncoder()
     }
 }

@@ -13,14 +13,11 @@ class MariaDBMemberTest {
         /**
          * given
          */
-        val id = 1L
-        val publicId = UUID.randomUUID()
         val nickname = "nickname"
-        val roles = ArrayList<MariaDBMemberRole>()
 
         /**
          * when, then
          */
-        MariaDBMember(id, publicId, nickname, roles)
+        MariaDBMember(nickname)
     }
 }

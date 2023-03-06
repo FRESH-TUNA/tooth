@@ -25,9 +25,8 @@ class LocalMemberUpdateAdapterTest {
          */
         val publicId = UUID.randomUUID()
         val newPassword = SecuredPassword("newPassword")
-        val member = LocalMember(publicId.toStr(), "nickname", null, null)
-        val dbMember = MariaDBLocalMember(
-            null, null, null, null, null, emptyList())
+        val member = LocalMember(publicId.toStr(), "nickname", emptyList(), "localId")
+        val dbMember = MariaDBLocalMember("localId", "password", "nickname")
 
         /**
          * when

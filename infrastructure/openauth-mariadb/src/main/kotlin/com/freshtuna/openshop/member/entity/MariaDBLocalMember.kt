@@ -15,7 +15,7 @@ class MariaDBLocalMember(
     @Column(name = "local_password")
     var password: String,
 
-    nickname: String,
+    nickname: String?,
 ) : MariaDBMember(nickname) {
     companion object {
 

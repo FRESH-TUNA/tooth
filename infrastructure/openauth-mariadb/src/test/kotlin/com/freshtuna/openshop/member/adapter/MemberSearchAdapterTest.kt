@@ -62,8 +62,7 @@ class MemberSearchAdapterTest {
          */
         val localId = "existed"
         val password = "password"
-        val mariaDBLocalMember = MariaDBLocalMember(
-            localId, password, 0L, UUID.randomUUID(), "nickname", ArrayList())
+        val mariaDBLocalMember = MariaDBLocalMember(localId, password, "nickanme")
 
         /**
          * when

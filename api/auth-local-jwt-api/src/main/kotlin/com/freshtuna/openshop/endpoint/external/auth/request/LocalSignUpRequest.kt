@@ -7,7 +7,7 @@ import com.freshtuna.openshop.member.constant.Role
 
 class LocalSignUpRequest(
     val id: String,
-    val nickname: String,
+    val nickname: String?,
     val password: String,
     val repeatPassword: String
 ) {

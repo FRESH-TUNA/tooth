@@ -16,12 +16,8 @@ class MariaDBLocalMemberTest {
          */
         val localId = "thisIsLocalId"
         val password = "password"
-
-        val id = 1L
-        val publicId = UUID.randomUUID()
         val nickname = "nickname"
-        val roles = ArrayList<MariaDBMemberRole>()
 
-        MariaDBLocalMember(localId, password, id, publicId, nickname, roles)
+        MariaDBLocalMember(localId, password, nickname)
     }
 }

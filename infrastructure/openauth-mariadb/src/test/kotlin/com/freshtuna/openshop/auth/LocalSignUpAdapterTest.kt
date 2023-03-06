@@ -38,6 +38,6 @@ class LocalSignUpAdapterTest {
         /**
          * then
          */
-        assertEquals(localSignUpPort.signUp(member, password).id, savedDbMember.publicId.toStr())
+        assertEquals(localSignUpPort.signUp(member, password).localId, savedDbMember.localId)
     }
 }
