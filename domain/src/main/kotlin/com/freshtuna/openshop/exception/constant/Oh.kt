@@ -8,7 +8,7 @@ enum class Oh {
      * LocalMember
      */
     LOCAL_MEMBER_NOT_FOUNDED,
-    PASSWORD_NOT_MATCHED,
+    LOCAL_AUTHENTICATION_FAIL,
     BREAK_PASSWORD_RULE,
 
     /**
@@ -32,6 +32,10 @@ enum class Oh {
 
         fun breakPasswordRule(): Nothing {
             throw OpenException(BREAK_PASSWORD_RULE)
+        }
+
+        fun localAuthenticationFail(): Nothing {
+            throw OpenMsgException(LOCAL_AUTHENTICATION_FAIL, "아이디나 패스워드가 일치하지 않습니다")
         }
     }
 }

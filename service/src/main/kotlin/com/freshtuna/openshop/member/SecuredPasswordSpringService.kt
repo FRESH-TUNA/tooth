@@ -12,4 +12,8 @@ class SecuredPasswordSpringService(
     override fun generate(password: Password): SecuredPassword {
         return SecuredPassword(passwordEncoder.encode(password.passwordString))
     }
+
+    override fun matched(givenPW: Password, storedPW: SecuredPassword): Boolean {
+        return passwordEncoder.matches(givenPW.passwordString, storedPW.passwordString)
+    }
 }

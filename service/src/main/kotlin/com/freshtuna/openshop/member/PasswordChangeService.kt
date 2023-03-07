@@ -17,7 +17,12 @@ class PasswordChangeService(
 ) : ChangePasswordUseCase {
 
     override fun changePassword(id: String, curPassword: Password, newPassword: Password) {
-        val member = memberSearchPort.findLocalMember(id, securedPasswordUseCase.generate(curPassword))
+
+        val member = memberSearchPort.findLocalMember(id)
+        val savedPW = memberSearchPort.findSavedPasswordByLocalMember(member)
+
+        if(!securedPasswordUseCase.matched(curPassword, savedPW))
+            Oh.localAuthenticationFail()
 
         if (!newPassword.checkPasswordRule())
             Oh.breakPasswordRule()

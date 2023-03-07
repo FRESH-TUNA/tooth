@@ -46,8 +46,9 @@ class LocalSignInJWTServiceTest {
         /**
          * when
          */
-        every { securedPasswordUseCase.generate(password) } returns securedPassword
-        every { memberSearchPort.findLocalMember(localId, securedPassword) } returns member
+        every { memberSearchPort.findLocalMember(localId) } returns member
+        every { memberSearchPort.findSavedPasswordByLocalMember(member) } returns securedPassword
+        every { securedPasswordUseCase.matched(password, securedPassword) } returns true
         every { jwtUseCase.generateAccessToken(member) } returns JWT("accessToken!")
         every { jwtUseCase.generateRefreshToken(member) } returns JWT("refreshToken")
 

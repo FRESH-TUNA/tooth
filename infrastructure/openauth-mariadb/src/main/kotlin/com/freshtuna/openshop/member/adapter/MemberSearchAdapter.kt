@@ -19,15 +19,24 @@ class MemberSearchAdapter(
         return localMemberRepository.existsByLocalId(localId)
     }
 
-    override fun findLocalMember(localId: String, password: SecuredPassword): LocalMember {
+    override fun findLocalMember(localId: String): LocalMember {
 
-        val optionalOfLocalMember = localMemberRepository
-            .findByLocalIdAndPassword(localId, password.passwordString)
+        val optionalOfLocalMember = localMemberRepository.findByLocalId(localId)
 
         if(!optionalOfLocalMember.isPresent)
             Oh.localMemberNotExisted(localId)
 
         return optionalOfLocalMember.get().toLocalMember()
+    }
+
+    override fun findSavedPasswordByLocalMember(member: LocalMember): SecuredPassword {
+
+        val optionalOfLocalMember = localMemberRepository.findByLocalId(member.localId)
+
+        if(!optionalOfLocalMember.isPresent)
+            Oh.localMemberNotExisted(member.localId)
+
+        return SecuredPassword(optionalOfLocalMember.get().password)
     }
 
     override fun existsOAuthMember(oauthId: String, provider: Provider): Boolean {

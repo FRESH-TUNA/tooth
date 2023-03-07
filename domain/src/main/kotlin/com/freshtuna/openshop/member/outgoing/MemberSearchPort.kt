@@ -14,7 +14,12 @@ interface MemberSearchPort {
     /**
      * localId와 패스워드로 가입한 로컬 계정을 반환한다.
      */
-    fun findLocalMember(localId: String, password: SecuredPassword) : LocalMember
+    fun findLocalMember(localId: String) : LocalMember
+
+    /**
+     * localId와 패스워드로 가입한 로컬 계정을 반환한다.
+     */
+    fun findSavedPasswordByLocalMember(member: LocalMember) : SecuredPassword
 
     /**
      * 같은 정보로 가입된 소셜계정이 있는지 검사한다.
@@ -23,5 +28,3 @@ interface MemberSearchPort {
 
     fun findLocalMemberByIdAndPassword(localId: String, password: Password): LocalMember
 }
-
-// memberRepository.findOrNullByIdAndPassword(id, password) ?: throw Exception()

@@ -1,7 +1,6 @@
 package com.freshtuna.openshop.member.adapter
 
 import com.freshtuna.openshop.exception.OpenException
-import com.freshtuna.openshop.member.SecuredPassword
 import com.freshtuna.openshop.member.entity.MariaDBLocalMember
 import com.freshtuna.openshop.member.repository.MariaDBLocalMemberRepository
 import io.mockk.every
@@ -12,7 +11,6 @@ import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.assertThrows
 import java.util.*
-import kotlin.collections.ArrayList
 
 class MemberSearchAdapterTest {
 
@@ -69,10 +67,10 @@ class MemberSearchAdapterTest {
          * localId를 가진 유저가 있다면
          */
         every {
-            localMemberRepository.findByLocalIdAndPassword(localId, password)
+            localMemberRepository.findByLocalId(localId)
         } returns Optional.of(mariaDBLocalMember)
 
-        val localMember = memberSearchAdapter.findLocalMember(localId, SecuredPassword(password))
+        val localMember = memberSearchAdapter.findLocalMember(localId)
 
         /**
          * then
@@ -87,19 +85,18 @@ class MemberSearchAdapterTest {
          * given
          */
         val localId = "existed"
-        val password = "password"
 
         /**
          * when
          * 만약 localId를 가진 로컬 유저가 없다면
          */
         every {
-            localMemberRepository.findByLocalIdAndPassword(localId, password)
+            localMemberRepository.findByLocalId(localId)
         } returns Optional.empty()
 
         /**
          * then
          */
-        assertThrows<OpenException> { memberSearchAdapter.findLocalMember(localId, SecuredPassword(password)) }
+        assertThrows<OpenException> { memberSearchAdapter.findLocalMember(localId) }
     }
 }

@@ -45,10 +45,12 @@ class PasswordChangeServiceTest {
         /**
          * when
          */
+        every { securedPasswordUseCase.matched(curPassword, curSecuredPassword) } returns true
         every { securedPasswordUseCase.generate(curPassword) } returns curSecuredPassword
         every { securedPasswordUseCase.generate(newPassword) } returns newSecuredPassword
 
-        every { memberSearchPort.findLocalMember(id, curSecuredPassword) } returns member
+        every { memberSearchPort.findLocalMember(id) } returns member
+        every { memberSearchPort.findSavedPasswordByLocalMember(member) } returns curSecuredPassword
         every { localMemberUpdatePort.changePassword(member, newSecuredPassword) } returns Unit
 
 
@@ -78,10 +80,12 @@ class PasswordChangeServiceTest {
         /**
          * when
          */
+        every { securedPasswordUseCase.matched(curPassword, curSecuredPassword) } returns true
         every { securedPasswordUseCase.generate(curPassword) } returns curSecuredPassword
         every { securedPasswordUseCase.generate(newPassword) } returns newSecuredPassword
 
-        every { memberSearchPort.findLocalMember(id, curSecuredPassword) } returns member
+        every { memberSearchPort.findLocalMember(id) } returns member
+        every { memberSearchPort.findSavedPasswordByLocalMember(member) } returns curSecuredPassword
         every { localMemberUpdatePort.changePassword(member, newSecuredPassword) } returns Unit
 
         /**
