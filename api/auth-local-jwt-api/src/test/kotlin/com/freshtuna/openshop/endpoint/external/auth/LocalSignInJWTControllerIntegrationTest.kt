@@ -3,7 +3,9 @@ package com.freshtuna.openshop.endpoint.external.auth
 import com.freshtuna.openshop.AuthJWTApplication
 import com.freshtuna.openshop.api.response.BasicResponse
 import com.freshtuna.openshop.api.response.DataResponse
+import com.freshtuna.openshop.api.response.MessageResponse
 import com.freshtuna.openshop.config.constant.Url
+import com.freshtuna.openshop.exception.constant.Oh
 import io.mockk.InternalPlatformDsl.toStr
 
 import org.assertj.core.api.Assertions
@@ -84,10 +86,9 @@ class LocalSignInJWTControllerIntegrationTest {
          * when
          */
         val response = restTemplate.postForEntity(
-            Url.EXTERNAL.JWT_LOCAL_SIGNIN, entity, BasicResponse::class.java)
+            Url.EXTERNAL.JWT_LOCAL_SIGNIN, entity, MessageResponse::class.java)
 
-        Assertions.assertThat(response.statusCode).isEqualTo(HttpStatus.OK)
-//        Assertions.assertThat(response.headers["authorization"]).isNotEmpty
-//        Assertions.assertThat(response.headers.).isNotEmpty
+        Assertions.assertThat(response.statusCode).isEqualTo(HttpStatus.BAD_REQUEST)
+        Assertions.assertThat(response.body!!.code).isEqualTo(Oh.LOCAL_AUTHENTICATION_FAIL.code)
     }
 }

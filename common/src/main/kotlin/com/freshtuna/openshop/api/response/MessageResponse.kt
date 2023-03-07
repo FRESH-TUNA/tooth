@@ -15,5 +15,9 @@ class MessageResponse(
         fun of(status: ResponseStatus): MessageResponse {
             return MessageResponse(status.code, status.msg)
         }
+
+        fun of(status: ResponseStatus, msg: String): MessageResponse {
+            return MessageResponse(status.code, msg)
+        }
     }
 }
