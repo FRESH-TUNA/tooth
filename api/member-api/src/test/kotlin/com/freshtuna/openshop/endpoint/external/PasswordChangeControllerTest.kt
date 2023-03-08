@@ -1,10 +1,8 @@
 package com.freshtuna.openshop.endpoint.external
 
-import com.freshtuna.openshop.api.security.ToothUserDetail
-import com.freshtuna.openshop.api.security.ToothUserDetailManager
+import com.freshtuna.openshop.api.security.userDetail.ToothUserDetail
+import com.freshtuna.openshop.api.security.userDetail.ToothUserDetailManager
 import com.freshtuna.openshop.config.constant.Url
-import com.freshtuna.openshop.member.LocalMember
-import com.freshtuna.openshop.member.Password
 
 import com.freshtuna.openshop.member.incoming.ChangePasswordUseCase
 import io.mockk.every

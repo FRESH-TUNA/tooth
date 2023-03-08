@@ -1,6 +1,6 @@
 package com.freshtuna.openshop.config
 
-import io.github.oshai.KotlinLogging
+import com.freshtuna.openshop.api.security.filter.AuthenticationFilter
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
@@ -11,16 +11,14 @@ import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.SecurityFilterChain
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
 
 
 @Configuration
 @EnableWebSecurity
-class SecurityConfig {
-
-    private val logger = KotlinLogging.logger {}
-
-    /** CORS 관련 설정 정보  */
-//    private val corsProperties: CorsProperties? = null
+class SecurityConfig(
+    private val authenticationFilter: AuthenticationFilter
+) {
 
     /** Spring Security Filter Chain 관련 설정  */
     @Bean
@@ -39,6 +37,7 @@ class SecurityConfig {
             .authorizeHttpRequests()
             .anyRequest().permitAll()
             .and()
+            .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter::class.java)
             .build()
     }
 

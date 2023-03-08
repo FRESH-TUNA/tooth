@@ -20,7 +20,7 @@ class JWTService(
         val now: Long = Date().time
         val expiryDate = Date(now + accessTokenExpiredMileSeconds)
 
-        return JWT(Jwts.builder()
+        return JWT(JWT.PREFIX + Jwts.builder()
             .setSubject(member.id)
             .claim("ROLES", roles)
             .signWith(secret, SignatureAlgorithm.HS512)
@@ -44,7 +44,7 @@ class JWTService(
             return Jwts.parserBuilder()
                 .setSigningKey(secret)
                 .build()
-                .parseClaimsJws(token.tokenString)
+                .parseClaimsJws(token.tokenStringWithoutPrefix())
                 .body != null
         } catch (e: SecurityException) {
             if (Objects.isNull(e.message))
@@ -73,7 +73,7 @@ class JWTService(
             return Jwts.parserBuilder()
                 .setSigningKey(secret)
                 .build()
-                .parseClaimsJws(token.tokenString)
+                .parseClaimsJws(token.tokenStringWithoutPrefix())
                 .getBody()
                 .subject
         } catch (e: Exception) {
@@ -89,7 +89,7 @@ class JWTService(
             return Jwts.parserBuilder()
                 .setSigningKey(secret)
                 .build()
-                .parseClaimsJws(token.tokenString)
+                .parseClaimsJws(token.tokenStringWithoutPrefix())
                 .body[claimKey].toString()
         } catch (e: Exception) {
             if (Objects.isNull(e.message))

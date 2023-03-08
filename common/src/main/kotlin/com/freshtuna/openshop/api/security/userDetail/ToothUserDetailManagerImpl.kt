@@ -1,4 +1,4 @@
-package com.freshtuna.openshop.api.security
+package com.freshtuna.openshop.api.security.userDetail
 
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Service
