@@ -45,7 +45,7 @@ class LocalSignUpJWTControllerTest {
         every {
             signUpJWTUseCase.signUp(any(), any())
         } returns JWTResult(
-            localMember, JWT("accessToken"), JWT("refreshToken")
+            localMember, JWT.accessOf("accessToken"), JWT.refreshOf("refreshToken")
         )
 
         // then

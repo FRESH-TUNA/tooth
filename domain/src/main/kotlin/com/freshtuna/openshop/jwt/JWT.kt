@@ -1,13 +1,14 @@
 package com.freshtuna.openshop.jwt
 
-class JWT(val tokenString: String) {
+import com.freshtuna.openshop.jwt.incoming.JWTType
+
+class JWT(val tokenString: String, val type: JWTType) {
 
     companion object {
-        const val ROLE_KEY = "ROLE"
-        const val PREFIX = "Bearer "
-    }
+        fun accessOf(tokenString: String): JWT
+            = JWT(tokenString, JWTType.ACCESS)
 
-    fun tokenStringWithoutPrefix(): String {
-        return tokenString.removePrefix(PREFIX)
+        fun refreshOf(tokenString: String): JWT
+            = JWT(tokenString, JWTType.REFRESH)
     }
 }

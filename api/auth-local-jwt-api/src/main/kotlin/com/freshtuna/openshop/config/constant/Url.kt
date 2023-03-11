@@ -23,9 +23,14 @@ class Url {
             const val JWT_LOCAL_SIGNUP = "/sign-up/jwt/local"
 
             /**
+             * jwt refresh
+             */
+            const val JWT_REFRESH = "/refresh/jwt"
+
+            /**
              * change password
              */
-            const val CHANGE_PASSWORD = "change-password"
+            const val CHANGE_PASSWORD = "/change-password"
         }
     }
 }

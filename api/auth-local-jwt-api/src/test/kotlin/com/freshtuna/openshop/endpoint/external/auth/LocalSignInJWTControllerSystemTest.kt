@@ -1,11 +1,11 @@
 package com.freshtuna.openshop.endpoint.external.auth
 
 import com.freshtuna.openshop.AuthJWTApplication
-import com.freshtuna.openshop.api.response.BasicResponse
 import com.freshtuna.openshop.api.response.DataResponse
 import com.freshtuna.openshop.api.response.MessageResponse
 import com.freshtuna.openshop.config.constant.Url
 import com.freshtuna.openshop.exception.constant.Oh
+import io.github.oshai.KotlinLogging
 import io.mockk.InternalPlatformDsl.toStr
 
 import org.assertj.core.api.Assertions
@@ -26,10 +26,12 @@ import org.springframework.test.context.ActiveProfiles
     classes = [AuthJWTApplication::class]
 )
 @ActiveProfiles("sandbox")
-class LocalSignInJWTControllerIntegrationTest {
+class LocalSignInJWTControllerSystemTest {
 
     @Autowired
     lateinit var restTemplate: TestRestTemplate
+
+    private val logger = KotlinLogging.logger {}
 
     @Test
     @DisplayName("로컬 로그인 성공")
@@ -62,6 +64,7 @@ class LocalSignInJWTControllerIntegrationTest {
 
         // refresh token check
         val data = response.body!!.data as LinkedHashMap<String, String>
+        logger.info(data["refresh"])
         Assertions.assertThat(data["refresh"]).isNotBlank
     }
 

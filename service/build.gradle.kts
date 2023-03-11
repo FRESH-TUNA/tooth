@@ -22,6 +22,8 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 
+    implementation("io.github.oshai:kotlin-logging-jvm:4.0.0-beta-22")
+
     /**
      * jwt
      */

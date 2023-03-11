@@ -20,28 +20,11 @@ class JWTServiceTest {
     @Test
     @DisplayName("구현체 생성 테스트")
     fun createJWTUtilTest() {
-        /**
-         * given
-         * key, 액세스 토큰 유효기간(ms), 리프레시 토큰 유효기간(ms)
-         */
-        val key = "this is key this is key this is key this is key this is key this is key this is key"
-        val refreshKey = "this is key this is key this is key this is key this is key this is key this is key"
-        val accessTokenExpiredMileSeconds = 5000L
-        val refreshTokenExpiredMileSeconds = 1000L
-
-        /**
-         * when
-         */
-        val jwtUtil = JWTService(
-            Keys.hmacShaKeyFor(key.toByteArray()),
-            Keys.hmacShaKeyFor(refreshKey.toByteArray()),
-            accessTokenExpiredMileSeconds,
-            refreshTokenExpiredMileSeconds)
 
         /**
          * then
          */
-        assertEquals(true, jwtUtil is JWTUseCase)
+        assertEquals(true, createJWTUtilJJWTImpl() is JWTUseCase)
     }
 
     @Test
@@ -114,22 +97,60 @@ class JWTServiceTest {
         /**
          * then
          */
-        assertEquals(localId, jwtUtil.idOfToken(localToken))
-        assertEquals(oauthId, jwtUtil.idOfToken(oauthToken))
+        assertEquals(localId, jwtUtil.publicIdOfAccess(localToken))
+        assertEquals(oauthId, jwtUtil.publicIdOfAccess(oauthToken))
+    }
+
+    @Test
+    @DisplayName("리프레시 토큰을 통한 재발행 테스트")
+    fun refreshTest() {
+        /**
+         * given
+         * 토큰을 생성하고 싶은 멤버, 토큰을 생성할 테스트 객체, 리프레시 토큰
+         */
+        val jwtUtil = createJWTUtilJJWTImpl()
+
+        val localId = "thisislocalId"
+        val localMember = createLocalMember(localId)
+        val refreshToken = jwtUtil.generateAccessToken(localMember)
+
+        /**
+         * when
+         * 새로운 엑세스 토큰 생성
+         */
+        val accessToken = jwtUtil.refresh(refreshToken)
+
+        /**
+         * then
+         */
+        jwtUtil.checkAccessToken(accessToken)
+
+        assertEquals(jwtUtil.publicIdOfAccess(accessToken), jwtUtil.publicIdOfRefresh(refreshToken))
+        assertEquals(
+            jwtUtil.roleOfAccess(accessToken),
+            jwtUtil.roleOfRefresh(refreshToken)
+        )
     }
 
 
+    /**
+     * helpers
+     */
     private fun createJWTUtilJJWTImpl(): JWTUseCase {
         val key = "this is key this is key this is key this is key this is key this is key this is key"
         val refreshKey = "this is key this is key this is key this is key this is key this is key this is key"
         val accessTokenExpiredMileSeconds = 5000L
         val refreshTokenExpiredMileSeconds = 1000L
+        val roleKey = "ROLES"
+        val prefix = "Bearer"
 
         return JWTService(
             Keys.hmacShaKeyFor(key.toByteArray()),
             Keys.hmacShaKeyFor(refreshKey.toByteArray()),
             accessTokenExpiredMileSeconds,
-            refreshTokenExpiredMileSeconds)
+            refreshTokenExpiredMileSeconds,
+            roleKey,
+            prefix)
     }
 
     private fun createLocalMember(): Member {

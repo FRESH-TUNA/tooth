@@ -1,6 +1,6 @@
 package com.freshtuna.openshop.config
 
-import com.freshtuna.openshop.config.constant.JWTProperties
+import com.freshtuna.openshop.api.config.constant.JWTProperties
 import com.freshtuna.openshop.jwt.JWTService
 import com.freshtuna.openshop.jwt.incoming.JWTUseCase
 import io.github.oshai.KotlinLogging
@@ -28,7 +28,10 @@ class BeanConfig {
             Keys.hmacShaKeyFor(jwtProperties().secret.toByteArray()),
             Keys.hmacShaKeyFor(jwtProperties().refreshTokenSecret.toByteArray()),
             jwtProperties().accessTokenExpiredMileSeconds.toLong(),
-            jwtProperties().refreshTokenExpiredMileSeconds.toLong())
+            jwtProperties().refreshTokenExpiredMileSeconds.toLong(),
+            jwtProperties().roleKey,
+            jwtProperties().prefix
+        )
     }
 
     @Bean

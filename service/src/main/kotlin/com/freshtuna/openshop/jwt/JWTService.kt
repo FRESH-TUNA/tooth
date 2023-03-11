@@ -12,84 +12,107 @@ import java.util.*
 class JWTService(
     private val secret: Key,
     private val refreshTokenSecret: Key,
+
     private val accessTokenExpiredMileSeconds: Long,
-    private val refreshTokenExpiredMileSeconds: Long) : JWTUseCase {
+    private val refreshTokenExpiredMileSeconds: Long,
+
+    private val roleKey: String,
+    private val prefix: String
+) : JWTUseCase {
 
     override fun generateAccessToken(member: Member): JWT {
         val roles: String = member.roles!!.joinToString(separator = ",") { role -> role.name }
         val now: Long = Date().time
         val expiryDate = Date(now + accessTokenExpiredMileSeconds)
 
-        return JWT(JWT.PREFIX + Jwts.builder()
-            .setSubject(member.id)
-            .claim("ROLES", roles)
+        return JWT.accessOf(prefix + Jwts.builder()
+            .setSubject(member.publicId)
+            .claim(roleKey, roles)
             .signWith(secret, SignatureAlgorithm.HS512)
             .setExpiration(expiryDate)
             .compact())
     }
 
     override fun generateRefreshToken(member: Member): JWT {
+        val roles: String = member.roles!!.joinToString(separator = ",") { role -> role.name }
         val now: Long = Date().time
         val expiryDate = Date(now + refreshTokenExpiredMileSeconds)
 
-        return JWT(Jwts.builder()
-            .setSubject(member.id)
+        return JWT.refreshOf(prefix + Jwts.builder()
+            .setSubject(member.publicId)
+            .claim(roleKey, roles)
             .signWith(refreshTokenSecret, SignatureAlgorithm.HS512)
             .setExpiration(expiryDate)
             .compact())
     }
 
-    override fun isValid(token: JWT): Boolean {
-        try {
-            return Jwts.parserBuilder()
-                .setSigningKey(secret)
-                .build()
-                .parseClaimsJws(token.tokenStringWithoutPrefix())
-                .body != null
-        } catch (e: SecurityException) {
-            if (Objects.isNull(e.message))
-                throw OpenException(Oh.JWT_ERROR)
-            throw OpenMsgException(Oh.JWT_ERROR, e.message!!)
-        } catch (e: JwtException) {
-            if (Objects.isNull(e.message))
-                throw OpenException(Oh.JWT_ERROR)
-            throw OpenMsgException(Oh.JWT_ERROR, e.message!!)
-        } catch (e: IllegalArgumentException) {
-            if (Objects.isNull(e.message))
-                throw OpenException(Oh.JWT_ERROR)
-            throw OpenMsgException(Oh.JWT_ERROR, e.message!!)
-        } catch (e: Exception) {
-            if (Objects.isNull(e.message))
-                throw OpenException(Oh.INTERNAL_SERVER_ERROR)
-            throw OpenMsgException(Oh.INTERNAL_SERVER_ERROR, e.message!!)
-        }
+    override fun refresh(refreshToken: JWT): JWT {
+        checkRefreshToken(refreshToken)
 
-        return false
+        val now: Long = Date().time
+        val expiryDate = Date(now + refreshTokenExpiredMileSeconds)
+
+        return JWT.accessOf(Jwts.builder()
+            .setSubject(publicIdOfRefresh(refreshToken))
+            .claim(roleKey, roleOfRefresh(refreshToken))
+            .signWith(refreshTokenSecret, SignatureAlgorithm.HS512)
+            .setExpiration(expiryDate)
+            .compact())
     }
 
-    override fun idOfToken(token: JWT): String {
-
-        try {
-            return Jwts.parserBuilder()
-                .setSigningKey(secret)
-                .build()
-                .parseClaimsJws(token.tokenStringWithoutPrefix())
-                .getBody()
-                .subject
-        } catch (e: Exception) {
-            if (Objects.isNull(e.message))
-                throw OpenException(Oh.INTERNAL_SERVER_ERROR)
-            throw OpenMsgException(Oh.INTERNAL_SERVER_ERROR, e.message!!)
-        }
+    override fun checkAccessToken(token: JWT) {
+        checkToken(secret, token)
     }
 
-    override fun claim(token: JWT, claimKey: String): String {
+    override fun checkRefreshToken(token: JWT) {
+        checkToken(refreshTokenSecret, token)
+    }
 
+    override fun publicIdOfAccess(token: JWT): String
+        = idOfToken(secret, token)
+
+    override fun publicIdOfRefresh(token: JWT): String
+        = idOfToken(refreshTokenSecret, token)
+
+    override fun roleOfAccess(token: JWT): String {
+        return claim(secret, token, roleKey)
+    }
+
+    override fun roleOfRefresh(token: JWT): String {
+        return claim(refreshTokenSecret, token, roleKey)
+    }
+
+    /**
+     * helpers
+     */
+    private fun checkToken(key: Key, token: JWT) {
+        try {
+            Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(tokenStringWithoutPrefix(token))
+
+        } catch (e: RuntimeException) {
+            if (Objects.isNull(e.message))
+                throw OpenException(Oh.JWT_ERROR)
+            throw OpenMsgException(Oh.JWT_ERROR, e.message!!)
+        }
+    }
+    private fun idOfToken(secret: Key, token: JWT): String {
+
+        return Jwts.parserBuilder()
+            .setSigningKey(secret)
+            .build()
+            .parseClaimsJws(tokenStringWithoutPrefix(token))
+            .body
+            .subject
+    }
+    private fun claim(secret: Key, token: JWT, claimKey: String): String {
         try {
             return Jwts.parserBuilder()
                 .setSigningKey(secret)
                 .build()
-                .parseClaimsJws(token.tokenStringWithoutPrefix())
+                .parseClaimsJws(tokenStringWithoutPrefix(token))
                 .body[claimKey].toString()
         } catch (e: Exception) {
             if (Objects.isNull(e.message))
@@ -97,5 +120,8 @@ class JWTService(
             throw OpenMsgException(Oh.INTERNAL_SERVER_ERROR, e.message!!)
         }
     }
+
+    private fun tokenStringWithoutPrefix(token: JWT)
+        = token.tokenString.removePrefix(prefix)
 }
 

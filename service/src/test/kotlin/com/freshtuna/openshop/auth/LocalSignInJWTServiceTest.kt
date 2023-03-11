@@ -49,12 +49,12 @@ class LocalSignInJWTServiceTest {
         every { memberSearchPort.findLocalMember(localId) } returns member
         every { memberSearchPort.findSavedPasswordByLocalMember(member) } returns securedPassword
         every { securedPasswordUseCase.matched(password, securedPassword) } returns true
-        every { jwtUseCase.generateAccessToken(member) } returns JWT("accessToken!")
-        every { jwtUseCase.generateRefreshToken(member) } returns JWT("refreshToken")
+        every { jwtUseCase.generateAccessToken(member) } returns JWT.accessOf("accessToken!")
+        every { jwtUseCase.generateRefreshToken(member) } returns JWT.refreshOf("refreshToken")
 
         /**
          * then
          */
-        assertEquals(memberSignInService.signIn(localId, password).member.id, id)
+        assertEquals(memberSignInService.signIn(localId, password).member.publicId, id)
     }
 }

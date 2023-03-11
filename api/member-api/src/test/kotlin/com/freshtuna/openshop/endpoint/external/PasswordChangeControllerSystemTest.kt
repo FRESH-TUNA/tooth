@@ -3,7 +3,6 @@ package com.freshtuna.openshop.endpoint.external
 import com.freshtuna.openshop.MemberApiApplication
 import com.freshtuna.openshop.api.response.DataResponse
 import com.freshtuna.openshop.config.constant.Url
-import io.mockk.InternalPlatformDsl.toStr
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
@@ -22,13 +21,10 @@ import org.springframework.test.context.ActiveProfiles
     classes = [MemberApiApplication::class]
 )
 @ActiveProfiles("sandbox")
-class PasswordChangeControllerIntegrationTest {
+class PasswordChangeControllerSystemTest {
 
     @Value("\${openauth.jwt.local-member-access-token-for-test}")
     private lateinit var accessToken: String
-
-    @Value("\${openauth.jwt.local-member-refresh-token-for-test}")
-    private lateinit var refreshToken: String
 
     @Autowired
     private lateinit var restTemplate: TestRestTemplate

@@ -103,13 +103,13 @@ class LocalSignUpJWTServiceTest {
         every { memberSearchPort.existsLocalMember(localId) } returns false
 
         every { securedPasswordUseCase.generate(any()) } returns SecuredPassword("thisISsecure!!")
-        every { jwtUseCase.generateAccessToken(newMember) } returns JWT("accessToken!")
-        every { jwtUseCase.generateRefreshToken(newMember) } returns JWT("refreshToken")
+        every { jwtUseCase.generateAccessToken(newMember) } returns JWT.accessOf("accessToken!")
+        every { jwtUseCase.generateRefreshToken(newMember) } returns JWT.refreshOf("refreshToken")
 
         /**
          * then
          * 로컬멤버 생성 테스트
          */
-        Assertions.assertEquals(memberSignUpService.signUp(member, password).member.id, newId)
+        Assertions.assertEquals(memberSignUpService.signUp(member, password).member.publicId, newId)
     }
 }

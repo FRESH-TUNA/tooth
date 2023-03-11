@@ -14,18 +14,39 @@ interface JWTUseCase {
      */
     fun generateRefreshToken(member: Member): JWT
 
+
+    /**
+     * 엑세스 토큰을 재발행한다.
+     */
+    fun refresh(refreshToken: JWT): JWT
+
     /**
      * 토큰을 검증한다.
      */
-    fun isValid(token: JWT): Boolean
+    fun checkAccessToken(token: JWT)
+
+    /**
+     * 토큰을 검증한다.
+     */
+    fun checkRefreshToken(token: JWT)
 
     /**
      * 토큰에서 id를 추출한다.
      */
-    fun idOfToken(token: JWT): String
+    fun publicIdOfAccess(token: JWT): String
+
+    /**
+     * 토큰에서 id를 추출한다.
+     */
+    fun publicIdOfRefresh(token: JWT): String
 
     /**
      * 토큰의 key에 해당하는 claim값을 추출한다.
      */
-    fun claim(token: JWT, claimKey: String): String
+    fun roleOfAccess(token: JWT): String
+
+    /**
+     * 토큰의 key에 해당하는 claim값을 추출한다.
+     */
+    fun roleOfRefresh(token: JWT): String
 }

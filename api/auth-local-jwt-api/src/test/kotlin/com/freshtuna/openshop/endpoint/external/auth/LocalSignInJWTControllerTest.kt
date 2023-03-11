@@ -40,7 +40,7 @@ class LocalSignInJWTControllerTest {
         every {
             signInJWTUseCase.signIn(any(), any())
         } returns JWTResult(
-            localMember, JWT("accessToken"), JWT("refreshToken")
+            localMember, JWT.accessOf("accessToken"), JWT.refreshOf("refreshToken")
         )
 
         // when, then

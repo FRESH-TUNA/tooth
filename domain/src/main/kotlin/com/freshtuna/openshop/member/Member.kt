@@ -4,7 +4,7 @@ import com.freshtuna.openshop.member.constant.Role
 
 open class Member(
     // 고유식별자
-    var id: String?,
+    var publicId: String?,
 
     // 부가정보
     var nickname: String?,

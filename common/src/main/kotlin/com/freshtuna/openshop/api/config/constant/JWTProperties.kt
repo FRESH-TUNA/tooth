@@ -1,4 +1,4 @@
-package com.freshtuna.openshop.config.constant
+package com.freshtuna.openshop.api.config.constant
 
 import org.springframework.boot.context.properties.ConfigurationProperties
 
@@ -7,5 +7,7 @@ data class JWTProperties(
     var secret: String = "",
     var refreshTokenSecret: String = "",
     var accessTokenExpiredMileSeconds: String = "",
-    var refreshTokenExpiredMileSeconds: String = ""
+    var refreshTokenExpiredMileSeconds: String = "",
+    var roleKey: String = "",
+    var prefix: String = ""
 )

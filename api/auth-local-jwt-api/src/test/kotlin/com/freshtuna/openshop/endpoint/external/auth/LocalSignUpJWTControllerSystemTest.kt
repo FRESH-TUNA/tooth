@@ -22,7 +22,7 @@ import org.springframework.test.context.ActiveProfiles
     classes = [AuthJWTApplication::class]
 )
 @ActiveProfiles("sandbox")
-class LocalSignUpJWTControllerIntegrationTest {
+class LocalSignUpJWTControllerSystemTest {
 
     @Autowired
     lateinit var restTemplate: TestRestTemplate

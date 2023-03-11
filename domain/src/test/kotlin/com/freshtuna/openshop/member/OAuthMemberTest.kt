@@ -48,7 +48,7 @@ class OAuthMemberTest {
          * then
          * 필요한 정보들이 잘 설정되어있는지 확인
          */
-        Assertions.assertEquals(member.id, id)
+        Assertions.assertEquals(member.publicId, id)
         Assertions.assertEquals(member.nickname, nickname)
         Assertions.assertEquals(member.roles === roles, true)
 

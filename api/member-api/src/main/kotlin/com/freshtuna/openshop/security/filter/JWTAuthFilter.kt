@@ -37,10 +37,11 @@ class JWTAuthFilter(
             return
         }
 
-        val jwt = JWT(token!!)
+        val jwt = JWT.accessOf(token!!)
 
-        jwtUseCase.isValid(jwt)
-        if (!jwtUseCase.isValid(jwt)) {
+        try {
+            jwtUseCase.checkAccessToken(jwt)
+        } catch (e: RuntimeException) {
             log.debug("유효하지 않은 토큰")
             return
         }

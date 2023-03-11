@@ -13,7 +13,7 @@ class LocalMemberUpdateAdapter(
 ) : LocalMemberUpdatePort {
 
     override fun changePassword(member: LocalMember, newPassword: SecuredPassword) {
-        val dbMember = localMemberRepository.findByPublicId(UUID.fromString(member.id))
+        val dbMember = localMemberRepository.findByPublicId(UUID.fromString(member.publicId))
         dbMember.changePassword(newPassword)
     }
 }
