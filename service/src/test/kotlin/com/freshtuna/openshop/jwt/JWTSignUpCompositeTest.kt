@@ -7,6 +7,9 @@ import com.freshtuna.openshop.member.OAuthMember
 import com.freshtuna.openshop.member.constant.Role
 import com.freshtuna.openshop.member.constant.Provider
 import com.freshtuna.openshop.jwt.incoming.JWTUseCase
+import com.freshtuna.openshop.member.EncryptedPassword
+import com.freshtuna.openshop.member.id.LocalId
+import com.freshtuna.openshop.member.id.PublicId
 
 import io.jsonwebtoken.security.Keys
 import org.assertj.core.util.Lists
@@ -155,10 +158,7 @@ class JWTSignUpCompositeTest {
 
     private fun createLocalMember(): Member {
         // 고유 식별자
-        val id = "식별자"
-
-        // 부가정보
-        val nickname = "신선한참치"
+        val id = PublicId("식별자")
 
         // 권한
         val roles: List<Role> = Lists.emptyList()
@@ -168,19 +168,19 @@ class JWTSignUpCompositeTest {
          * 로컬 사용자에 필요한 정보
          */
         // 로그인 ID
-        val localId = "freshtuna@kakao.com"
+        val localId = LocalId("freshtuna@kakao.com")
+        val password = EncryptedPassword("encryptedPassword")
 
         /**
          * when
          * 주어진 정보들을 통해 로컬 멤버 생성하기
          */
-        return LocalMember(id, nickname, roles, localId)
+        return LocalMember(id, roles, localId, password)
     }
 
     private fun createLocalMember(id: String): Member {
-
-        // 부가정보
-        val nickname = "신선한참치"
+        // 고유 식별자
+        val id = PublicId(id)
 
         // 권한
         val roles: List<Role> = Lists.emptyList()
@@ -190,21 +190,19 @@ class JWTSignUpCompositeTest {
          * 로컬 사용자에 필요한 정보
          */
         // 로그인 ID
-        val localId = "freshtuna@kakao.com"
+        val localId = LocalId("freshtuna@kakao.com")
+        val password = EncryptedPassword("encryptedPassword")
 
         /**
          * when
          * 주어진 정보들을 통해 로컬 멤버 생성하기
          */
-        return LocalMember(id, nickname, roles, localId)
+        return LocalMember(id, roles, localId, password)
     }
 
     private fun createOAuthMember(): Member {
         // 고유 식별자
-        val id = "식별자"
-
-        // 부가정보
-        val nickname = "신선한참치"
+        val id = PublicId("식별자")
 
         // 권한
         val roles: List<Role> = Lists.emptyList()
@@ -215,14 +213,11 @@ class JWTSignUpCompositeTest {
         // oauth 프로바이더가 제공하는 id (sub)
         val oauthId = "oauthId"
 
-        return OAuthMember(id, nickname, roles, provider, oauthId)
+        return OAuthMember(id, roles, provider, oauthId)
     }
 
     private fun createOAuthMember(id: String): Member {
 
-        // 부가정보
-        val nickname = "신선한참치"
-
         // 권한
         val roles: List<Role> = Lists.emptyList()
 
@@ -232,6 +227,6 @@ class JWTSignUpCompositeTest {
         // oauth 프로바이더가 제공하는 id (sub)
         val oauthId = "oauthId"
 
-        return OAuthMember(id, nickname, roles, provider, oauthId)
+        return OAuthMember(PublicId(id), roles, provider, oauthId)
     }
 }

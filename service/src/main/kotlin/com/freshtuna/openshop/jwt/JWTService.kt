@@ -26,7 +26,7 @@ class JWTService(
         val expiryDate = Date(now + accessTokenExpiredMileSeconds)
 
         return JWT.accessOf(prefix + Jwts.builder()
-            .setSubject(member.publicId)
+            .setSubject(member.publicId.toString())
             .claim(roleKey, roles)
             .signWith(secret, SignatureAlgorithm.HS512)
             .setExpiration(expiryDate)
@@ -39,7 +39,7 @@ class JWTService(
         val expiryDate = Date(now + refreshTokenExpiredMileSeconds)
 
         return JWT.refreshOf(prefix + Jwts.builder()
-            .setSubject(member.publicId)
+            .setSubject(member.publicId.toString())
             .claim(roleKey, roles)
             .signWith(refreshTokenSecret, SignatureAlgorithm.HS512)
             .setExpiration(expiryDate)

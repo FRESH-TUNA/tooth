@@ -9,11 +9,11 @@ class SecuredPasswordSpringService(
     private val passwordEncoder: PasswordEncoder
 ) : SecuredPasswordUseCase {
 
-    override fun generate(password: Password): SecuredPassword {
-        return SecuredPassword(passwordEncoder.encode(password.passwordString))
+    override fun generate(password: Password): EncryptedPassword {
+        return EncryptedPassword(passwordEncoder.encode(password.passwordString))
     }
 
-    override fun matched(givenPW: Password, storedPW: SecuredPassword): Boolean {
+    override fun matched(givenPW: Password, storedPW: EncryptedPassword): Boolean {
         return passwordEncoder.matches(givenPW.passwordString, storedPW.passwordString)
     }
 }

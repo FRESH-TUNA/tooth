@@ -1,8 +1,10 @@
 package com.freshtuna.openshop.member.adapter
 
 import com.freshtuna.openshop.member.LocalMember
-import com.freshtuna.openshop.member.SecuredPassword
+import com.freshtuna.openshop.member.EncryptedPassword
 import com.freshtuna.openshop.member.entity.MariaDBLocalMember
+import com.freshtuna.openshop.member.id.LocalId
+import com.freshtuna.openshop.member.id.PublicId
 import com.freshtuna.openshop.member.repository.MariaDBLocalMemberRepository
 import io.mockk.InternalPlatformDsl.toStr
 import io.mockk.every
@@ -24,8 +26,9 @@ class LocalMemberUpdateAdapterTest {
          * given
          */
         val publicId = UUID.randomUUID()
-        val newPassword = SecuredPassword("newPassword")
-        val member = LocalMember(publicId.toStr(), "nickname", emptyList(), "localId")
+        val curPassword = EncryptedPassword("curPassword")
+        val newPassword = EncryptedPassword("newPassword")
+        val member = LocalMember(PublicId( publicId.toStr()), emptyList(), LocalId("localId"), curPassword)
         val dbMember = MariaDBLocalMember("localId", "password", "nickname")
 
         /**
@@ -33,7 +36,7 @@ class LocalMemberUpdateAdapterTest {
          */
         every {
             localMemberRepository.findByPublicId(publicId)
-        } returns dbMember
+        } returns Optional.of(dbMember)
 
         updateAdapter.changePassword(member, newPassword)
 

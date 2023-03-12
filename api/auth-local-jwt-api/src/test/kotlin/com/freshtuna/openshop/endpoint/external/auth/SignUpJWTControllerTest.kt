@@ -5,6 +5,7 @@ import com.freshtuna.openshop.config.constant.Url
 import com.freshtuna.openshop.jwt.JWT
 import com.freshtuna.openshop.auth.result.JWTLocalSignInResult
 import com.freshtuna.openshop.member.Member
+import com.freshtuna.openshop.member.id.PublicId
 import io.mockk.every
 import io.mockk.mockk
 
@@ -31,7 +32,7 @@ class SignUpJWTControllerTest {
         val localId = "localId"
         val password = "password"
         val nickname = "nickname"
-        val localMember = Member("id", "nick", ArrayList())
+        val localMember = Member(PublicId("id"), ArrayList())
         val payload = """
             {
                 "id": "$localId",

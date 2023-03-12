@@ -1,10 +1,10 @@
 package com.freshtuna.openshop.member.incoming
 
 import com.freshtuna.openshop.member.Password
-import com.freshtuna.openshop.member.SecuredPassword
+import com.freshtuna.openshop.member.EncryptedPassword
 
 interface SecuredPasswordUseCase {
-    fun generate(password: Password): SecuredPassword
+    fun generate(password: Password): EncryptedPassword
 
-    fun matched(givenPW: Password, storedPW: SecuredPassword): Boolean
+    fun matched(givenPW: Password, storedPW: EncryptedPassword): Boolean
 }

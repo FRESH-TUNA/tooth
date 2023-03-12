@@ -5,10 +5,6 @@ enum class Role {
     USER;
 
     companion object {
-
-        private val OF_NEW_MEMBER = listOf(USER)
-        fun ofNewMember() : List<Role> {
-            return OF_NEW_MEMBER
-        }
+        val OF_NEW_MEMBER = listOf(USER)
     }
 }

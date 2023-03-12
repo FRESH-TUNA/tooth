@@ -1,6 +1,7 @@
 package com.freshtuna.openshop.member
 
 import com.freshtuna.openshop.exception.constant.Oh
+import com.freshtuna.openshop.member.id.PublicId
 import com.freshtuna.openshop.member.incoming.ChangePasswordUseCase
 import com.freshtuna.openshop.member.incoming.SecuredPasswordUseCase
 import com.freshtuna.openshop.member.outgoing.LocalMemberUpdatePort
@@ -16,12 +17,11 @@ class PasswordChangeService(
     private val securedPasswordUseCase: SecuredPasswordUseCase
 ) : ChangePasswordUseCase {
 
-    override fun changePassword(id: String, curPassword: Password, newPassword: Password) {
+    override fun changePassword(id: PublicId, curPassword: Password, newPassword: Password) {
 
         val member = memberSearchPort.findLocalMember(id)
-        val savedPW = memberSearchPort.findSavedPasswordByLocalMember(member)
 
-        if(!securedPasswordUseCase.matched(curPassword, savedPW))
+        if(!securedPasswordUseCase.matched(curPassword, member.password))
             Oh.localAuthenticationFail()
 
         if (!newPassword.checkPasswordRule())

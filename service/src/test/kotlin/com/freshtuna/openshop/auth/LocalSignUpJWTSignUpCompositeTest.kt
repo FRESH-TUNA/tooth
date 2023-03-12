@@ -10,7 +10,9 @@ import com.freshtuna.openshop.jwt.JWT
 import com.freshtuna.openshop.jwt.incoming.JWTUseCase
 import com.freshtuna.openshop.member.LocalMember
 import com.freshtuna.openshop.member.Password
-import com.freshtuna.openshop.member.SecuredPassword
+import com.freshtuna.openshop.member.EncryptedPassword
+import com.freshtuna.openshop.member.id.LocalId
+import com.freshtuna.openshop.member.id.PublicId
 import com.freshtuna.openshop.member.incoming.SecuredPasswordUseCase
 import io.mockk.InternalPlatformDsl.toStr
 
@@ -45,19 +47,18 @@ class LocalSignUpJWTSignUpCompositeTest {
          * given
          * 로컬멤버 생성하기
          */
-        // 부가정보
-        val nickname = "신선한참치"
 
         // 권한
         val roles: List<Role> = Lists.emptyList()
 
         // 로그인 ID
-        val localId = "freshtuna@kakao.com"
+        val localId = LocalId("freshtuna@kakao.com")
 
         // 패스워드
         val password = Password("패스워드")
 
-        val member = LocalMember("null", nickname, roles, localId)
+        val member = LocalMember(
+            PublicId("hohohoho"), roles, localId, EncryptedPassword("encrypted"))
 
         /**
          * when
@@ -79,14 +80,12 @@ class LocalSignUpJWTSignUpCompositeTest {
          * given
          * 로컬멤버 생성하기
          */
-        // 부가정보
-        val nickname = "신선한참치"
 
         // 권한
         val roles: List<Role> = Lists.emptyList()
 
         // 로그인 ID
-        val localId = "freshtuna@kakao.com"
+        val localId = LocalId("freshtuna@kakao.com")
 
         // 패스워드
         val password = Password("1aB!1aB2")
@@ -95,13 +94,13 @@ class LocalSignUpJWTSignUpCompositeTest {
          * when
          * 테스트에 사용할 서비스 객체, 포트 객체
          */
-        val newId = UUID.randomUUID().toStr()
-        val newMember = LocalMember(newId, nickname, roles, localId)
+        val newId = PublicId(UUID.randomUUID().toStr())
+        val newMember = LocalMember(newId, roles, localId, EncryptedPassword("encrypted"))
 
         every { localSignUpPort.signUp(any(), any()) } returns newMember
         every { memberSearchPort.existsLocalMember(localId) } returns false
 
-        every { securedPasswordUseCase.generate(any()) } returns SecuredPassword("thisISsecure!!")
+        every { securedPasswordUseCase.generate(any()) } returns EncryptedPassword("thisISsecure!!")
         every { jwtUseCase.generateAccessToken(newMember) } returns JWT.accessOf("accessToken!")
         every { jwtUseCase.generateRefreshToken(newMember) } returns JWT.refreshOf("refreshToken")
 

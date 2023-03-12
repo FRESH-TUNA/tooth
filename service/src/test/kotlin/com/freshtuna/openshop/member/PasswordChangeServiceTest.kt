@@ -1,6 +1,8 @@
 package com.freshtuna.openshop.member
 
 import com.freshtuna.openshop.exception.OpenException
+import com.freshtuna.openshop.member.id.LocalId
+import com.freshtuna.openshop.member.id.PublicId
 import com.freshtuna.openshop.member.incoming.SecuredPasswordUseCase
 import com.freshtuna.openshop.member.outgoing.LocalMemberUpdatePort
 import com.freshtuna.openshop.member.outgoing.MemberSearchPort
@@ -32,26 +34,25 @@ class PasswordChangeServiceTest {
         /**
          * given
          */
-        val localId = "localId"
+        val localId = LocalId("localId")
         val curPassword = Password("password")
         val newPassword = Password("1aB!1aB!1aB!1aB!1aB!")
 
-        val curSecuredPassword = SecuredPassword("password")
-        val newSecuredPassword = SecuredPassword("password")
+        val curEncryptedPassword = EncryptedPassword("password")
+        val newEncryptedPassword = EncryptedPassword("password")
 
-        val id = "id"
-        val member = LocalMember(id,"nickname", Lists.emptyList(), localId)
+        val id = PublicId("id")
+        val member = LocalMember(id, Lists.emptyList(), localId, curEncryptedPassword)
 
         /**
          * when
          */
-        every { securedPasswordUseCase.matched(curPassword, curSecuredPassword) } returns true
-        every { securedPasswordUseCase.generate(curPassword) } returns curSecuredPassword
-        every { securedPasswordUseCase.generate(newPassword) } returns newSecuredPassword
+        every { securedPasswordUseCase.matched(curPassword, curEncryptedPassword) } returns true
+        every { securedPasswordUseCase.generate(curPassword) } returns curEncryptedPassword
+        every { securedPasswordUseCase.generate(newPassword) } returns newEncryptedPassword
 
         every { memberSearchPort.findLocalMember(id) } returns member
-        every { memberSearchPort.findSavedPasswordByLocalMember(member) } returns curSecuredPassword
-        every { localMemberUpdatePort.changePassword(member, newSecuredPassword) } returns Unit
+        every { localMemberUpdatePort.changePassword(member, newEncryptedPassword) } returns Unit
 
 
 
@@ -67,26 +68,25 @@ class PasswordChangeServiceTest {
         /**
          * given
          */
-        val localId = "localId"
+        val localId = LocalId("localId")
         val curPassword = Password("password")
         val newPassword = Password("hmm")
 
-        val curSecuredPassword = SecuredPassword("password")
-        val newSecuredPassword = SecuredPassword("password")
+        val curEncryptedPassword = EncryptedPassword("password")
+        val newEncryptedPassword = EncryptedPassword("password")
 
-        val id = "id"
-        val member = LocalMember(id,"nickname", Lists.emptyList(), localId)
+        val id = PublicId("id")
+        val member = LocalMember(id, Lists.emptyList(), localId, curEncryptedPassword)
 
         /**
          * when
          */
-        every { securedPasswordUseCase.matched(curPassword, curSecuredPassword) } returns true
-        every { securedPasswordUseCase.generate(curPassword) } returns curSecuredPassword
-        every { securedPasswordUseCase.generate(newPassword) } returns newSecuredPassword
+        every { securedPasswordUseCase.matched(curPassword, curEncryptedPassword) } returns true
+        every { securedPasswordUseCase.generate(curPassword) } returns curEncryptedPassword
+        every { securedPasswordUseCase.generate(newPassword) } returns newEncryptedPassword
 
         every { memberSearchPort.findLocalMember(id) } returns member
-        every { memberSearchPort.findSavedPasswordByLocalMember(member) } returns curSecuredPassword
-        every { localMemberUpdatePort.changePassword(member, newSecuredPassword) } returns Unit
+        every { localMemberUpdatePort.changePassword(member, newEncryptedPassword) } returns Unit
 
         /**
          * then

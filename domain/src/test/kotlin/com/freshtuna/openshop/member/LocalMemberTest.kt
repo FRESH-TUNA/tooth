@@ -1,6 +1,8 @@
 package com.freshtuna.openshop.member
 
 import com.freshtuna.openshop.member.constant.Role
+import com.freshtuna.openshop.member.id.LocalId
+import com.freshtuna.openshop.member.id.PublicId
 import org.assertj.core.util.Lists
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.DisplayName
@@ -16,10 +18,7 @@ class LocalMemberTest {
          * 사용자에 필요한 정보
          */
         // 고유 식별자
-        val id = "식별자"
-
-        // 부가정보
-        val nickname = "신선한참치"
+        val id = PublicId("식별자")
 
         // 권한
         val roles: List<Role> = Lists.emptyList()
@@ -29,12 +28,13 @@ class LocalMemberTest {
          * 로컬 사용자에 필요한 정보
          */
         // 로그인 ID
-        val localId = "freshtuna@kakao.com"
+        val localId = LocalId("freshtuna@kakao.com")
+        val password = EncryptedPassword("password")
 
         /**
          * when
          * 주어진 정보들을 통해 로컬 멤버 생성하기
          */
-        LocalMember(id, nickname, roles, localId)
+        LocalMember(id, roles, localId, password)
     }
 }

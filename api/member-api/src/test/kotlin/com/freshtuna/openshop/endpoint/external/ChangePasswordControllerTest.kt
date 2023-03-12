@@ -15,12 +15,12 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
 
-class PasswordChangeControllerTest {
+class ChangePasswordControllerTest {
 
     private val useCase: ChangePasswordUseCase = mockk()
     private val userDetailManager: ToothUserDetailManager = mockk()
     private val mockMvc =  MockMvcBuilders
-        .standaloneSetup(PasswordChangeController(useCase, userDetailManager))
+        .standaloneSetup(ChangePasswordController(useCase, userDetailManager))
         .build()
 
     @Test

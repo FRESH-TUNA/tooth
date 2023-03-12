@@ -2,6 +2,8 @@ package com.freshtuna.openshop.exception.constant
 
 import com.freshtuna.openshop.exception.OpenException
 import com.freshtuna.openshop.exception.OpenMsgException
+import com.freshtuna.openshop.member.id.LocalId
+import com.freshtuna.openshop.member.id.PublicId
 
 enum class Oh(
     val code: String,
@@ -26,11 +28,15 @@ enum class Oh(
     INTERNAL_SERVER_ERROR("ERROR", "알수 없는 오류 입니다.");
 
     companion object {
-        fun localMemberNotExisted(localId: String): Nothing {
+        fun localMemberNotExisted(localId: LocalId): Nothing {
             throw OpenMsgException(LOCAL_MEMBER_NOT_FOUNDED, "아이디: $localId 와 일치하는 계정이 없습니다.")
         }
 
-        fun localIdUsed(localId: String): Nothing {
+        fun localMemberNotExisted(): Nothing {
+            throw OpenException(LOCAL_MEMBER_NOT_FOUNDED)
+        }
+
+        fun localIdUsed(localId: LocalId): Nothing {
             throw OpenMsgException(LOCAL_MEMBER_NOT_FOUNDED, "아이디: $localId 는 이미 사용중입니다.")
         }
 

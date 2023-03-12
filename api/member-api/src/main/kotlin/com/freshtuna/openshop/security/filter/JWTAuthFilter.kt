@@ -46,12 +46,12 @@ class JWTAuthFilter(
             return
         }
 
-        val authorities: List<SimpleGrantedAuthority> = jwtUseCase.claim(jwt, JWT.ROLE_KEY)
+        val authorities: List<SimpleGrantedAuthority> = jwtUseCase.roleOfAccess(jwt)
             .split(",")
             .map { s -> SimpleGrantedAuthority(s) }
 
         val userDetail = ToothUserDetail(
-            jwtUseCase.idOfToken(jwt),
+            jwtUseCase.publicIdOfAccess(jwt),
             authorities
         )
 

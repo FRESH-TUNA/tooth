@@ -2,6 +2,7 @@ package com.freshtuna.openshop.member
 
 import com.freshtuna.openshop.member.constant.Role
 import com.freshtuna.openshop.member.constant.Provider
+import com.freshtuna.openshop.member.id.PublicId
 import org.assertj.core.util.Lists
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.DisplayName
@@ -17,13 +18,7 @@ class OAuthMemberTest {
          * 사용자에 필요한 정보
          */
         // 고유 식별자
-        val id = "식별자"
-
-        // 개인정보 (실명)
-        val name = "김동원"
-
-        // 부가정보
-        val nickname = "신선한참치"
+        val id = PublicId("식별자")
 
         // 권한
         val roles: List<Role> = Lists.emptyList()
@@ -42,14 +37,13 @@ class OAuthMemberTest {
          * when
          * 주어진 정보들을 통해 로컬 멤버 생성하기
          */
-        val member = OAuthMember(id, nickname, roles, provider, oauthId)
+        val member = OAuthMember(id, roles, provider, oauthId)
 
         /**
          * then
          * 필요한 정보들이 잘 설정되어있는지 확인
          */
         Assertions.assertEquals(member.publicId, id)
-        Assertions.assertEquals(member.nickname, nickname)
         Assertions.assertEquals(member.roles === roles, true)
 
         Assertions.assertEquals(member.provider, Provider.GOOGLE)

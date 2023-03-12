@@ -2,6 +2,7 @@ package com.freshtuna.openshop.member.adapter
 
 import com.freshtuna.openshop.exception.OpenException
 import com.freshtuna.openshop.member.entity.MariaDBLocalMember
+import com.freshtuna.openshop.member.id.LocalId
 import com.freshtuna.openshop.member.repository.MariaDBLocalMemberRepository
 import io.mockk.every
 import io.mockk.mockk
@@ -30,7 +31,7 @@ class MemberSearchAdapterTest {
         /**
          * when, then
          */
-        assertEquals(memberSearchAdapter.existsLocalMember(localId), true)
+        assertEquals(memberSearchAdapter.existsLocalMember(LocalId(localId)), true)
     }
 
     @Test
@@ -49,7 +50,7 @@ class MemberSearchAdapterTest {
         /**
          * then
          */
-        assertEquals(memberSearchAdapter.existsLocalMember(localId), false)
+        assertEquals(memberSearchAdapter.existsLocalMember(LocalId(localId)), false)
     }
 
     @Test
@@ -70,12 +71,12 @@ class MemberSearchAdapterTest {
             localMemberRepository.findByLocalId(localId)
         } returns Optional.of(mariaDBLocalMember)
 
-        val localMember = memberSearchAdapter.findLocalMember(localId)
+        val localMember = memberSearchAdapter.findLocalMember(LocalId(localId))
 
         /**
          * then
          */
-        assertEquals(localMember.localId, localId)
+        assertEquals(localMember.localId.toString(), localId)
     }
 
     @Test
@@ -97,6 +98,6 @@ class MemberSearchAdapterTest {
         /**
          * then
          */
-        assertThrows<OpenException> { memberSearchAdapter.findLocalMember(localId) }
+        assertThrows<OpenException> { memberSearchAdapter.findLocalMember(LocalId(localId)) }
     }
 }

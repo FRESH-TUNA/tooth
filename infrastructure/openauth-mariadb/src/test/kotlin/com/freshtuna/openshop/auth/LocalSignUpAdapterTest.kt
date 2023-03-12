@@ -5,6 +5,7 @@ import com.freshtuna.openshop.member.*
 import com.freshtuna.openshop.auth.adapter.LocalSignUpAdapter
 import com.freshtuna.openshop.auth.command.LocalSignUpCommand
 import com.freshtuna.openshop.member.entity.MariaDBLocalMember
+import com.freshtuna.openshop.member.id.LocalId
 import com.freshtuna.openshop.member.repository.MariaDBLocalMemberRepository
 import io.mockk.every
 import io.mockk.mockk
@@ -12,7 +13,6 @@ import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.Assertions.assertEquals
 import java.util.*
-import kotlin.collections.ArrayList
 
 class LocalSignUpAdapterTest {
 
@@ -26,8 +26,8 @@ class LocalSignUpAdapterTest {
          * given
          */
         val password = Password("myPassword")
-        val securedPassword = SecuredPassword("password")
-        val command = LocalSignUpCommand("wishToId", password, password)
+        val encryptedPassword = EncryptedPassword("password")
+        val command = LocalSignUpCommand(LocalId("wishToId"), password, password)
         /**
          * when
          */
@@ -38,6 +38,8 @@ class LocalSignUpAdapterTest {
         /**
          * then
          */
-        assertEquals(localSignUpPort.signUp(command, securedPassword).localId, savedDbMember.localId)
+        assertEquals(
+            localSignUpPort.signUp(command, encryptedPassword).localId.toString(), savedDbMember.localId
+        )
     }
 }

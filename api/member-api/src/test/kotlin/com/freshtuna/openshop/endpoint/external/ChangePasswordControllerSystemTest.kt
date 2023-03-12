@@ -21,7 +21,7 @@ import org.springframework.test.context.ActiveProfiles
     classes = [MemberApiApplication::class]
 )
 @ActiveProfiles("sandbox")
-class PasswordChangeControllerSystemTest {
+class ChangePasswordControllerSystemTest {
 
     @Value("\${openauth.jwt.local-member-access-token-for-test}")
     private lateinit var accessToken: String

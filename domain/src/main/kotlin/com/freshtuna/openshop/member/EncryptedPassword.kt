@@ -1,5 +1,5 @@
 package com.freshtuna.openshop.member
 
-class SecuredPassword(
+class EncryptedPassword(
     val passwordString: String
 )

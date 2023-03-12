@@ -2,7 +2,9 @@ package com.freshtuna.openshop.member.entity
 
 import com.freshtuna.openshop.auth.command.LocalSignUpCommand
 import com.freshtuna.openshop.member.LocalMember
-import com.freshtuna.openshop.member.SecuredPassword
+import com.freshtuna.openshop.member.EncryptedPassword
+import com.freshtuna.openshop.member.id.LocalId
+import com.freshtuna.openshop.member.id.PublicId
 import jakarta.persistence.*
 import java.util.*
 
@@ -20,11 +22,11 @@ class MariaDBLocalMember(
 ) : MariaDBMember(nickname) {
     companion object {
 
-        fun of(command: LocalSignUpCommand, securedPassword: SecuredPassword): MariaDBLocalMember {
+        fun of(command: LocalSignUpCommand, encryptedPassword: EncryptedPassword): MariaDBLocalMember {
 
             val mariaDBLocalMember = MariaDBLocalMember(
-                command.localId,
-                securedPassword.passwordString,
+                command.localId.toString(),
+                encryptedPassword.passwordString,
                 null
             )
 
@@ -37,10 +39,15 @@ class MariaDBLocalMember(
     fun toLocalMember(): LocalMember {
         val domainRules = roles.map { mariaDBRole -> mariaDBRole.role }
 
-        return LocalMember(publicId.toString(), nickname, domainRules, localId)
+        return LocalMember(
+            PublicId(publicId.toString()),
+            domainRules,
+            LocalId(localId),
+            EncryptedPassword(password)
+        )
     }
 
-    fun changePassword(newPassword: SecuredPassword) {
+    fun changePassword(newPassword: EncryptedPassword) {
         password = newPassword.passwordString
     }
 }

@@ -5,8 +5,10 @@ import com.freshtuna.openshop.member.outgoing.MemberSearchPort
 import com.freshtuna.openshop.jwt.incoming.JWTUseCase
 import com.freshtuna.openshop.member.LocalMember
 import com.freshtuna.openshop.member.Password
-import com.freshtuna.openshop.member.SecuredPassword
-import com.freshtuna.openshop.auth.command.SignInCommand
+import com.freshtuna.openshop.member.EncryptedPassword
+import com.freshtuna.openshop.auth.command.LocalSignInCommand
+import com.freshtuna.openshop.member.id.LocalId
+import com.freshtuna.openshop.member.id.PublicId
 import com.freshtuna.openshop.member.incoming.SecuredPasswordUseCase
 
 import io.mockk.every
@@ -38,24 +40,23 @@ class LocalSignInJWTSignUpCompositeTest {
          * 로그인 성공시 반환할 유저객체
          * 테스트할 서비스 객체
          */
-        val localId = "localId"
+        val localId = LocalId("localId")
         val password = Password("password")
-        val securedPassword = SecuredPassword("isSecured!")
-        val id = "id"
-        val member = LocalMember(id,"nickname", Lists.emptyList(), localId)
+        val encryptedPassword = EncryptedPassword("isSecured!")
+        val id = PublicId("id")
+        val member = LocalMember(id, Lists.emptyList(), localId, encryptedPassword)
 
         /**
          * when
          */
         every { memberSearchPort.findLocalMember(localId) } returns member
-        every { memberSearchPort.findSavedPasswordByLocalMember(member) } returns securedPassword
-        every { securedPasswordUseCase.matched(password, securedPassword) } returns true
+        every { securedPasswordUseCase.matched(password, encryptedPassword) } returns true
         every { jwtUseCase.generateAccessToken(member) } returns JWT.accessOf("accessToken!")
         every { jwtUseCase.generateRefreshToken(member) } returns JWT.refreshOf("refreshToken")
 
         /**
          * then
          */
-        assertEquals(memberSignInService.signIn(SignInCommand(localId, password)).member.publicId, id)
+        assertEquals(memberSignInService.signIn(LocalSignInCommand(localId, password)).member.publicId, id)
     }
 }

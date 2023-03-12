@@ -2,11 +2,12 @@ package com.freshtuna.openshop.member
 
 import com.freshtuna.openshop.member.constant.Provider
 import com.freshtuna.openshop.member.constant.Role
+import com.freshtuna.openshop.member.id.PublicId
 
 class OAuthMember(
-    id: String,
-    nickname: String,
+    id: PublicId,
     roles: List<Role>,
+
     var provider: Provider,
     var oauthId: String
-) : Member(id, nickname, roles)
+) : Member(id, roles)

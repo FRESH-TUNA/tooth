@@ -10,7 +10,5 @@ interface MariaDBLocalMemberRepository  : JpaRepository<MariaDBLocalMember, Long
 
     fun findByLocalId(localId: String): Optional<MariaDBLocalMember>
 
-    fun findByLocalIdAndPassword(localId: String, password: String): Optional<MariaDBLocalMember>
-
-    fun findByPublicId(publicId: UUID): MariaDBLocalMember
+    fun findByPublicId(publicId: UUID): Optional<MariaDBLocalMember>
 }

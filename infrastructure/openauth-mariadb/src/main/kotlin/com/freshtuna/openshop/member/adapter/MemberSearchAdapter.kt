@@ -5,23 +5,26 @@ import com.freshtuna.openshop.member.LocalMember
 import com.freshtuna.openshop.member.repository.MariaDBLocalMemberRepository
 
 import com.freshtuna.openshop.member.Password
-import com.freshtuna.openshop.member.SecuredPassword
+import com.freshtuna.openshop.member.EncryptedPassword
 import com.freshtuna.openshop.member.outgoing.MemberSearchPort
 import com.freshtuna.openshop.member.constant.Provider
+import com.freshtuna.openshop.member.id.LocalId
+import com.freshtuna.openshop.member.id.PublicId
 import org.springframework.stereotype.Component
+import java.util.*
 
 @Component
 class MemberSearchAdapter(
     private val localMemberRepository: MariaDBLocalMemberRepository
 ) : MemberSearchPort {
 
-    override fun existsLocalMember(localId: String): Boolean {
-        return localMemberRepository.existsByLocalId(localId)
+    override fun existsLocalMember(localId: LocalId): Boolean {
+        return localMemberRepository.existsByLocalId(localId.toString())
     }
 
-    override fun findLocalMember(localId: String): LocalMember {
+    override fun findLocalMember(localId: LocalId): LocalMember {
 
-        val optionalOfLocalMember = localMemberRepository.findByLocalId(localId)
+        val optionalOfLocalMember = localMemberRepository.findByLocalId(localId.toString())
 
         if(!optionalOfLocalMember.isPresent)
             Oh.localMemberNotExisted(localId)
@@ -29,14 +32,13 @@ class MemberSearchAdapter(
         return optionalOfLocalMember.get().toLocalMember()
     }
 
-    override fun findSavedPasswordByLocalMember(member: LocalMember): SecuredPassword {
-
-        val optionalOfLocalMember = localMemberRepository.findByLocalId(member.localId)
+    override fun findLocalMember(id: PublicId): LocalMember {
+        val optionalOfLocalMember = localMemberRepository.findByPublicId(UUID.fromString(id.toString()))
 
         if(!optionalOfLocalMember.isPresent)
-            Oh.localMemberNotExisted(member.localId)
+            Oh.localMemberNotExisted()
 
-        return SecuredPassword(optionalOfLocalMember.get().password)
+        return optionalOfLocalMember.get().toLocalMember()
     }
 
     override fun existsOAuthMember(oauthId: String, provider: Provider): Boolean {
