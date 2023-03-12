@@ -6,6 +6,7 @@ import com.freshtuna.openshop.jwt.incoming.JWTUseCase
 import com.freshtuna.openshop.member.LocalMember
 import com.freshtuna.openshop.member.Password
 import com.freshtuna.openshop.member.SecuredPassword
+import com.freshtuna.openshop.auth.command.SignInCommand
 import com.freshtuna.openshop.member.incoming.SecuredPasswordUseCase
 
 import io.mockk.every
@@ -16,13 +17,13 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.DisplayName
 
-class LocalSignInJWTServiceTest {
+class LocalSignInJWTSignUpCompositeTest {
 
     private val memberSearchPort: MemberSearchPort = mockk()
     private val jwtUseCase: JWTUseCase = mockk()
     private val securedPasswordUseCase: SecuredPasswordUseCase = mockk()
 
-    private val memberSignInService = LocalSignInJWTService(
+    private val memberSignInService = JWTSignInComposite(
         memberSearchPort,
         jwtUseCase,
         securedPasswordUseCase
@@ -55,6 +56,6 @@ class LocalSignInJWTServiceTest {
         /**
          * then
          */
-        assertEquals(memberSignInService.signIn(localId, password).member.publicId, id)
+        assertEquals(memberSignInService.signIn(SignInCommand(localId, password)).member.publicId, id)
     }
 }

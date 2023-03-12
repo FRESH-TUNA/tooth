@@ -26,7 +26,7 @@ import org.springframework.test.context.ActiveProfiles
     classes = [AuthJWTApplication::class]
 )
 @ActiveProfiles("sandbox")
-class LocalSignInJWTControllerSystemTest {
+class SignInJWTControllerSystemTest {
 
     @Autowired
     lateinit var restTemplate: TestRestTemplate
@@ -64,7 +64,7 @@ class LocalSignInJWTControllerSystemTest {
 
         // refresh token check
         val data = response.body!!.data as LinkedHashMap<String, String>
-        logger.info(data["refresh"])
+
         Assertions.assertThat(data["refresh"]).isNotBlank
     }
 

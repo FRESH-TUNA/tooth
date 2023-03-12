@@ -1,9 +1,9 @@
 package com.freshtuna.openshop.endpoint.external.auth
 
-import com.freshtuna.openshop.auth.incoming.SignInJWTUseCase
+import com.freshtuna.openshop.auth.incoming.JWTSignInUseCase
 import com.freshtuna.openshop.config.constant.Url
 import com.freshtuna.openshop.jwt.JWT
-import com.freshtuna.openshop.jwt.JWTResult
+import com.freshtuna.openshop.auth.result.JWTLocalSignInResult
 import com.freshtuna.openshop.member.Member
 import com.freshtuna.openshop.member.Password
 import io.mockk.every
@@ -16,12 +16,12 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders
 import kotlin.collections.ArrayList
 
 
-class LocalSignInJWTControllerTest {
+class SignInJWTControllerTest {
 
-    private val signInJWTUseCase: SignInJWTUseCase = mockk()
+    private val JWTSignInUseCase: JWTSignInUseCase = mockk()
 
     private val mockMvc =  MockMvcBuilders
-        .standaloneSetup(LocalSignInJWTController(signInJWTUseCase))
+        .standaloneSetup(SignInJWTController(JWTSignInUseCase))
         .build()
 
     @Test
@@ -38,8 +38,8 @@ class LocalSignInJWTControllerTest {
             """.trimIndent()
 
         every {
-            signInJWTUseCase.signIn(any(), any())
-        } returns JWTResult(
+            JWTSignInUseCase.signIn(any())
+        } returns JWTLocalSignInResult(
             localMember, JWT.accessOf("accessToken"), JWT.refreshOf("refreshToken")
         )
 

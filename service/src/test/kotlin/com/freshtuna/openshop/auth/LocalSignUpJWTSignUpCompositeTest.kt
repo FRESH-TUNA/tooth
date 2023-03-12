@@ -1,5 +1,6 @@
 package com.freshtuna.openshop.auth
 
+import com.freshtuna.openshop.auth.command.LocalSignUpCommand
 import com.freshtuna.openshop.member.constant.Role
 import com.freshtuna.openshop.member.outgoing.MemberSearchPort
 import com.freshtuna.openshop.auth.outgoing.LocalSignUpPort
@@ -20,7 +21,7 @@ import org.assertj.core.util.Lists
 import org.junit.jupiter.api.*
 import java.util.UUID
 
-class LocalSignUpJWTServiceTest {
+class LocalSignUpJWTSignUpCompositeTest {
 
     private val localSignUpPort: LocalSignUpPort = mockk()
 
@@ -30,7 +31,7 @@ class LocalSignUpJWTServiceTest {
 
     private val securedPasswordUseCase: SecuredPasswordUseCase = mockk()
 
-    private val memberSignUpService = LocalSignUpJWTService(
+    private val memberSignUpService = JWTSignUpComposite(
         localSignUpPort,
         memberSearchPort,
         jwtUseCase,
@@ -68,7 +69,7 @@ class LocalSignUpJWTServiceTest {
          * then
          * 로컬멤버 생성 테스트
          */
-        assertThrows<OpenException> { memberSignUpService.signUp(member, password) }
+        assertThrows<OpenException> { memberSignUpService.signUp(LocalSignUpCommand(localId, password, password)) }
     }
 
     @Test
@@ -90,8 +91,6 @@ class LocalSignUpJWTServiceTest {
         // 패스워드
         val password = Password("1aB!1aB2")
 
-        val member = LocalMember("null", nickname, roles, localId)
-
         /**
          * when
          * 테스트에 사용할 서비스 객체, 포트 객체
@@ -110,6 +109,7 @@ class LocalSignUpJWTServiceTest {
          * then
          * 로컬멤버 생성 테스트
          */
-        Assertions.assertEquals(memberSignUpService.signUp(member, password).member.publicId, newId)
+        Assertions.assertEquals(
+            memberSignUpService.signUp(LocalSignUpCommand(localId, password, password)).member.publicId, newId)
     }
 }

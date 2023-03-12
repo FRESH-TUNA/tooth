@@ -2,8 +2,11 @@ package com.freshtuna.openshop.endpoint.external.auth
 
 import com.freshtuna.openshop.AuthJWTApplication
 import com.freshtuna.openshop.api.response.BasicResponse
+import com.freshtuna.openshop.api.response.DataResponse
 import com.freshtuna.openshop.config.constant.Url
 import com.freshtuna.openshop.member.repository.MariaDBLocalMemberRepository
+import io.mockk.InternalPlatformDsl.toStr
+import org.assertj.core.api.Assertions
 
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.DisplayName
@@ -22,7 +25,7 @@ import org.springframework.test.context.ActiveProfiles
     classes = [AuthJWTApplication::class]
 )
 @ActiveProfiles("sandbox")
-class LocalSignUpJWTControllerSystemTest {
+class SignUpJWTControllerSystemTest {
 
     @Autowired
     lateinit var restTemplate: TestRestTemplate
@@ -50,14 +53,22 @@ class LocalSignUpJWTControllerSystemTest {
         /**
          * when
          */
-        val responseEntity = restTemplate.postForEntity(
-            Url.EXTERNAL.JWT_LOCAL_SIGNUP, entity, BasicResponse::class.java)
+        val response = restTemplate.postForEntity(
+            Url.EXTERNAL.JWT_LOCAL_SIGNUP, entity, DataResponse::class.java)
 
         /**
          * then and cleaning
          */
-        assertThat(responseEntity.statusCode).isEqualTo(HttpStatus.OK)
-        assertThat(repository.findByLocalId(id).isPresent).isTrue
+        // status code check
+        assertThat(response.statusCode).isEqualTo(HttpStatus.OK)
+
+        // access token check
+        assertThat(response.headers[HttpHeaders.AUTHORIZATION].toStr()).isNotBlank
+
+        // refresh token check
+        val data = response.body!!.data as LinkedHashMap<String, String>
+
+        assertThat(data["refresh"]).isNotBlank
         repository.delete(repository.findByLocalId(id).get())
     }
 }

@@ -15,7 +15,7 @@ import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 
 
-class JWTServiceTest {
+class JWTSignUpCompositeTest {
 
     @Test
     @DisplayName("구현체 생성 테스트")

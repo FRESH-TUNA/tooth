@@ -1,5 +1,6 @@
 package com.freshtuna.openshop.auth.adapter
 
+import com.freshtuna.openshop.auth.command.LocalSignUpCommand
 import com.freshtuna.openshop.auth.outgoing.LocalSignUpPort
 import com.freshtuna.openshop.member.LocalMember
 import com.freshtuna.openshop.member.SecuredPassword
@@ -12,8 +13,8 @@ class LocalSignUpAdapter(
     private val localMemberRepository: MariaDBLocalMemberRepository
 ) : LocalSignUpPort {
 
-    override fun signUp(localMember: LocalMember, securedPassword: SecuredPassword): LocalMember {
-        val newMember = MariaDBLocalMember.of(localMember, securedPassword)
+    override fun signUp(command: LocalSignUpCommand, securedPassword: SecuredPassword): LocalMember {
+        val newMember = MariaDBLocalMember.of(command, securedPassword)
 
         localMemberRepository.save(newMember)
 

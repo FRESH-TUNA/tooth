@@ -3,9 +3,9 @@ package com.freshtuna.openshop.auth
 import com.freshtuna.openshop.auth.outgoing.LocalSignUpPort
 import com.freshtuna.openshop.member.*
 import com.freshtuna.openshop.auth.adapter.LocalSignUpAdapter
+import com.freshtuna.openshop.auth.command.LocalSignUpCommand
 import com.freshtuna.openshop.member.entity.MariaDBLocalMember
 import com.freshtuna.openshop.member.repository.MariaDBLocalMemberRepository
-import io.mockk.InternalPlatformDsl.toStr
 import io.mockk.every
 import io.mockk.mockk
 import org.junit.jupiter.api.DisplayName
@@ -25,9 +25,9 @@ class LocalSignUpAdapterTest {
         /**
          * given
          */
-        val member = LocalMember(null, "nickname", ArrayList(), "wishToId")
-        val password = SecuredPassword("password")
-
+        val password = Password("myPassword")
+        val securedPassword = SecuredPassword("password")
+        val command = LocalSignUpCommand("wishToId", password, password)
         /**
          * when
          */
@@ -38,6 +38,6 @@ class LocalSignUpAdapterTest {
         /**
          * then
          */
-        assertEquals(localSignUpPort.signUp(member, password).localId, savedDbMember.localId)
+        assertEquals(localSignUpPort.signUp(command, securedPassword).localId, savedDbMember.localId)
     }
 }
