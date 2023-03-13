@@ -1,5 +1,5 @@
 package com.freshtuna.openshop.endpoint.external.auth.response
 
-class LocalSignInJWTResponse(
+class SignInJWTResponse(
     val refresh: String
 )

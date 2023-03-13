@@ -7,8 +7,9 @@ import com.freshtuna.openshop.api.util.HeaderUtil.Companion.addHeader
 import com.freshtuna.openshop.config.constant.Url
 import com.freshtuna.openshop.endpoint.external.auth.request.SignInRequest
 import com.freshtuna.openshop.endpoint.external.auth.spec.LocalMemberSignInSpec
-import com.freshtuna.openshop.auth.incoming.JWTSignInUseCase
-import com.freshtuna.openshop.endpoint.external.auth.response.LocalSignInJWTResponse
+import com.freshtuna.openshop.auth.incoming.LocalSignInUseCase
+import com.freshtuna.openshop.auth.result.SignInJWTResult
+import com.freshtuna.openshop.endpoint.external.auth.response.SignInJWTResponse
 
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.http.HttpHeaders
@@ -18,8 +19,8 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-class SignInJWTController(
-    private val JWTSignInUseCase: JWTSignInUseCase
+class LocalSignInJWTController(
+    private val LocalSignInUseCase: LocalSignInUseCase
 ) : LocalMemberSignInSpec {
 
     /** 일반 로그인  */
@@ -27,10 +28,10 @@ class SignInJWTController(
     override fun signIn(@RequestBody request: SignInRequest,
                         response: HttpServletResponse): BasicResponse {
 
-        val result = JWTSignInUseCase.signIn(request.toCommand())
+        val result = LocalSignInUseCase.signIn(request.toCommand()) as SignInJWTResult
 
         addHeader(HttpHeaders.AUTHORIZATION, result.accessToken.tokenString, response)
 
-        return DataResponse.of(LocalSignInJWTResponse(result.refreshToken.tokenString))
+        return DataResponse.of(SignInJWTResponse(result.refreshToken.tokenString))
     }
 }

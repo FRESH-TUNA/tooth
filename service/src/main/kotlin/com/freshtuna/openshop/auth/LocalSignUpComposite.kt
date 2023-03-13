@@ -1,12 +1,13 @@
 package com.freshtuna.openshop.auth
 
 import com.freshtuna.openshop.auth.command.LocalSignUpCommand
-import com.freshtuna.openshop.auth.incoming.JWTSignUpUseCase
+import com.freshtuna.openshop.auth.incoming.LocalSignUpUseCase
 
 import com.freshtuna.openshop.member.outgoing.MemberSearchPort
 import com.freshtuna.openshop.auth.outgoing.LocalSignUpPort
+import com.freshtuna.openshop.auth.result.SignInJWTResult
 import com.freshtuna.openshop.exception.constant.Oh
-import com.freshtuna.openshop.auth.result.JWTLocalSignInResult
+import com.freshtuna.openshop.auth.result.SignInResult
 import com.freshtuna.openshop.jwt.incoming.JWTUseCase
 import com.freshtuna.openshop.member.incoming.SecuredPasswordUseCase
 
@@ -15,15 +16,15 @@ import org.springframework.transaction.annotation.Transactional
 
 @Service
 @Transactional
-class JWTSignUpComposite(
+class LocalSignUpComposite(
     private val localSignUpPort: LocalSignUpPort,
     private val memberSearchPort: MemberSearchPort,
 
     private val jwtUseCase: JWTUseCase,
     private val securedPasswordUseCase: SecuredPasswordUseCase
-) : JWTSignUpUseCase {
+) : LocalSignUpUseCase {
 
-    override fun signUp(command: LocalSignUpCommand): JWTLocalSignInResult {
+    override fun signUp(command: LocalSignUpCommand): SignInResult {
         if(!command.localId.checkRule())
             Oh.breakLocalIdRule()
 
@@ -38,6 +39,6 @@ class JWTSignUpComposite(
         val accessToken = jwtUseCase.generateAccessToken(member)
         val refreshToken = jwtUseCase.generateRefreshToken(member)
 
-        return JWTLocalSignInResult(member, accessToken, refreshToken)
+        return SignInJWTResult(member, accessToken, refreshToken)
     }
 }

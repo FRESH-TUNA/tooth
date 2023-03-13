@@ -1,5 +1,5 @@
 package com.freshtuna.openshop.endpoint.external.auth.request
 
-class JWTRefreshRequest(
+class RefreshJWTRequest(
     val refresh: String
 )

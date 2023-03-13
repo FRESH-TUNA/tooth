@@ -33,7 +33,7 @@ class LocalSignUpJWTSignUpCompositeTest {
 
     private val securedPasswordUseCase: SecuredPasswordUseCase = mockk()
 
-    private val memberSignUpService = JWTSignUpComposite(
+    private val memberSignUpService = LocalSignUpComposite(
         localSignUpPort,
         memberSearchPort,
         jwtUseCase,
