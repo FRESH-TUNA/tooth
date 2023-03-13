@@ -5,7 +5,7 @@ import com.freshtuna.openshop.member.*
 import com.freshtuna.openshop.auth.adapter.LocalSignUpAdapter
 import com.freshtuna.openshop.auth.command.LocalSignUpCommand
 import com.freshtuna.openshop.member.entity.MariaDBLocalMember
-import com.freshtuna.openshop.member.id.LocalId
+import com.freshtuna.openshop.id.LocalId
 import com.freshtuna.openshop.member.repository.MariaDBLocalMemberRepository
 import io.mockk.every
 import io.mockk.mockk

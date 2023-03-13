@@ -2,7 +2,7 @@ package com.freshtuna.openshop.member.adapter
 
 import com.freshtuna.openshop.exception.OpenException
 import com.freshtuna.openshop.member.entity.MariaDBLocalMember
-import com.freshtuna.openshop.member.id.LocalId
+import com.freshtuna.openshop.id.LocalId
 import com.freshtuna.openshop.member.repository.MariaDBLocalMemberRepository
 import io.mockk.every
 import io.mockk.mockk

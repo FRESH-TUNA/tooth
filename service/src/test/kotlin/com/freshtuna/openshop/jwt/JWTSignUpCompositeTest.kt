@@ -8,8 +8,8 @@ import com.freshtuna.openshop.member.constant.Role
 import com.freshtuna.openshop.member.constant.Provider
 import com.freshtuna.openshop.jwt.incoming.JWTUseCase
 import com.freshtuna.openshop.member.EncryptedPassword
-import com.freshtuna.openshop.member.id.LocalId
-import com.freshtuna.openshop.member.id.PublicId
+import com.freshtuna.openshop.id.LocalId
+import com.freshtuna.openshop.id.PublicId
 
 import io.jsonwebtoken.security.Keys
 import org.assertj.core.util.Lists

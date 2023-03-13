@@ -1,7 +1,7 @@
 package com.freshtuna.openshop.member
 
 import com.freshtuna.openshop.member.constant.Role
-import com.freshtuna.openshop.member.id.PublicId
+import com.freshtuna.openshop.id.PublicId
 
 open class Member(
     // 고유식별자

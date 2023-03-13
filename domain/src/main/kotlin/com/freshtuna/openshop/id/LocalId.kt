@@ -1,4 +1,4 @@
-package com.freshtuna.openshop.member.id
+package com.freshtuna.openshop.id
 
 class LocalId(private val value: String) {
 

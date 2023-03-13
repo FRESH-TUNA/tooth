@@ -10,7 +10,7 @@ import com.freshtuna.openshop.endpoint.external.spec.ChangePasswordSpec
 import com.freshtuna.openshop.member.Password
 
 import com.freshtuna.openshop.api.security.userDetail.ToothUserDetailManager
-import com.freshtuna.openshop.member.id.PublicId
+import com.freshtuna.openshop.id.PublicId
 
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody

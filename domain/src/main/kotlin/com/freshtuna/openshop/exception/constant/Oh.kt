@@ -2,8 +2,8 @@ package com.freshtuna.openshop.exception.constant
 
 import com.freshtuna.openshop.exception.OpenException
 import com.freshtuna.openshop.exception.OpenMsgException
-import com.freshtuna.openshop.member.id.LocalId
-import com.freshtuna.openshop.member.id.PublicId
+import com.freshtuna.openshop.id.LocalId
+import com.freshtuna.openshop.id.PublicId
 
 enum class Oh(
     val code: String,
@@ -16,7 +16,7 @@ enum class Oh(
     LOCAL_MEMBER_NOT_FOUNDED("AL-01", "사용자를 찾을수 없습니다."),
     LOCAL_AUTHENTICATION_FAIL("AL-02", "사용자 인증에 실패 했습니다."),
     BREAK_PASSWORD_RULE("AL-03", "패스워드 규칙에 위배됩니다."),
-
+    REPEAT_PASSWORD_NOT_EQUAL("AL-04", "재확인을 위한 패스워드가 일치하지 않습니다."),
     /**
      * JWT
      */
@@ -42,6 +42,10 @@ enum class Oh(
 
         fun breakPasswordRule(): Nothing {
             throw OpenException(BREAK_PASSWORD_RULE)
+        }
+
+        fun repeatPasswordNotEqual(): Nothing {
+            throw OpenException(REPEAT_PASSWORD_NOT_EQUAL)
         }
 
         fun localAuthenticationFail(): Nothing {

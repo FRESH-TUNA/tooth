@@ -1,8 +1,8 @@
 package com.freshtuna.openshop.member
 
 import com.freshtuna.openshop.exception.OpenException
-import com.freshtuna.openshop.member.id.LocalId
-import com.freshtuna.openshop.member.id.PublicId
+import com.freshtuna.openshop.id.LocalId
+import com.freshtuna.openshop.id.PublicId
 import com.freshtuna.openshop.member.incoming.SecuredPasswordUseCase
 import com.freshtuna.openshop.member.outgoing.LocalMemberUpdatePort
 import com.freshtuna.openshop.member.outgoing.MemberSearchPort

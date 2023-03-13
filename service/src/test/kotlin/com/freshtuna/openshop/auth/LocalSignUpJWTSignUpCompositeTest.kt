@@ -11,8 +11,8 @@ import com.freshtuna.openshop.jwt.incoming.JWTUseCase
 import com.freshtuna.openshop.member.LocalMember
 import com.freshtuna.openshop.member.Password
 import com.freshtuna.openshop.member.EncryptedPassword
-import com.freshtuna.openshop.member.id.LocalId
-import com.freshtuna.openshop.member.id.PublicId
+import com.freshtuna.openshop.id.LocalId
+import com.freshtuna.openshop.id.PublicId
 import com.freshtuna.openshop.member.incoming.SecuredPasswordUseCase
 import io.mockk.InternalPlatformDsl.toStr
 

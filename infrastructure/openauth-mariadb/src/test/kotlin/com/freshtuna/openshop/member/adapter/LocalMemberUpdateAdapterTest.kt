@@ -3,8 +3,8 @@ package com.freshtuna.openshop.member.adapter
 import com.freshtuna.openshop.member.LocalMember
 import com.freshtuna.openshop.member.EncryptedPassword
 import com.freshtuna.openshop.member.entity.MariaDBLocalMember
-import com.freshtuna.openshop.member.id.LocalId
-import com.freshtuna.openshop.member.id.PublicId
+import com.freshtuna.openshop.id.LocalId
+import com.freshtuna.openshop.id.PublicId
 import com.freshtuna.openshop.member.repository.MariaDBLocalMemberRepository
 import io.mockk.InternalPlatformDsl.toStr
 import io.mockk.every

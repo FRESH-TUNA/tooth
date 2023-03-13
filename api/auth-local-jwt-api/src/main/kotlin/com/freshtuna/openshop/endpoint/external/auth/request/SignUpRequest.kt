@@ -4,7 +4,7 @@ import com.freshtuna.openshop.auth.command.LocalSignUpCommand
 import com.freshtuna.openshop.member.LocalMember
 import com.freshtuna.openshop.member.Password
 import com.freshtuna.openshop.member.constant.Role
-import com.freshtuna.openshop.member.id.LocalId
+import com.freshtuna.openshop.id.LocalId
 
 class SignUpRequest(
     val id: String,

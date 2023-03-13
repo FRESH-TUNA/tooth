@@ -5,7 +5,7 @@ import com.freshtuna.openshop.config.constant.Url
 import com.freshtuna.openshop.jwt.JWT
 import com.freshtuna.openshop.auth.result.JWTLocalSignInResult
 import com.freshtuna.openshop.member.Member
-import com.freshtuna.openshop.member.id.PublicId
+import com.freshtuna.openshop.id.PublicId
 import io.mockk.every
 import io.mockk.mockk
 

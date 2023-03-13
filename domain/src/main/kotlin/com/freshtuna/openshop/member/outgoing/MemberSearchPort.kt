@@ -4,8 +4,8 @@ import com.freshtuna.openshop.member.LocalMember
 import com.freshtuna.openshop.member.Password
 
 import com.freshtuna.openshop.member.constant.Provider
-import com.freshtuna.openshop.member.id.LocalId
-import com.freshtuna.openshop.member.id.PublicId
+import com.freshtuna.openshop.id.LocalId
+import com.freshtuna.openshop.id.PublicId
 
 interface MemberSearchPort {
     /**

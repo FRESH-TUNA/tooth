@@ -2,7 +2,7 @@ package com.freshtuna.openshop.member
 
 import com.freshtuna.openshop.member.constant.Provider
 import com.freshtuna.openshop.member.constant.Role
-import com.freshtuna.openshop.member.id.PublicId
+import com.freshtuna.openshop.id.PublicId
 
 class OAuthMember(
     id: PublicId,
