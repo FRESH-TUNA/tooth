@@ -8,7 +8,7 @@ plugins {
     kotlin("jvm") version "1.7.22"
 }
 
-group = "com.freshtuna.openshop"
+group = "com.freshtuna.tooth"
 version = "1.0-SNAPSHOT"
 java.sourceCompatibility = JavaVersion.VERSION_17
 
@@ -20,7 +20,7 @@ dependencies {
     implementation(project(":domain"))
     implementation(project(":service"))
     implementation(project(":common"))
-    implementation(project(":infrastructure:openauth-mariadb"))
+    implementation(project(":infrastructure:tooth-mariadb"))
 
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-security")
