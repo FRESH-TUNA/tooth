@@ -20,7 +20,7 @@ class LocalSignUpCommand(
      * validations
      */
     private fun passwordSameCheck() {
-        if(password != repeatPassword)
+        if(password.passwordString != repeatPassword.passwordString)
             Oh.repeatPasswordNotEqual()
     }
 }

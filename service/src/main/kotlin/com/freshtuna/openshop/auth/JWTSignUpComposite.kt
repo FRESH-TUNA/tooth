@@ -24,11 +24,14 @@ class JWTSignUpComposite(
 ) : JWTSignUpUseCase {
 
     override fun signUp(command: LocalSignUpCommand): JWTLocalSignInResult {
-        if (memberSearchPort.existsLocalMember(command.localId))
-            Oh.localIdUsed(command.localId)
+        if(!command.localId.checkRule())
+            Oh.breakLocalIdRule()
 
         if (!command.password.checkPasswordRule())
             Oh.breakPasswordRule()
+
+        if (memberSearchPort.existsLocalMember(command.localId))
+            Oh.localIdUsed(command.localId)
 
         val member = localSignUpPort.signUp(command, securedPasswordUseCase.generate(command.password))
 

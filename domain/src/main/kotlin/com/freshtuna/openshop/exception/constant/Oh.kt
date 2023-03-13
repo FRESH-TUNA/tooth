@@ -17,6 +17,8 @@ enum class Oh(
     LOCAL_AUTHENTICATION_FAIL("AL-02", "사용자 인증에 실패 했습니다."),
     BREAK_PASSWORD_RULE("AL-03", "패스워드 규칙에 위배됩니다."),
     REPEAT_PASSWORD_NOT_EQUAL("AL-04", "재확인을 위한 패스워드가 일치하지 않습니다."),
+    BREAK_LOCALID_RULE("AL-05", "로컬 아이디 생성규칙에 위배됩니다."),
+
     /**
      * JWT
      */
@@ -42,6 +44,10 @@ enum class Oh(
 
         fun breakPasswordRule(): Nothing {
             throw OpenException(BREAK_PASSWORD_RULE)
+        }
+
+        fun breakLocalIdRule(): Nothing {
+            throw OpenException(BREAK_LOCALID_RULE)
         }
 
         fun repeatPasswordNotEqual(): Nothing {

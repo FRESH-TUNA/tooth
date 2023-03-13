@@ -10,8 +10,8 @@ class SignUpRequest(
     val id: String,
     val nickname: String?,
     val password: String,
-    val repeatPassword: String
+    private val repeatPassword: String
 ) {
     fun toCommand(): LocalSignUpCommand
-        = LocalSignUpCommand(LocalId(id), Password(password), Password(password))
+        = LocalSignUpCommand(LocalId(id), Password(password), Password(repeatPassword))
 }
