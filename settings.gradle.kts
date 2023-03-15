@@ -1,5 +1,10 @@
-rootProject.name = "openshop"
+rootProject.name = "tooth"
+
 include("domain")
-include("domain:application")
-findProject(":domain:application")?.name = "application"
-include("application")
+include("service")
+include("common")
+
+include("infrastructure:tooth-mariadb")
+
+include("api:auth-local-jwt-api")
+include("api:member-api")

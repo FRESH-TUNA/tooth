@@ -2,3 +2,7 @@
 /.gradle/
 /.idea/
 /*/build/
+/api/*/build/
+/infrastructure/*/build/
+
+application*.yml
