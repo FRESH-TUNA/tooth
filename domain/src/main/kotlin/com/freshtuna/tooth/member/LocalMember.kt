@@ -1,18 +1,18 @@
 package com.freshtuna.tooth.member
 
+import com.freshtuna.tooth.id.ID
 import com.freshtuna.tooth.member.constant.Role
-import com.freshtuna.tooth.id.LocalId
-import com.freshtuna.tooth.id.PublicId
 
 class LocalMember(
-    id: PublicId,
+    id: ID,
+    publicID: ID,
     roles: List<Role>,
 
-    var localId: LocalId,
-    var password: EncryptedPassword
-) : Member(id, roles) {
+    var localID: ID,
+    var password: Password
+) : Member(id, publicID, roles) {
 
-    fun changePassword(newPW: EncryptedPassword) {
+    fun changePassword(newPW: Password) {
         password = newPW
     }
 }

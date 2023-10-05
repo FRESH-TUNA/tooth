@@ -5,6 +5,10 @@ package com.freshtuna.tooth.config.constant
  */
 class Url {
 
+    companion object {
+        const val ROOT = "/auth"
+    }
+
     /**
      * external api 설정
      */
@@ -12,25 +16,26 @@ class Url {
 
         companion object {
 
+
             /**
              * jwt local member signin
              */
-            const val JWT_LOCAL_SIGNIN = "/sign-in/jwt/local"
+            const val JWT_LOCAL_SIGNIN = "$ROOT/sign-in/jwt/local"
 
             /**
              * jwt local member signup
              */
-            const val JWT_LOCAL_SIGNUP = "/sign-up/jwt/local"
+            const val JWT_LOCAL_SIGNUP = "$ROOT/sign-up/jwt/local"
 
             /**
              * jwt refresh
              */
-            const val JWT_REFRESH = "/refresh/jwt"
+            const val JWT_REFRESH = "$ROOT/refresh/jwt"
 
             /**
              * change password
              */
-            const val CHANGE_PASSWORD = "/change-password"
+            const val CHANGE_PASSWORD = "$ROOT/change-password"
         }
     }
 }

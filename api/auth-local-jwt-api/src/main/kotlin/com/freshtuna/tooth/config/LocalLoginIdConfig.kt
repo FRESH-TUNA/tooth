@@ -1,0 +1,26 @@
+package com.freshtuna.tooth.config
+
+import com.freshtuna.tooth.config.constant.LocalProperties
+import com.freshtuna.tooth.id.LocalIdDefaultValidateService
+import com.freshtuna.tooth.id.EmailLocalIdValidator
+import com.freshtuna.tooth.id.incoming.LocalIdValidateUseCase
+
+import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Configuration
+
+@Configuration
+class LocalLoginIdConfig(
+    private val localProperties: LocalProperties
+) {
+
+    @Bean
+    fun defaultPolicy(): LocalIdValidateUseCase {
+
+        val policy = localProperties.idPolicy
+
+        if(policy == "EMAIL")
+            return EmailLocalIdValidator()
+
+        return LocalIdDefaultValidateService()
+    }
+}

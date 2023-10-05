@@ -1,5 +1,6 @@
 package com.freshtuna.tooth.util
 
+import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.http.HttpHeaders
 
@@ -25,6 +26,10 @@ class HeaderUtil {
 
         fun getAuthorizationHeaderValue(response: HttpServletResponse): String? {
             return getHeaderValue(HttpHeaders.AUTHORIZATION, response)
+        }
+
+        fun getAuthorizationHeaderValue(request: HttpServletRequest): String? {
+            return request.getHeader(HttpHeaders.AUTHORIZATION)
         }
     }
 }

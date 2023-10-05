@@ -3,7 +3,7 @@ package com.freshtuna.tooth.member
 import java.util.regex.Pattern
 
 class Password(
-    val passwordString: String
+    var passwordString: String
 ) {
 
     companion object {

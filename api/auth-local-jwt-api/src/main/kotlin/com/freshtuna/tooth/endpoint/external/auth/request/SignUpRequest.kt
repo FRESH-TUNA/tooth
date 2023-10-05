@@ -1,8 +1,8 @@
 package com.freshtuna.tooth.endpoint.external.auth.request
 
-import com.freshtuna.tooth.auth.command.LocalSignUpCommand
+import com.freshtuna.tooth.member.command.SignUpCommand
 import com.freshtuna.tooth.member.Password
-import com.freshtuna.tooth.id.LocalId
+import com.freshtuna.tooth.id.ID
 
 class SignUpRequest(
     val id: String,
@@ -10,6 +10,6 @@ class SignUpRequest(
     val password: String,
     private val repeatPassword: String
 ) {
-    fun toCommand(): LocalSignUpCommand
-        = LocalSignUpCommand(LocalId(id), Password(password), Password(repeatPassword))
+    fun toCommand(): SignUpCommand
+        = SignUpCommand(ID(id), Password(password), Password(repeatPassword))
 }

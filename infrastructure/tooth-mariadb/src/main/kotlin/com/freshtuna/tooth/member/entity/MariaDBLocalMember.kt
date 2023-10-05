@@ -1,10 +1,10 @@
 package com.freshtuna.tooth.member.entity
 
-import com.freshtuna.tooth.auth.command.LocalSignUpCommand
+import com.freshtuna.tooth.id.ID
+import com.freshtuna.tooth.member.command.SignUpCommand
 import com.freshtuna.tooth.member.LocalMember
-import com.freshtuna.tooth.member.EncryptedPassword
-import com.freshtuna.tooth.id.LocalId
-import com.freshtuna.tooth.id.PublicId
+
+import com.freshtuna.tooth.member.Password
 import jakarta.persistence.*
 import java.util.*
 
@@ -22,11 +22,11 @@ class MariaDBLocalMember(
 ) : MariaDBMember(nickname) {
     companion object {
 
-        fun of(command: LocalSignUpCommand, encryptedPassword: EncryptedPassword): MariaDBLocalMember {
+        fun of(command: SignUpCommand): MariaDBLocalMember {
 
             val mariaDBLocalMember = MariaDBLocalMember(
                 command.localId.toString(),
-                encryptedPassword.passwordString,
+                command.password.passwordString,
                 null
             )
 
@@ -40,14 +40,15 @@ class MariaDBLocalMember(
         val domainRules = roles.map { mariaDBRole -> mariaDBRole.role }
 
         return LocalMember(
-            PublicId(publicId.toString()),
+            ID(id),
+            ID(publicId),
             domainRules,
-            LocalId(localId),
-            EncryptedPassword(password)
+            ID(localId),
+            Password(password)
         )
     }
 
-    fun changePassword(newPassword: EncryptedPassword) {
+    fun changePassword(newPassword: Password) {
         password = newPassword.passwordString
     }
 }

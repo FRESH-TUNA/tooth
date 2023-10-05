@@ -84,7 +84,7 @@ tooth:
     role-key: 'ROLES'
     prefix: 'Bearer '
 
-    local-member-access-token-for-test: <STRING, 설정안해도됨>
+    local-member-access-token-for-test: jwt.io 등의 사이트를 통해 설정
     local-member-refresh-token-for-test: <STRING, 설정안해도됨>
 
   cors:

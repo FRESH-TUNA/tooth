@@ -1,11 +1,11 @@
 package com.freshtuna.tooth.auth
 
-import com.freshtuna.tooth.auth.outgoing.LocalSignUpPort
+import com.freshtuna.tooth.id.ID
+import com.freshtuna.tooth.member.outgoing.NewLocalMemberPort
 import com.freshtuna.tooth.member.*
-import com.freshtuna.tooth.auth.adapter.LocalSignUpAdapter
-import com.freshtuna.tooth.auth.command.LocalSignUpCommand
+import com.freshtuna.tooth.member.adapter.NewLocalMemberAdapter
+import com.freshtuna.tooth.member.command.SignUpCommand
 import com.freshtuna.tooth.member.entity.MariaDBLocalMember
-import com.freshtuna.tooth.id.LocalId
 import com.freshtuna.tooth.member.repository.MariaDBLocalMemberRepository
 import io.mockk.every
 import io.mockk.mockk
@@ -17,7 +17,7 @@ import java.util.*
 class LocalSignUpAdapterTest {
 
     private val memberRepository: MariaDBLocalMemberRepository = mockk()
-    private val localSignUpPort: LocalSignUpPort = LocalSignUpAdapter(memberRepository)
+    private val newLocalMemberPort: NewLocalMemberPort = NewLocalMemberAdapter(memberRepository)
 
     @Test
     @DisplayName("로컬 회원가입 성공 테스트")
@@ -26,8 +26,8 @@ class LocalSignUpAdapterTest {
          * given
          */
         val password = Password("myPassword")
-        val encryptedPassword = EncryptedPassword("password")
-        val command = LocalSignUpCommand(LocalId("wishToId"), password, password)
+        val encryptedPassword = Password("password")
+        val command = SignUpCommand(ID("wishToId"), password, password)
         /**
          * when
          */
@@ -39,7 +39,7 @@ class LocalSignUpAdapterTest {
          * then
          */
         assertEquals(
-            localSignUpPort.signUp(command, encryptedPassword).localId.toString(), savedDbMember.localId
+            newLocalMemberPort.new(command).localID.toString(), savedDbMember.localId
         )
     }
 }

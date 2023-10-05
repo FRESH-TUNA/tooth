@@ -1,5 +1,7 @@
 package com.freshtuna.tooth.member.entity
 
+import com.freshtuna.tooth.id.ID
+import com.freshtuna.tooth.member.Member
 import com.freshtuna.tooth.member.constant.Role
 import jakarta.persistence.*
 
@@ -22,11 +24,16 @@ class MariaDBMember(
 
     @OneToMany(mappedBy = "member")
     private var _roles: MutableList<MariaDBMemberRole> = mutableListOf()
+
     val roles: List<MariaDBMemberRole>
         get() = _roles.toList()
 
     fun updateRoles(roles: List<Role>) {
         _roles.clear()
         roles.map { role -> this._roles.add(MariaDBMemberRole( this, role)) }
+    }
+
+    fun toMember(): Member {
+        return Member(ID(id), ID(publicId), roles.stream().map { role -> role.role }.toList())
     }
 }

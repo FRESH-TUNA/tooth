@@ -1,10 +1,9 @@
 package com.freshtuna.tooth.member.incoming
 
 import com.freshtuna.tooth.member.Password
-import com.freshtuna.tooth.member.EncryptedPassword
 
 interface SecuredPasswordUseCase {
-    fun generate(password: Password): EncryptedPassword
+    fun encrypt(password: Password)
 
-    fun matched(givenPW: Password, storedPW: EncryptedPassword): Boolean
+    fun matched(givenPW: Password, storedPW: Password): Boolean
 }
