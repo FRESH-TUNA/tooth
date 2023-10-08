@@ -1,10 +1,10 @@
 package com.freshtuna.tooth.member.adapter
 
+import com.freshtuna.tooth.id.ID
 import com.freshtuna.tooth.member.LocalMember
-import com.freshtuna.tooth.member.EncryptedPassword
+import com.freshtuna.tooth.member.Password
+
 import com.freshtuna.tooth.member.entity.MariaDBLocalMember
-import com.freshtuna.tooth.id.LocalId
-import com.freshtuna.tooth.id.PublicId
 import com.freshtuna.tooth.member.repository.MariaDBLocalMemberRepository
 import io.mockk.InternalPlatformDsl.toStr
 import io.mockk.every
@@ -25,17 +25,18 @@ class LocalMemberUpdateAdapterTest {
         /**
          * given
          */
+        val id = ID(1)
         val publicId = UUID.randomUUID()
-        val curPassword = EncryptedPassword("curPassword")
-        val newPassword = EncryptedPassword("newPassword")
-        val member = LocalMember(PublicId( publicId.toStr()), emptyList(), LocalId("localId"), curPassword)
+        val curPassword = Password("curPassword")
+        val newPassword = Password("newPassword")
+        val member = LocalMember(id, ID( publicId.toStr()), emptyList(), ID("localId"), curPassword)
         val dbMember = MariaDBLocalMember("localId", "password", "nickname")
 
         /**
          * when
          */
         every {
-            localMemberRepository.findByPublicId(publicId)
+            localMemberRepository.findById(any())
         } returns Optional.of(dbMember)
 
         updateAdapter.changePassword(member, newPassword)

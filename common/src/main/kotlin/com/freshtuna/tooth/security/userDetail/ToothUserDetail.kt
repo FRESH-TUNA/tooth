@@ -1,15 +1,16 @@
 package com.freshtuna.tooth.security.userDetail
 
-import org.springframework.security.core.GrantedAuthority
+import com.freshtuna.tooth.member.Member
+import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
 
 class ToothUserDetail(
-    private val id: String,
-    private val authorites: Collection<GrantedAuthority>
+    val member: Member
 ) : UserDetails {
 
-    override fun getAuthorities(): MutableCollection<out GrantedAuthority> {
-        return authorities
+    override fun getAuthorities(): List<SimpleGrantedAuthority> {
+        return member.roles
+            .map { role -> SimpleGrantedAuthority(role.name) }
     }
 
     override fun getPassword(): String {
@@ -17,7 +18,7 @@ class ToothUserDetail(
     }
 
     override fun getUsername(): String {
-        return id
+        return member.id.stringID()
     }
 
     override fun isAccountNonExpired(): Boolean {

@@ -2,7 +2,7 @@ package com.freshtuna.tooth.exception.constant
 
 import com.freshtuna.tooth.exception.ToothException
 import com.freshtuna.tooth.exception.ToothMsgException
-import com.freshtuna.tooth.id.LocalId
+import com.freshtuna.tooth.id.ID
 
 enum class Oh(
     val code: String,
@@ -29,7 +29,7 @@ enum class Oh(
     INTERNAL_SERVER_ERROR("ERROR", "알수 없는 오류 입니다.");
 
     companion object {
-        fun localMemberNotExisted(localId: LocalId): Nothing {
+        fun localMemberNotExisted(localId: ID): Nothing {
             throw ToothMsgException(LOCAL_MEMBER_NOT_FOUNDED, "아이디: $localId 와 일치하는 계정이 없습니다.")
         }
 
@@ -37,7 +37,7 @@ enum class Oh(
             throw ToothException(LOCAL_MEMBER_NOT_FOUNDED)
         }
 
-        fun localIdUsed(localId: LocalId): Nothing {
+        fun localIdUsed(localId: ID): Nothing {
             throw ToothMsgException(LOCAL_MEMBER_NOT_FOUNDED, "아이디: $localId 는 이미 사용중입니다.")
         }
 

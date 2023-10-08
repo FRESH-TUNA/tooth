@@ -1,8 +1,8 @@
 package com.freshtuna.tooth.id.incoming
 
-import com.freshtuna.tooth.id.LocalId
+import com.freshtuna.tooth.id.ID
 
 interface LocalIdValidateUseCase {
 
-    fun validate(localId: LocalId)
+    fun validate(localID: ID)
 }

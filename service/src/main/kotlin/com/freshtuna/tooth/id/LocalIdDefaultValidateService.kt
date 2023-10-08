@@ -4,7 +4,7 @@ import com.freshtuna.tooth.id.incoming.LocalIdValidateUseCase
 
 class LocalIdDefaultValidateService : LocalIdValidateUseCase {
 
-    override fun validate(localId: LocalId) {
+    override fun validate(localId: ID) {
 
     }
 }

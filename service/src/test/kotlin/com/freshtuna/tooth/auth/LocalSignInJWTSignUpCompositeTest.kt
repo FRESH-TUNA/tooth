@@ -1,14 +1,14 @@
 package com.freshtuna.tooth.auth
 
-import com.freshtuna.tooth.jwt.JWT
-import com.freshtuna.tooth.member.outgoing.MemberSearchPort
-import com.freshtuna.tooth.jwt.incoming.JWTUseCase
+import com.freshtuna.tooth.token.AuthToken
+import com.freshtuna.tooth.member.outgoing.LocalMemberSearchPort
+import com.freshtuna.tooth.token.incoming.ManageTokenUseCase
 import com.freshtuna.tooth.member.LocalMember
 import com.freshtuna.tooth.member.Password
-import com.freshtuna.tooth.member.EncryptedPassword
-import com.freshtuna.tooth.auth.command.LocalSignInCommand
-import com.freshtuna.tooth.id.LocalId
-import com.freshtuna.tooth.id.PublicId
+
+import com.freshtuna.tooth.auth.command.SignInCommand
+import com.freshtuna.tooth.id.ID
+
 import com.freshtuna.tooth.member.incoming.SecuredPasswordUseCase
 
 import io.mockk.every
@@ -21,14 +21,16 @@ import org.junit.jupiter.api.DisplayName
 
 class LocalSignInJWTSignUpCompositeTest {
 
-    private val memberSearchPort: MemberSearchPort = mockk()
-    private val jwtUseCase: JWTUseCase = mockk()
+    private val localMemberSearchPort: LocalMemberSearchPort = mockk()
+    private val tokenManager: ManageTokenUseCase = mockk()
+    private val refreshTokenManager: ManageTokenUseCase = mockk()
     private val securedPasswordUseCase: SecuredPasswordUseCase = mockk()
 
-    private val memberSignInService = LocalSignInComposite(
-        memberSearchPort,
-        jwtUseCase,
-        securedPasswordUseCase
+    private val memberSignInService = SignInComposite(
+        localMemberSearchPort,
+        securedPasswordUseCase,
+        tokenManager,
+        refreshTokenManager
     )
 
     @Test
@@ -40,23 +42,28 @@ class LocalSignInJWTSignUpCompositeTest {
          * 로그인 성공시 반환할 유저객체
          * 테스트할 서비스 객체
          */
-        val localId = LocalId("localId")
+        val localId = ID("localId")
         val password = Password("password")
-        val encryptedPassword = EncryptedPassword("isSecured!")
-        val id = PublicId("id")
-        val member = LocalMember(id, Lists.emptyList(), localId, encryptedPassword)
+        val encryptedPassword = Password("isSecured!")
+        val id = ID("id")
+        val member = LocalMember(id, id, Lists.emptyList(), localId, encryptedPassword)
 
         /**
          * when
          */
-        every { memberSearchPort.findLocalMember(localId) } returns member
+        val accessToken = AuthToken.of("accessToken!")
+        val refreshToken = AuthToken.of("refreshToken!")
+
+        every { localMemberSearchPort.findByLocalId(localId) } returns member
         every { securedPasswordUseCase.matched(password, encryptedPassword) } returns true
-        every { jwtUseCase.generateAccessToken(member) } returns JWT.accessOf("accessToken!")
-        every { jwtUseCase.generateRefreshToken(member) } returns JWT.refreshOf("refreshToken")
+        every { tokenManager.generate(member) } returns accessToken
+        every { refreshTokenManager.generate(member) } returns refreshToken
 
         /**
          * then
          */
-        assertEquals(memberSignInService.signIn(LocalSignInCommand(localId, password)).member.publicId, id)
+        val result = memberSignInService.signIn(SignInCommand(localId, password))
+        assertEquals(result.access, accessToken)
+        assertEquals(result.refresh, refreshToken)
     }
 }

@@ -2,7 +2,7 @@ package com.freshtuna.tooth.config
 
 import com.freshtuna.tooth.config.constant.LocalProperties
 import com.freshtuna.tooth.id.LocalIdDefaultValidateService
-import com.freshtuna.tooth.id.LocalIdEmailVaildateService
+import com.freshtuna.tooth.id.EmailLocalIdValidator
 import com.freshtuna.tooth.id.incoming.LocalIdValidateUseCase
 
 import org.springframework.context.annotation.Bean
@@ -18,7 +18,7 @@ class LocalIdConfig(
         val policy = localProperties.idPolicy
 
         if(policy == "EMAIL")
-            return LocalIdEmailVaildateService()
+            return EmailLocalIdValidator()
 
         return LocalIdDefaultValidateService()
     }

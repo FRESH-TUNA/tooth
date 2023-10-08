@@ -2,7 +2,7 @@ package com.freshtuna.tooth.member
 
 import com.freshtuna.tooth.member.constant.Role
 import com.freshtuna.tooth.member.constant.Provider
-import com.freshtuna.tooth.id.PublicId
+import com.freshtuna.tooth.id.ID
 import org.assertj.core.util.Lists
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.DisplayName
@@ -18,7 +18,8 @@ class OAuthMemberTest {
          * 사용자에 필요한 정보
          */
         // 고유 식별자
-        val id = PublicId("식별자")
+        val id = ID("식별자")
+        val publicId = ID("공개 식별자")
 
         // 권한
         val roles: List<Role> = Lists.emptyList()
@@ -37,13 +38,13 @@ class OAuthMemberTest {
          * when
          * 주어진 정보들을 통해 로컬 멤버 생성하기
          */
-        val member = OAuthMember(id, roles, provider, oauthId)
+        val member = OAuthMember(id, publicId, roles, provider, oauthId)
 
         /**
          * then
          * 필요한 정보들이 잘 설정되어있는지 확인
          */
-        Assertions.assertEquals(member.publicId, id)
+        Assertions.assertEquals(member.id, id)
         Assertions.assertEquals(member.roles === roles, true)
 
         Assertions.assertEquals(member.provider, Provider.GOOGLE)

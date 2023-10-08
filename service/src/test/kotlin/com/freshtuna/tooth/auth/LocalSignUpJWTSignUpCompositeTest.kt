@@ -1,18 +1,18 @@
 package com.freshtuna.tooth.auth
 
-import com.freshtuna.tooth.auth.command.LocalSignUpCommand
+import com.freshtuna.tooth.member.command.SignUpCommand
 import com.freshtuna.tooth.member.constant.Role
-import com.freshtuna.tooth.member.outgoing.MemberSearchPort
-import com.freshtuna.tooth.auth.outgoing.LocalSignUpPort
+import com.freshtuna.tooth.member.outgoing.LocalMemberSearchPort
+import com.freshtuna.tooth.member.outgoing.NewLocalMemberPort
 import com.freshtuna.tooth.exception.ToothException
-import com.freshtuna.tooth.jwt.JWT
+import com.freshtuna.tooth.id.ID
+import com.freshtuna.tooth.id.incoming.LocalIdValidateUseCase
+import com.freshtuna.tooth.token.AuthToken
 
-import com.freshtuna.tooth.jwt.incoming.JWTUseCase
+import com.freshtuna.tooth.token.incoming.ManageTokenUseCase
 import com.freshtuna.tooth.member.LocalMember
 import com.freshtuna.tooth.member.Password
-import com.freshtuna.tooth.member.EncryptedPassword
-import com.freshtuna.tooth.id.LocalId
-import com.freshtuna.tooth.id.PublicId
+
 import com.freshtuna.tooth.member.incoming.SecuredPasswordUseCase
 import io.mockk.InternalPlatformDsl.toStr
 
@@ -25,19 +25,25 @@ import java.util.UUID
 
 class LocalSignUpJWTSignUpCompositeTest {
 
-    private val localSignUpPort: LocalSignUpPort = mockk()
+    private val newLocalMemberPort: NewLocalMemberPort = mockk()
 
-    private val memberSearchPort: MemberSearchPort = mockk()
+    private val localMemberSearchPort: LocalMemberSearchPort = mockk()
 
-    private val jwtUseCase: JWTUseCase = mockk()
+    private val tokenManager: ManageTokenUseCase = mockk()
+
+    private val refreshTokenManager: ManageTokenUseCase = mockk()
 
     private val securedPasswordUseCase: SecuredPasswordUseCase = mockk()
 
-    private val memberSignUpService = LocalSignUpComposite(
-        localSignUpPort,
-        memberSearchPort,
-        jwtUseCase,
-        securedPasswordUseCase
+    private val localIdValidateUseCase: LocalIdValidateUseCase = mockk()
+
+    private val memberSignUpService = SignUpComposite(
+        newLocalMemberPort,
+        localMemberSearchPort,
+        tokenManager,
+        refreshTokenManager,
+        securedPasswordUseCase,
+        localIdValidateUseCase
     )
 
     @Test
@@ -52,25 +58,26 @@ class LocalSignUpJWTSignUpCompositeTest {
         val roles: List<Role> = Lists.emptyList()
 
         // 로그인 ID
-        val localId = LocalId("freshtuna@kakao.com")
+        val localId = ID("freshtuna@kakao.com")
 
         // 패스워드
         val password = Password("패스워드")
 
         val member = LocalMember(
-            PublicId("hohohoho"), roles, localId, EncryptedPassword("encrypted"))
+            ID("hohohoho"), ID("hohohoho"), roles, localId, Password("encrypted"))
 
         /**
          * when
          */
-        every { localSignUpPort.signUp(any(), any()) } returns member
-        every { memberSearchPort.existsLocalMember(localId) } returns true
+        every { newLocalMemberPort.new(any()) } returns member
+        every { localMemberSearchPort.existsByLocalId(localId) } returns true
+        every { localIdValidateUseCase.validate(any()) } returns Unit
 
         /**
          * then
          * 로컬멤버 생성 테스트
          */
-        assertThrows<ToothException> { memberSignUpService.signUp(LocalSignUpCommand(localId, password, password)) }
+        assertThrows<ToothException> { memberSignUpService.signUp(SignUpCommand(localId, password, password)) }
     }
 
     @Test
@@ -85,7 +92,7 @@ class LocalSignUpJWTSignUpCompositeTest {
         val roles: List<Role> = Lists.emptyList()
 
         // 로그인 ID
-        val localId = LocalId("freshtuna@kakao.com")
+        val localId = ID("freshtuna@kakao.com")
 
         // 패스워드
         val password = Password("1aB!1aB2")
@@ -94,21 +101,26 @@ class LocalSignUpJWTSignUpCompositeTest {
          * when
          * 테스트에 사용할 서비스 객체, 포트 객체
          */
-        val newId = PublicId(UUID.randomUUID().toStr())
-        val newMember = LocalMember(newId, roles, localId, EncryptedPassword("encrypted"))
+        val accessToken = AuthToken.of("accessToken!")
+        val refreshToken = AuthToken.of("refreshToken!")
 
-        every { localSignUpPort.signUp(any(), any()) } returns newMember
-        every { memberSearchPort.existsLocalMember(localId) } returns false
+        val newId = ID(UUID.randomUUID().toStr())
+        val newMember = LocalMember(newId, newId, roles, localId, Password("encrypted"))
 
-        every { securedPasswordUseCase.generate(any()) } returns EncryptedPassword("thisISsecure!!")
-        every { jwtUseCase.generateAccessToken(newMember) } returns JWT.accessOf("accessToken!")
-        every { jwtUseCase.generateRefreshToken(newMember) } returns JWT.refreshOf("refreshToken")
+        every { newLocalMemberPort.new(any()) } returns newMember
+        every { localMemberSearchPort.existsByLocalId(localId) } returns false
 
+        every { securedPasswordUseCase.encrypt(any()) } returns Unit
+
+        every { tokenManager.generate(newMember) } returns accessToken
+        every { refreshTokenManager.generate(newMember) } returns refreshToken
+        every { localIdValidateUseCase.validate(any()) } returns Unit
         /**
          * then
          * 로컬멤버 생성 테스트
          */
-        Assertions.assertEquals(
-            memberSignUpService.signUp(LocalSignUpCommand(localId, password, password)).member.publicId, newId)
+        val result = memberSignUpService.signUp(SignUpCommand(localId, password, password))
+        Assertions.assertEquals(result.access, accessToken)
+        Assertions.assertEquals(result.refresh, refreshToken)
     }
 }

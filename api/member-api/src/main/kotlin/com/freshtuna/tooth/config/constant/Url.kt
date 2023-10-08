@@ -22,7 +22,7 @@ class Url {
             /**
              * change password
              */
-            const val CHANGE_PASSWORD = ROOT+"change-password"
+//            const val CHANGE_PASSWORD = ROOT+"change-password"
         }
     }
 }

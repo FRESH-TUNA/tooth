@@ -1,11 +1,11 @@
 package com.freshtuna.tooth.member
 
 import com.freshtuna.tooth.exception.ToothException
-import com.freshtuna.tooth.id.LocalId
-import com.freshtuna.tooth.id.PublicId
+import com.freshtuna.tooth.id.ID
+
 import com.freshtuna.tooth.member.incoming.SecuredPasswordUseCase
 import com.freshtuna.tooth.member.outgoing.LocalMemberUpdatePort
-import com.freshtuna.tooth.member.outgoing.MemberSearchPort
+import com.freshtuna.tooth.member.outgoing.LocalMemberSearchPort
 import io.mockk.every
 import io.mockk.mockk
 import org.assertj.core.util.Lists
@@ -18,13 +18,13 @@ class PasswordChangeServiceTest {
 
     private val localMemberUpdatePort: LocalMemberUpdatePort = mockk()
 
-    private val memberSearchPort: MemberSearchPort = mockk()
+    private val localMemberSearchPort: LocalMemberSearchPort = mockk()
 
     private val securedPasswordUseCase: SecuredPasswordUseCase = mockk()
 
-    private val passwordChangeService = PasswordChangeService(
+    private val passwordChangeService = LocalPasswordChangeComposite(
         localMemberUpdatePort,
-        memberSearchPort,
+        localMemberSearchPort,
         securedPasswordUseCase
     )
 
@@ -34,32 +34,32 @@ class PasswordChangeServiceTest {
         /**
          * given
          */
-        val localId = LocalId("localId")
+        val localId = ID("localId")
         val curPassword = Password("password")
         val newPassword = Password("1aB!1aB!1aB!1aB!1aB!")
 
-        val curEncryptedPassword = EncryptedPassword("password")
-        val newEncryptedPassword = EncryptedPassword("password")
+        val curEncryptedPassword = Password("password")
 
-        val id = PublicId("id")
-        val member = LocalMember(id, Lists.emptyList(), localId, curEncryptedPassword)
+        val id = ID("id")
+        val publicID = ID("publicID")
+        val member = LocalMember(id, publicID, Lists.emptyList(), localId, curEncryptedPassword)
 
         /**
          * when
          */
         every { securedPasswordUseCase.matched(curPassword, curEncryptedPassword) } returns true
-        every { securedPasswordUseCase.generate(curPassword) } returns curEncryptedPassword
-        every { securedPasswordUseCase.generate(newPassword) } returns newEncryptedPassword
+        every { securedPasswordUseCase.encrypt(curPassword) } returns Unit
+        every { securedPasswordUseCase.encrypt(newPassword) } returns Unit
 
-        every { memberSearchPort.findLocalMember(id) } returns member
-        every { localMemberUpdatePort.changePassword(member, newEncryptedPassword) } returns Unit
+        every { localMemberSearchPort.findBy(id) } returns member
+        every { localMemberUpdatePort.changePassword(member, newPassword) } returns Unit
 
 
 
         /**
          * then
          */
-        assertDoesNotThrow { passwordChangeService.changePassword(id, curPassword, newPassword) }
+        assertDoesNotThrow { passwordChangeService.change(id, curPassword, newPassword) }
     }
 
     @Test
@@ -68,29 +68,30 @@ class PasswordChangeServiceTest {
         /**
          * given
          */
-        val localId = LocalId("localId")
+        val localId = ID("localId")
         val curPassword = Password("password")
         val newPassword = Password("hmm")
 
-        val curEncryptedPassword = EncryptedPassword("password")
-        val newEncryptedPassword = EncryptedPassword("password")
+        val curEncryptedPassword = Password("password")
+        val newEncryptedPassword = Password("password")
 
-        val id = PublicId("id")
-        val member = LocalMember(id, Lists.emptyList(), localId, curEncryptedPassword)
+        val id = ID("id")
+        val publicID = ID("publicID")
+        val member = LocalMember(id, publicID, Lists.emptyList(), localId, curEncryptedPassword)
 
         /**
          * when
          */
         every { securedPasswordUseCase.matched(curPassword, curEncryptedPassword) } returns true
-        every { securedPasswordUseCase.generate(curPassword) } returns curEncryptedPassword
-        every { securedPasswordUseCase.generate(newPassword) } returns newEncryptedPassword
+        every { securedPasswordUseCase.encrypt(curPassword) } returns Unit
+        every { securedPasswordUseCase.encrypt(newPassword) } returns Unit
 
-        every { memberSearchPort.findLocalMember(id) } returns member
+        every { localMemberSearchPort.findBy(id) } returns member
         every { localMemberUpdatePort.changePassword(member, newEncryptedPassword) } returns Unit
 
         /**
          * then
          */
-        assertThrows<ToothException> { passwordChangeService.changePassword(id, curPassword, newPassword) }
+        assertThrows<ToothException> { passwordChangeService.change(id, curPassword, newPassword) }
     }
 }
